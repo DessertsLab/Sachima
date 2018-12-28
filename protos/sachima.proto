@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package sachima;
+
+service Reporter {
+    rpc RunReport (ReportRequest) returns (ReportReply);
+}
+
+message ReportRequest {
+    string name = 1;
+}
+
+message ReportReply {
+    string message = 1;
+}
