@@ -7,7 +7,7 @@ service Reporter {
 }
 
 message ReportRequest {
-    string name = 1;
+    string params = 1;
 }
 
 message ReportReply {

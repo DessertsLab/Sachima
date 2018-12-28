@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='sachima',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rsachima.proto\x12\x07sachima\"\x1d\n\rReportRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\"\x1e\n\x0bReportReply\x12\x0f\n\x07message\x18\x01 \x01(\t2E\n\x08Reporter\x12\x39\n\tRunReport\x12\x16.sachima.ReportRequest\x1a\x14.sachima.ReportReplyb\x06proto3')
+  serialized_pb=_b('\n\rsachima.proto\x12\x07sachima\"\x1f\n\rReportRequest\x12\x0e\n\x06params\x18\x01 \x01(\t\"\x1e\n\x0bReportReply\x12\x0f\n\x07message\x18\x01 \x01(\t2E\n\x08Reporter\x12\x39\n\tRunReport\x12\x16.sachima.ReportRequest\x1a\x14.sachima.ReportReplyb\x06proto3')
 )
 
 
@@ -33,7 +33,7 @@ _REPORTREQUEST = _descriptor.Descriptor(
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='sachima.ReportRequest.name', index=0,
+      name='params', full_name='sachima.ReportRequest.params', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -52,7 +52,7 @@ _REPORTREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=26,
-  serialized_end=55,
+  serialized_end=57,
 )
 
 
@@ -82,8 +82,8 @@ _REPORTREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=57,
-  serialized_end=87,
+  serialized_start=59,
+  serialized_end=89,
 )
 
 DESCRIPTOR.message_types_by_name['ReportRequest'] = _REPORTREQUEST
@@ -112,8 +112,8 @@ _REPORTER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=89,
-  serialized_end=158,
+  serialized_start=91,
+  serialized_end=160,
   methods=[
   _descriptor.MethodDescriptor(
     name='RunReport',

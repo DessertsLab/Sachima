@@ -29,34 +29,34 @@ def get_data(r):
             '字段E': pd.Categorical(["test", "train", "test", "train"]),
             '字段F': '这是一段测试文字测试字段的长度是否能自动调整'
         })
-    return(data)
+    
+    col_width = 1 / len(data.columns)
+
+    return {'you send: ': r,
+            'itemSelect': {
+                '字段A': ['111', 'javascript', 'flutter'],
+                '字段C': [1, 2, 3],
+                '测试3': ['a', 'b', 'c'],
+                '字段D': [1],
+                '字段E': [''],
+            },
+            'columns': list(map(
+                lambda x: {
+                    'title': x,
+                    'dataIndex': x,
+                    'key': x,
+                    'width': f'{col_width:.0%}'
+                },
+                data.columns.tolist()
+            )),
+            'dataSource': list(data.reset_index().rename(
+                columns={'index': 'key'}).T.to_dict().values())
+            }
 
 
 class Reporter(sachima_pb2_grpc.ReporterServicer):
-
     def RunReport(self, request, context):
-        data = get_data(request.name)
-        col_width = 1 / len(data.columns)
-        msg = {'you send: ': request.name,
-               'itemSelect': {
-                   '字段A': ['111', 'javascript', 'flutter'],
-                   '字段C': [1, 2, 3],
-                   '测试3': ['a', 'b', 'c'],
-                   '字段D': [1],
-                   '字段E': [''],
-               },
-               'columns': list(map(
-                   lambda x: {
-                       'title': x,
-                       'dataIndex': x,
-                       'key': x,
-                       'width': f'{col_width:.0%}'
-                   },
-                   data.columns.tolist()
-               )),
-               'dataSource': list(data.reset_index().rename(
-                   columns={'index': 'key'}).T.to_dict().values())
-               }
+        msg = get_data(request.params)
         return sachima_pb2.ReportReply(message=str(msg))
 
 
