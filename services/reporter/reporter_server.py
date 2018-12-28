@@ -29,7 +29,7 @@ def get_data(r):
             '字段E': pd.Categorical(["test", "train", "test", "train"]),
             '字段F': '这是一段测试文字测试字段的长度是否能自动调整'
         })
-    
+
     col_width = 1 / len(data.columns)
 
     return {'you send: ': r,

@@ -1,0 +1,6 @@
+mail:
+  mail_host: 'smtp.exmail.qq.com'
+  mail_add: '@'
+  mail_user: ''
+  mail_pass: ''
+  mail_sender: 'Chef'
