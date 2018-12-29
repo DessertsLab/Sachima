@@ -1,6 +1,35 @@
 mail:
   mail_host: 'smtp.exmail.qq.com'
-  mail_add: '@'
+  mail_add: ''
   mail_user: ''
   mail_pass: ''
-  mail_sender: 'Chef'
+  mail_sender: ''
+db:
+  impala:
+    ip: ''
+    port: 21050
+    db: ''
+    timeout: 20
+    auth_mechanism: ''
+  mysql_h:
+    db: ''
+    ip: ''
+    user: ''
+    pass: ''
+    charset: ''
+    port: 3306
+  mysql_d:
+    db: ''
+    ip: ''
+    user: ''
+    pass: ''
+    charset: ''
+    port: 3306
+  mariadb:
+    db: ''
+    ip: ''
+    user: ''
+    pass: ''
+    charset: ''
+    port: 3306
+
