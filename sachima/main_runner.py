@@ -1,10 +1,5 @@
-'''
-Sachima
-'''
-import handler as han
-from model import Data
-# from db_connects import db
-# db = db()
+import sachima.handler as han
+from sachima.model import Data
 
 
 def rpts_controller(model_in, h_er):

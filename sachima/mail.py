@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import smtplib
 from os.path import basename
 from email.mime.application import MIMEApplication

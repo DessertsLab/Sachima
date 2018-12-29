@@ -1,0 +1,78 @@
+.GenericTable
+
+{
+/* width:1400px; */
+/* table-layout:fixed; */
+
+font-size:12px;
+
+color:#36161686;
+
+border-width: 1px;
+
+border-color: rgb(255, 255, 255);/* This is dark*/
+
+border-collapse: collapse;   /*表格边框显示一条线，不重叠*/
+
+margin: 12px;  /*表与表之间的间距*/
+
+}
+
+.GenericTable th
+
+{
+
+font-size:14px;  /*字段名大小*/
+
+color:black;  /*字段名颜色*/
+
+background-color:rgb(255, 255, 255);/* 字段名背景色*/
+
+border-width: 1px;
+
+padding: 4px;
+
+border-style: solid;
+
+border-color: rgb(8, 4, 6);/* This is light*/
+
+text-align:center;   /*字段名对齐*/
+
+}
+
+.GenericTable tr
+
+{
+
+color:black;  /*单元格字颜色*/
+
+background-color:rgb(255, 255, 255);/* This is light*/
+
+}
+
+.GenericTable td
+
+{
+
+/* overflow:hidden; 
+white-space:nowrap;
+width: 1%; */
+
+font-size:14px; /* 字大小 */
+
+text-align:center; /*对齐*/
+
+border-width: 1px;
+
+border-style: solid;
+
+border-color: rgb(10, 10, 10);/* This is dark*/
+
+}
+
+.tabletitle
+{
+    text-indent: 20%;
+    font-size:24px;
+    color:rgb(32, 21, 27);
+}

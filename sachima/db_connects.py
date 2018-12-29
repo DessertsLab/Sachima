@@ -1,6 +1,5 @@
 '''
-数据库连接输出
-需要安装pymysql和cx_Oracle
+if you need to connect Oracle  you shoud install cx_Oracle
 
 mac instanclient install
 http://www.oracle.com/technetwork/topics/intel-macsoft-096467.html?ssSourceSiteId=otncn
@@ -51,6 +50,7 @@ class db(object):
             self.mariadb_user = c['db']['mariadb']['user']
             self.mariadb_pass = c['db']['mariadb']['pass']
             self.mariadb_charset = c['db']['mariadb']['charset']
+        print('Loading database config from conf/sachima.yaml')
 
     @property
     def ENGINE_MYSQL_hawaii(self):
