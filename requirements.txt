@@ -1,0 +1,9 @@
+grpcio==1.17.1
+pandas==0.23.0
+numpy==1.14.5
+PyMySQL==0.9.2
+SQLAlchemy==1.2.7
+protobuf==3.6.1
+grpc==0.3-19
+impyla==0.14.1
+PyYAML==3.13
