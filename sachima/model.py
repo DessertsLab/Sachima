@@ -15,11 +15,11 @@ class Data:
         if datatype in ('xls', 'xlsx'):
             self.data = pd.read_excel(
                 os.path.join(
-                    os.path.dirname(__file__), '..', 'data', dataname))
+                    os.path.dirname(__file__), 'data', dataname))
         elif datatype in ('csv', 'txt'):
             self.data = pd.read_csv(
                 os.path.join(
-                    os.path.dirname(__file__), '..', 'data', dataname))
+                    os.path.dirname(__file__), 'data', dataname))
         elif datatype in ('api', ):
             api_cls = importlib.import_module(
                 'services.' + dataname, package='..')
@@ -28,6 +28,5 @@ class Data:
         else:
             self.data = pd.read_sql(
                 open(
-                    os.path.join(
-                        os.path.dirname(__file__), '..', 'sqls', dataname),
+                    os.path.join('sqls', dataname),
                     encoding='utf-8').read(), datatype)
