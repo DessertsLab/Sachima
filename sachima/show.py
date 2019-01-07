@@ -1,9 +1,23 @@
-def show(func):
-    def wrapper(a):
-        try:
-            print('show had been called')
-            return func(a)
-        except Exception as ex:
-            print('Exception show called')
+import inspect
 
-    return wrapper
+
+class show(object):
+
+    # _showfile = 'data/1.csv'
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args):
+        print(args)
+        log_string = inspect.getfile(self.func) + " was called"
+        print(log_string)
+        # with open(self._showfile, 'r') as f:
+        #     print(f.readlines())
+
+        self.notify
+
+        return self.func(*args)
+
+    def notify(self):
+        pass

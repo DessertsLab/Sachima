@@ -19,15 +19,15 @@ def send(func):
         SENDING_STR = c['sns']['dingding']['SENDING_STR']
         ERRSENT_STR = c['sns']['dingding']['ERRSENT_STR']
 
-    def wrapper(a):
+    def wrapper(*args, **kwargs):
         try:
             time_str = str(datetime.datetime.now())
-            t = SENDING_STR.format(a['handler'], time_str)
+            t = SENDING_STR.format(args[0]['handler'], time_str)
             sns.send_dingding(t, t, ERROR_GRP_TOKEN)
-            return func(a)
+            return func(*args, **kwargs)
         except Exception as ex:
             title = ERRSENT_STR.format(
-                a['handler'],
+                args[0]['handler'],
                 str(datetime.datetime.now())
             )
             data = str(ex)
