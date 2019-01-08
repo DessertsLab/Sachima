@@ -1,22 +1,25 @@
 import inspect
+import functools
 
 
 class api(object):
 
     def __init__(self, func):
+        functools.update_wrapper(self, func)
         self.func = func
 
-    def __call__(self, *args):
+    def __call__(self, *args, **kwargs):
         log_string = inspect.getfile(self.func) + " was called"
         print(log_string)
-
         self.publish()
-
-        return self.func(*args)
+        return self.func(*args, **kwargs)
 
     def publish(self):
         print('publish...................')
         pass
+
+if __name__ == '__main__':
+    print(inspect.getfile(api))
 
 
 # class grpc(api):

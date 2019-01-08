@@ -1,6 +1,7 @@
 import sachima.sns as sns
 import datetime
 import yaml
+import functools
 
 
 def send(func):
@@ -19,12 +20,16 @@ def send(func):
         SENDING_STR = c['sns']['dingding']['SENDING_STR']
         ERRSENT_STR = c['sns']['dingding']['ERRSENT_STR']
 
+    @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
+            # before
             time_str = str(datetime.datetime.now())
             t = SENDING_STR.format(args[0]['handler'], time_str)
             sns.send_dingding(t, t, ERROR_GRP_TOKEN)
-            return func(*args, **kwargs)
+            value = func(*args, **kwargs)
+            # after
+            return value
         except Exception as ex:
             title = ERRSENT_STR.format(
                 args[0]['handler'],
