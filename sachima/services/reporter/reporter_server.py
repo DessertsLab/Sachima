@@ -37,7 +37,7 @@ def get_data(r):
     return json.dumps({
         'itemDatePicker': {
             'id': '日期',
-            'type': 'DatePicker',
+            'type': 'DatePicker',  # RangePicker
         },
         'itemSelect': [
             {
@@ -91,6 +91,7 @@ def get_data(r):
 class Reporter(sachima_pb2_grpc.ReporterServicer):
     def RunReport(self, request, context):
         msg = get_data(request.params)
+        print(request.params)
         return sachima_pb2.ReportReply(message=str(msg))
 
 

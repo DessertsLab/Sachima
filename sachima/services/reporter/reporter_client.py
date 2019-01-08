@@ -13,7 +13,7 @@ def run():
     # NOTE(gRPC Python Team): .close() is possible on a channel and should be
     # used in circumstances in which the with statement does not fit the needs
     # of the code.
-    with grpc.insecure_channel('192.168.0.233:50051') as channel:
+    with grpc.insecure_channel('10.16.45.124:50051') as channel:
         stub = sachima_pb2_grpc.ReporterStub(channel)
         response = stub.RunReport(
             sachima_pb2.ReportRequest(params=str(API_PARAMES)))

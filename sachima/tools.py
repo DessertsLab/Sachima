@@ -48,3 +48,54 @@ def singleton(cls):
         return wrapper_singleton.instance
     wrapper_singleton.instance = None
     return wrapper_singleton
+
+
+class Averager():
+
+    def __init__(self):
+        self.series = []
+
+    def __call__(self, new_value):
+        self.series.append(new_value)
+        total = sum(self.series)
+        return total/len(self.series)
+
+
+def make_averager():
+    count = 0
+    total = 0
+
+    def averager(new_value):
+        nonlocal count, total  # 自由变量 闭包
+        count += 1
+        total += new_value
+        return total / count
+
+    return averager
+
+
+def clock(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        t0 = time.time()
+        result = func(*args, **kwargs)
+        elapsed = time.time() - t0
+        name = func.__name__
+        arg_lst = []
+        if args:
+            arg_lst.append(', '.join(repr(arg) for arg in args))
+        if kwargs:
+            pairs = ['%s=%r' % (k, w) for k, w in sorted(kwargs.items())]
+            arg_lst.append(', '.join(pairs))
+        arg_str = ', '.join(arg_lst)
+        print('[%0.8fs] %s(%s) => %r' % (elapsed, name, arg_str, result))
+        return result
+    return wrapper
+
+# @clock
+# def f(n):
+#     return 1 if n < 2 else n * f(n - 1)
+
+
+# if __name__ == '__main__':
+#     f(19)
