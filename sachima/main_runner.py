@@ -23,4 +23,4 @@ def run(p_in):
     else:
         data_in = None
     handler = han.ReportsHandler(handler=p_in['handler'])
-    rpts_controller(data_in, handler)
+    return rpts_controller(data_in, handler)

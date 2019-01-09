@@ -2,8 +2,11 @@ import importlib
 
 
 class ReportsHandler(object):
-    def __init__(self, **r_list):
-        self.reports_lists = r_list['handler']
+    def __init__(self, **kwargs):
+        if isinstance(kwargs['handler'], list):
+            self.reports_lists = kwargs['handler']
+        else:
+            self.reports_lists = [kwargs['handler']]
 
     def handle(self, model_in):
         data_in = model_in

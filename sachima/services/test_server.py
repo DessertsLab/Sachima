@@ -1,18 +1,10 @@
-from concurrent import futures
-import time
-
-import grpc
-
+import server
 import sachima_pb2
 import sachima_pb2_grpc
-
 import numpy as np
 import pandas as pd
 
 import json
-
-_ONE_DAY_IN_SECONDS = 60 * 60 * 24
-
 
 def get_data(r):
     if r == 'r0001':
@@ -88,24 +80,5 @@ def get_data(r):
     })
 
 
-class Reporter(sachima_pb2_grpc.ReporterServicer):
-    def RunReport(self, request, context):
-        msg = get_data(request.params)
-        print(request.params)
-        return sachima_pb2.ReportReply(message=str(msg))
-
-
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    sachima_pb2_grpc.add_ReporterServicer_to_server(Reporter(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    try:
-        while True:
-            time.sleep(_ONE_DAY_IN_SECONDS)
-    except KeyboardInterrupt:
-        server.stop(0)
-
-
 if __name__ == '__main__':
-    serve()
+    server.serve(get_data(''))
