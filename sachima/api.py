@@ -1,11 +1,12 @@
 import inspect
 import functools
-import sanic
-from sachima.services import server
+import importlib
+# import sanic
+# from sachima.services import server
 import numpy as np
 import pandas as pd
 import json
-
+from nameko.rpc import rpc, RpcProxy
 ################################
 
 
@@ -83,10 +84,6 @@ def get_data(r):
     })
 
 
-
-
-server.serve(get_data(''))
-
 def api(type='grpc', platform='superset'):
     def wrapper(func):
         @functools.wraps(func)
@@ -94,7 +91,8 @@ def api(type='grpc', platform='superset'):
             # before
             _result = func(*_args, **kw)
             # print(_result)  # None
-            publish(type, platform)
+            name = 'r00001'
+            publish(type, platform, func, name)
             # 调用supersetpost注册接口
 
             # after
@@ -103,6 +101,26 @@ def api(type='grpc', platform='superset'):
     return wrapper
 
 
-def publish(t, p):
+class Data(object):
+    name = 'data'
+
+    @rpc
+    def get_report(self, params):
+        print(params)
+        m = importlib.import_module(params['name'])
+        res = m.main()
+        return res
+
+
+def publish(t, p, f, n):
+    '''
+        class {}(object):
+        name = n
+
+        @rpc
+        def get(self):
+            return f()
+    '''
+
     print('publishing to ' + p + ' using ' + t)
     return 'success'
