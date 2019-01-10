@@ -109,8 +109,64 @@ class Data(object):
         print(params)
         m = importlib.import_module(params['name'])
         res = m.main()
-        return res
+        print(type(res))
+        return test(res)
 
+
+def test(data):
+    print(type(data[0]))
+    return json.dumps({
+        'itemDatePicker': {
+            'id': '日期',
+            'type': 'DatePicker',  # RangePicker
+        },
+        'itemSelect': [
+            {
+                'id': '测试1',
+                'props': {
+                    'mode': 'tags',
+                    'allowClear': True,
+                    'placeholder': '待输入',
+                },
+                'option': ['111', 'javascript', 'flutter']
+            }, {
+                'id': 'Test2',
+                'props': {
+                    # 'mode': 'multiple',
+                    'allowClear': True,
+                    'placeholder': 'pls input',
+                },
+                'option': [1, 2, 3]
+            }, {
+                'id': '测试5',
+                'props': {
+                    'mode': 'multiple',
+                    'allowClear': True,
+                    'placeholder': 'pls input',
+                },
+                'option': ['a', 'b', 'c']
+            }, {
+                'id': '测试4',
+                'props': {
+                    'mode': 'multiple',
+                    'allowClear': True,
+                    'placeholder': 'pls input',
+                },
+                'option': [1]
+            }, {
+                'id': '测试6',
+                'props': {
+                    'mode': 'multiple',
+                    'allowClear': True,
+                    'placeholder': 'pls input',
+                },
+                'option': []
+            },
+        ],
+        # 'index': data.index.to_frame(),
+        'columns': data[0].drop(['打款日期','进件时间'], axis=1).columns.tolist(),
+        'dataSource': data[0].drop(['打款日期','进件时间'], axis=1).to_dict('records')
+    })
 
 def publish(t, p, f, n):
     '''
