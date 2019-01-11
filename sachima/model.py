@@ -5,7 +5,7 @@ from sachima.params import set_sql_params
 
 
 class Data:
-    def __init__(self, dataname, datatype, params):
+    def __init__(self, dataname, datatype, user_params, api_params):
         '''
         dataname: sql filename
         datatype: db engine  or filetype in str
@@ -30,5 +30,5 @@ class Data:
             str_sql = open(
                     os.path.join('sqls', dataname),
                     encoding='utf-8').read()
-            sql = set_sql_params(str_sql, params)
+            sql = set_sql_params(str_sql, user_params, api_params)
             self.data = pd.read_sql(sql, datatype)

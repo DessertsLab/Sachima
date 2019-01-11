@@ -34,10 +34,10 @@ class Data(object):
         # print(params['params']['日期'])
 
         '''
-        {'ApiUrl': 'http://0.0.0.0:8080/api/v1/reports/test1', 
-        '日期': '2019-01-01T05:33:03.801Z', 
-        '日期1': '2019-01-16T05:33:06.118Z', 
-        '测试1': ['111', 'flutter'], 
+        {'ApiUrl': 'http://0.0.0.0:8080/api/v1/reports/test1',
+        '日期': '2019-01-01T05:33:03.801Z',
+        '日期1': '2019-01-16T05:33:06.118Z',
+        '测试1': ['111', 'flutter'],
         'Test2': 2, '测试5': ['b', 'c']}
         '''
         res = m.main(params['params'])  # dataframe
@@ -55,7 +55,7 @@ def test(data):
                         "size": 'small',
                     },
                 }, {
-                    'id': '日期1',
+                    'id': '日期',
                     'type': 'RangePicker',
                     'props': {
                         "size": 'small',
@@ -64,13 +64,13 @@ def test(data):
             ],
         'itemSelect': [
             {
-                'id': '测试1',
+                'id': 'noshoptype',
                 'props': {
                     'mode': 'tags',
                     'allowClear': True,
                     'placeholder': '待输入',
                 },
-                'option': ['111', 'javascript', 'flutter']
+                'option': ['TEST', '']
             }, {
                 'id': 'Test2',
                 'props': {
@@ -80,13 +80,13 @@ def test(data):
                 },
                 'option': [1, 2, 3]
             }, {
-                'id': '测试5',
+                'id': '行业类型',
                 'props': {
                     'mode': 'multiple',
                     'allowClear': True,
                     'placeholder': 'pls input',
                 },
-                'option': ['a', 'b', 'c']
+                'option': ['医美', '祛痘', '其它']
             }, {
                 'id': '测试4',
                 'props': {
