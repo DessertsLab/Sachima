@@ -31,20 +31,37 @@ class Data(object):
     def get_report(self, params):
         print(params)
         m = importlib.import_module(params['name'])
-        res = m.main()  # dataframe
+        # print(params['params']['日期'])
+
+        '''
+        {'ApiUrl': 'http://0.0.0.0:8080/api/v1/reports/test1', 
+        '日期': '2019-01-01T05:33:03.801Z', 
+        '日期1': '2019-01-16T05:33:06.118Z', 
+        '测试1': ['111', 'flutter'], 
+        'Test2': 2, '测试5': ['b', 'c']}
+        '''
+        res = m.main(params['params'])  # dataframe
         return test(res)
 
 
 def test(data):
     print(type(data[0]))
     return json.dumps({
-        'itemDatePicker': [{
-            'id': '进件日期',
-            'type': 'DatePicker',  # RangePicker
-        }, {
-            'id': '到期日期',
-            'type': 'DateRange',  # RangePicker
-        }],
+        'itemDatePicker': [
+                {
+                    'id': '日期',
+                    'type': 'DatePicker',
+                    'props': {
+                        "size": 'small',
+                    },
+                }, {
+                    'id': '日期1',
+                    'type': 'RangePicker',
+                    'props': {
+                        "size": 'small',
+                    },
+                }
+            ],
         'itemSelect': [
             {
                 'id': '测试1',
@@ -94,17 +111,3 @@ def test(data):
         'dataSource': [{"a": 1, "b": 2}, {"a": 3, "b": 4}]
         # 'dataSource': data[0].to_dict('records')
     })
-
-
-def publish(t, p, f, n):
-    '''
-        class {}(object):
-        name = n
-
-        @rpc
-        def get(self):
-            return f()
-    '''
-
-    print('publishing to ' + p + ' using ' + t)
-    return 'success'

@@ -7,18 +7,13 @@ def rpts_controller(model_in, h_er):
     return res_df
 
 
-# def rpts_view(control_in, view):
-#     '''
-#     todo: output rpts to excel
-#     '''
-#     res_v = view.vis(control_in)
-#     return res_v
+def run(p_in, params):
+    if params == {}:
+        print('no params-----------------------------')
 
-
-def run(p_in):
     if 'model' in p_in and p_in['model']:
         data_in = [
-            Data(dataname, source).data for dataname, source in p_in['model']
+            Data(dataname, source, params).data for dataname, source in p_in['model']
         ]
     else:
         data_in = None
