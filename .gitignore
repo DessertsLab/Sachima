@@ -107,4 +107,8 @@ venv.bak/
 
 # sachima
 sachima.yaml
-examples/
+conf/
+data/
+sqls/
+
+
