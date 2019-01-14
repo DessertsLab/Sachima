@@ -79,8 +79,10 @@ def data_wrapper(data):
     if isinstance(df, pd.DataFrame):
         res["controls"] = [f.to_json() for f in filters]
         res["columns"] = df.columns.tolist()
-        res["dataSource"] = df.to_json(
-            orient="records", date_format="iso", date_unit="s", force_ascii=False
+        res["dataSource"] = json.loads(
+            df.to_json(
+                orient="records", date_format="iso", date_unit="s", force_ascii=False
+            )
         )
         return json.dumps(res)
     else:
