@@ -11,6 +11,6 @@ def run(data_in):
     df1 = data_in[0]
     df1 = df1.describe()
 
-    df1.reset_index(level=0, inplace=true)
+    df1.reset_index(level=0, inplace=True)
 
     return df1
