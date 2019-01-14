@@ -34,54 +34,55 @@ class Filter:
 def data_wrapper(data):
     return json.dumps(
         {
-            "components": [
+            "controls": [
                 {"id": "日期1", "type": "DatePicker", "props": {"size": "small"}},
                 {"id": "日期2", "type": "RangePicker", "props": {"size": "small"}},
                 {
                     "id": "noshoptype",
-                    "type": "itemSelect",
+                    "type": "Select",
                     "props": {
                         "mode": "tags",
-                        "allowClear": "True",
+                        "allowClear": True,
                         "placeholder": "待输入",
                     },
                     "option": ["TEST", ""],
                 },
                 {
                     "id": "Test2",
-                    "type": "itemSelect",
+                    "type": "Select",
                     "props": {
                         "mode": "multiple",
-                        "allowClear": "True",
+                        "allowClear": True,
                         "placeholder": "pls input",
                     },
                     "option": [1, 2, 3],
                 },
                 {
                     "id": "行业类型",
-                    "type": "itemSelect",
+                    "type": "Select",
                     "props": {
                         "mode": "multiple",
-                        "allowClear": "True",
+                        "allowClear": True,
                         "placeholder": "pls input",
                     },
                     "option": ["医美", "祛痘", "其它"],
                 },
                 {
                     "id": "测试4",
-                    "type": "itemSelect",
+                    "type": "Select",
                     "props": {
                         "mode": "multiple",
-                        "allowClear": "True",
+                        "allowClear": True,
                         "placeholder": "pls input",
                     },
                     "option": [1],
                 },
                 {
                     "id": "测试6",
+                    "type": "Select",
                     "props": {
                         "mode": "multiple",
-                        "allowClear": "True",
+                        "allowClear": True,
                         "placeholder": "pls input",
                     },
                     "option": [],
