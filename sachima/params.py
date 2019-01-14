@@ -40,19 +40,17 @@ class Filter:
 
         # todo: json str from enumn tree improve
         for arg in self.setter:
-            # print(type(arg), arg.value)
+            print(type(arg))
             if isinstance(arg, FilterEnum.TYPE):
                 res["type"] = arg.value
-            if isinstance(arg, FilterEnum.PROPS):
-                if isinstance(arg, FilterEnum.PROPS.MODE):
-                    res["props"]["mode"] = arg.value
-                if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
-                    res["props"]["allowclear"] = arg.value
-                if isinstance(arg, FilterEnum.PROPS.SIZE):
-                    res["props"]["size"] = arg.value
+            if isinstance(arg, FilterEnum.PROPS.MODE):  # bug++++
+                res.update({"props": {"mode": arg.value}})
+            if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
+                res.update({"props": {"allowclear": arg.value}})
+            if isinstance(arg, FilterEnum.PROPS.SIZE):
+                res.update({"props": {"size": arg.value}})
             if isinstance(arg, dict):
-                for k, v in arg.items():
-                    res["props"][k] = v
+                res.update(arg)
 
         return res
 
