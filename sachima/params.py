@@ -24,16 +24,6 @@ class Filter:
         for arg in setter:
             print(type(arg), arg.value)
 
-    @property
-    def name(self):
-        return self.name
-
-    @name.setter
-    def name(self, value):
-        if not isinstance(value, str):
-            raise TypeError("Filter name should be type of string")
-        setattr(self, "_name", value)
-
     def __repr__(self):
         return "Filter(" + self.name + ")"
 

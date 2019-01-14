@@ -35,8 +35,8 @@ def main(api_params={}):
 
     PARAM_IN = {
         "model": [("email_content_style_example.sql", db.ENGINE_MYSQL_duckchat)],
-        # "handler": ["email_content_style_example", "another_handler"]
-        "handler": "email_content_style_example",
+        "handler": ["email_content_style_example", "another_handler"],
+        # "handler": "email_content_style_example",
         "params": {
             "noshoptype": "TEST",
             "debit_level": get_debit_level(),
