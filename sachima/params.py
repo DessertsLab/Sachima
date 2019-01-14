@@ -50,7 +50,7 @@ class Filter:
                     res["props"]["allowclear"] = arg.value
                 if isinstance(arg, FilterEnum.PROPS.SIZE):
                     res["props"]["size"] = arg.value
-            if isinstance(arg, list):
+            if isinstance(arg, dict):
                 for k, v in arg.items():
                     res["props"][k] = v
 
