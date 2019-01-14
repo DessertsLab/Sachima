@@ -46,5 +46,4 @@ class Data(object):
         '测试5': ['b', 'c']
         }
         """
-        res = m.main(params["params"])  # dataframe
-        return data_wrapper(res)
+        return m.main(params["params"])

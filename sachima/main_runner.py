@@ -3,26 +3,29 @@ from sachima.model import Data
 from sachima.params import Filter, data_wrapper
 
 
-# def rpts_controller(model_in, h_er):
-#     res_df = h_er.handle(model_in)
-#     return {"data":res_df, "filters":}
+def run(user_params, api_params):
+    """
+    run main defined by user see example
+    user_params: dict
+    api_params: dict
+    return: json str
+    """
+    print("-----------------------api_params-----------------------------")
+    print(api_params)
+    print("-----------------------user_params-----------------------------")
+    print(user_params)
 
-
-def run(p_in, api_params):
-    if api_params == {}:
-        print("empty api_params-----------------------------")
-
-    if p_in["params"] == {}:
-        print("empty user_params-----------------------------")
-
-    if "model" in p_in and p_in["model"]:
+    if "model" in user_params and user_params["model"]:
         data_in = [
-            Data(dataname, source, p_in["params"], api_params).data
-            for dataname, source in p_in["model"]
+            Data(dataname, source, user_params["params"], api_params).data
+            for dataname, source in user_params["model"]
         ]
     else:
         data_in = None
 
-    handler = han.ReportsHandler(handler=p_in["handler"])
+    # str or str list : handler name is
+    # one string of handler name
+    # or list of handler name
+    handler = han.ReportsHandler(handler=user_params["handler"])
 
-    return {"data": handler.handle(data_in), "filters": p_in["filters"]}
+    return {"data": handler.handle(data_in), "filters": user_params["filters"]}
