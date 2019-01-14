@@ -40,7 +40,7 @@ class Filter:
 
         # todo: json str from enumn tree improve
         for arg in self.setter:
-            print(type(arg), arg.value)
+            # print(type(arg), arg.value)
             if isinstance(arg, FilterEnum.TYPE):
                 res["type"] = arg.value
             if isinstance(arg, FilterEnum.PROPS):

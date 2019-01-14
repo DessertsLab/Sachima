@@ -26,7 +26,7 @@ def main(api_params={}):
         _.PROPS.SIZE.SMALL,
         _.PROPS.MODE.TAGS,
         {"placeholder": "#请输入"},
-        {"option", ["option1", "option2", "option3"]},
+        {"option": ["option1", "option2", "option3"]},
     )
 
     f1 = Filter("客户姓名", setter=s1)
