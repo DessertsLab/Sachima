@@ -1,11 +1,15 @@
 import pandas as pd
 import json
+from sachima.filter_enum import FilterEnum
 
 
 def set_sql_params(sql, user_params, api_params):
-    # test
-    # sql = 'select 1 from {表} where col1 in {aaa}'
-    # params = {"表": "debit_order", "aaa": [1, 2, 3]}
+    """
+    set sql params from user_params and api_params to sql
+    return sql str\n
+    for example:
+        select {colname1} from {tablename} where {colname2} = '{value}'
+    """
 
     # combine two dict  api_params will overwrite user_params
     params = {**user_params, **api_params}
@@ -19,77 +23,65 @@ def set_sql_params(sql, user_params, api_params):
 
 
 class Filter:
-    def __init__(self, name, setter):
-        self.name = name
-        for arg in setter:
-            print(type(arg), arg.value)
+    def __init__(self, id, setter):
+        """
+        id: str
+        setter: tuple
+        """
+        self.id = id
+        self.setter = setter
 
     def __repr__(self):
-        return "Filter(" + self.name + ")"
+        return "Filter(" + self.id + ")"
 
     def to_json(self):
-        return {"a": "b"}
+        res = {}
+        res["id"] = self.id
+
+        # todo: json str from enumn tree improve
+        for arg in self.setter:
+            print(type(arg), arg.value)
+            if isinstance(arg, FilterEnum.TYPE):
+                res["type"] = arg.value
+            if isinstance(arg, FilterEnum.PROPS):
+                if isinstance(arg, FilterEnum.PROPS.MODE):
+                    res["props"]["mode"] = arg.value
+                if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
+                    res["props"]["allowclear"] = arg.value
+                if isinstance(arg, FilterEnum.PROPS.SIZE):
+                    res["props"]["size"] = arg.value
+            if isinstance(arg, list):
+                for k, v in arg.items():
+                    res["props"][k] = v
+
+        return res
 
 
 def data_wrapper(data):
-    return json.dumps(
-        {
-            "controls": [
-                {"id": "日期1", "type": "DatePicker", "props": {"size": "small"}},
-                {"id": "日期2", "type": "RangePicker", "props": {"size": "small"}},
-                {
-                    "id": "noshoptype",
-                    "type": "Select",
-                    "props": {
-                        "mode": "tags",
-                        "allowClear": True,
-                        "placeholder": "待输入",
-                    },
-                    "option": ["TEST", ""],
-                },
-                {
-                    "id": "Test2",
-                    "type": "Select",
-                    "props": {
-                        "mode": "multiple",
-                        "allowClear": True,
-                        "placeholder": "pls input",
-                    },
-                    "option": [1, 2, 3],
-                },
-                {
-                    "id": "行业类型",
-                    "type": "Select",
-                    "props": {
-                        "mode": "multiple",
-                        "allowClear": True,
-                        "placeholder": "pls input",
-                    },
-                    "option": ["医美", "祛痘", "其它"],
-                },
-                {
-                    "id": "测试4",
-                    "type": "Select",
-                    "props": {
-                        "mode": "multiple",
-                        "allowClear": True,
-                        "placeholder": "pls input",
-                    },
-                    "option": [1],
-                },
-                {
-                    "id": "测试6",
-                    "type": "Select",
-                    "props": {
-                        "mode": "multiple",
-                        "allowClear": True,
-                        "placeholder": "pls input",
-                    },
-                    "option": [],
-                },
-            ],
-            "columns": ["a", "b"],
-            "dataSource": [{"a": 1, "b": 2}, {"a": 3, "b": 4}],
-        }
-    )
+    """
+    data: dict
+    return: json str
+    return json str to api for frontend \n 
+    for example:
+        antd
+    """
+    # data["data"]
+    # data["filters"]
+    print(data)
+    print("changing the data into json str...")
+    res = {}
+    df = data["data"][0]
+    # check and change index to columns
+    # df.reset_index(level=0, inplace=True)
 
+    filters = data["filters"]
+
+    if isinstance(df, pd.DataFrame):
+        res["controls"] = [f.to_json() for f in filters]
+        res["columns"] = df.columns.tolist()
+        res["dataSource"] = df.to_json(
+            orient="records", date_format="iso", date_unit="s", force_ascii=False
+        )
+        return json.dumps(res)
+    else:
+        raise TypeError("your handler should return pd.DataFrame")
