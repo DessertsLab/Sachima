@@ -29,10 +29,18 @@ def main(api_params={}):
         {"option": ["option1", "option2", "option3"]},
     )
 
+    s2 = (
+        _.TYPE.DATE,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        _.PROPS.SIZE.SMALL,
+        {"placeholder": "#请输入"},
+        {"option": ["option1", "option2", "option3"]},
+    )
+
     f1 = Filter("客户姓名", setter=s1)
     f2 = Filter("筛选字段2", setter=s1)
-    f3 = Filter("noshoptype", setter=s1)
-    f4 = Filter("行业类型", setter=s1)
+    f3 = Filter("noshoptype", setter=s2)
+    f4 = Filter("行业类型", setter=s2)
     f5 = Filter("下拉", setter=s1)
 
     PARAM_IN = {
