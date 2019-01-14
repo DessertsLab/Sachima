@@ -46,4 +46,6 @@ class Data(object):
         '测试5': ['b', 'c']
         }
         """
-        return m.main(params["params"])
+        # m.main(params["params"] ---> {"data":[DataFrames], "filters":[Filters]}
+        #
+        return data_wrapper(m.main(params["params"]))

@@ -4,9 +4,9 @@ from aenum import Enum, unique, skip
 class FilterEnum(Enum):
     @skip
     class TYPE(Enum):
-        DATE = "itemDatePicker.DatePicker"
-        DATERANGE = "itemDatePicker.RangePicker"
-        ITEMSELECT = "itemSelect"
+        DATE = "DatePicker"
+        DATERANGE = "RangePicker"
+        ITEMSELECT = "Select"
 
     @skip
     class PROPS(Enum):

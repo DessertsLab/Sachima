@@ -1,6 +1,5 @@
 import sachima.handler as han
 from sachima.model import Data
-from sachima.params import Filter, data_wrapper
 
 
 def run(user_params, api_params):

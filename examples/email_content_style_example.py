@@ -51,5 +51,5 @@ def main(api_params={}):
 if __name__ == "__main__":
     # testing
     res = main()
-    print(res)
+    # print(res)
     # pass
