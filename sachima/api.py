@@ -6,7 +6,7 @@ import pandas as pd
 import json
 from nameko.rpc import rpc, RpcProxy
 from sachima.publish import Publisher
-from sachima.params import Filter
+from sachima.params import Filter, DataWrapper
 
 
 def api(type="grpc", platform="superset"):
@@ -47,7 +47,7 @@ class Data(object):
         }
         """
         res = m.main(params["params"])  # dataframe
-        return test(res)
+        return DataWrapper(res)
 
 
 def test(data):

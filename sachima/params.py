@@ -38,3 +38,7 @@ class Filter:
 
     def to_json(self):
         return {"a": "b"}
+
+
+class DataWrapper:
+    pass
