@@ -53,7 +53,7 @@ def main(api_params={}):
             "日期": "2019-01-11",
             "行业类型": ["yimei", "qudou"],
         },
-        "filters": [f1, f2, f3, f4, f5],
+        "filters": [f3, f4, f1, f2, f5],
     }
     return run(PARAM_IN, api_params)
 
