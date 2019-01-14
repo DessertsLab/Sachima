@@ -110,5 +110,5 @@ sachima.yaml
 conf/
 data/
 sqls/
-
+test_rpc_client.py
 

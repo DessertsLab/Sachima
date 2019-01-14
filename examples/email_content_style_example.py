@@ -19,18 +19,19 @@ def get_debit_level():
 # @send
 # @api(type='grpc', platform='superset')
 def main(api_params={}):
-    set_date_filter = (
+    # 下拉选择 字体小  允许清除 多选
+    s1 = (
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.SIZE.SMALL,
-        _.PROPS.MODE.MULTIPLE,
-        _.PROPS.P.A,
-        _.PROPS.P.B,
+        _.PROPS.MODE.TAGS,
     )
 
-    f1 = Filter("筛选字段1", setter=set_date_filter)
-    f2 = Filter("筛选字段2", setter=set_date_filter)
-    f3 = Filter("noshoptype", setter=set_date_filter)
+    f1 = Filter("客户姓名", setter=s1)
+    f2 = Filter("筛选字段2", setter=s1)
+    f3 = Filter("noshoptype", setter=s1)
+    f4 = Filter("行业类型", setter=s1)
+    f5 = Filter("下拉", setter=s1)
 
     PARAM_IN = {
         "model": [("email_content_style_example.sql", db.ENGINE_MYSQL_duckchat)],
@@ -42,16 +43,13 @@ def main(api_params={}):
             "日期": "2019-01-11",
             "行业类型": ["yimei", "qudou"],
         },
-        "filters": [f1, f2, f3],
+        "filters": [f1, f2, f3, f4, f5],
     }
     return run(PARAM_IN, api_params)
 
 
-# 下拉选择 字体小  允许清除 多选
-
-
 if __name__ == "__main__":
     # testing
-    # res = main()
-    # print(res)
-    pass
+    res = main()
+    print(res)
+    # pass

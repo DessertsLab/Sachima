@@ -6,7 +6,7 @@ import pandas as pd
 import json
 from nameko.rpc import rpc, RpcProxy
 from sachima.publish import Publisher
-from sachima.params import Filter, DataWrapper
+from sachima.params import Filter, data_wrapper
 
 
 def api(type="grpc", platform="superset"):
@@ -32,7 +32,7 @@ class Data(object):
 
     @rpc
     def get_report(self, params):
-        print(params)
+        print(params)  # {'name': 'email_content_style_example', 'params': {}}
         m = importlib.import_module(params["name"])
         # print(params['params']['日期'])
 
@@ -47,7 +47,7 @@ class Data(object):
         }
         """
         res = m.main(params["params"])  # dataframe
-        return DataWrapper(res)
+        return data_wrapper(res)
 
 
 def test(data):

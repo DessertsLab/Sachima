@@ -1,4 +1,5 @@
 import pandas as pd
+import json
 
 
 def set_sql_params(sql, user_params, api_params):
@@ -40,5 +41,64 @@ class Filter:
         return {"a": "b"}
 
 
-class DataWrapper:
-    pass
+def data_wrapper(data):
+    return json.dumps(
+        {
+            "components": [
+                {"id": "日期1", "type": "DatePicker", "props": {"size": "small"}},
+                {"id": "日期2", "type": "RangePicker", "props": {"size": "small"}},
+                {
+                    "id": "noshoptype",
+                    "type": "itemSelect",
+                    "props": {
+                        "mode": "tags",
+                        "allowClear": "True",
+                        "placeholder": "待输入",
+                    },
+                    "option": ["TEST", ""],
+                },
+                {
+                    "id": "Test2",
+                    "type": "itemSelect",
+                    "props": {
+                        "mode": "multiple",
+                        "allowClear": "True",
+                        "placeholder": "pls input",
+                    },
+                    "option": [1, 2, 3],
+                },
+                {
+                    "id": "行业类型",
+                    "type": "itemSelect",
+                    "props": {
+                        "mode": "multiple",
+                        "allowClear": "True",
+                        "placeholder": "pls input",
+                    },
+                    "option": ["医美", "祛痘", "其它"],
+                },
+                {
+                    "id": "测试4",
+                    "type": "itemSelect",
+                    "props": {
+                        "mode": "multiple",
+                        "allowClear": "True",
+                        "placeholder": "pls input",
+                    },
+                    "option": [1],
+                },
+                {
+                    "id": "测试6",
+                    "props": {
+                        "mode": "multiple",
+                        "allowClear": "True",
+                        "placeholder": "pls input",
+                    },
+                    "option": [],
+                },
+            ],
+            "columns": ["a", "b"],
+            "dataSource": [{"a": 1, "b": 2}, {"a": 3, "b": 4}],
+        }
+    )
+
