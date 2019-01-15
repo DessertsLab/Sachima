@@ -57,6 +57,14 @@ def main(api_params={}):
         {"option": "行业"},
     )
 
+    qishu_set = (
+        _.TYPE.ITEMSELECT,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        _.PROPS.MODE.TAGS,
+        {"props": {"placeholder": "#请输入"}},
+        {"option": "期数"},
+    )
+
     s13 = (
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
@@ -89,7 +97,7 @@ def main(api_params={}):
     rq = Filter("日期", setter=set_data)
     hy = Filter("行业", setter=s12)
     noshoptype = Filter("noshoptype", setter=s12)
-    f5 = Filter("期数", setter=s12)
+    f5 = Filter("期数", setter=qishu_set)
     yourlines = Filter("行数", setter=set_lines)
     sssh = Filter("所属商户", setter=s13)
 
