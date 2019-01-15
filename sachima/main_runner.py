@@ -16,6 +16,7 @@ def run(user_params, api_params):
 
     # combine two dict  api_params will overwrite user_params
     params = {**user_params["params"], **api_params}
+    print("=" * 10 + "combined params ====> " + str(params))
 
     if "model" in user_params and user_params["model"]:
         data_in = [

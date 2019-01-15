@@ -5,21 +5,15 @@ from sachima.filter_enum import FilterEnum
 
 def set_sql_params(sql, params):
     """
-    set sql params from user_params and api_params to sql
+    set params to sql
     return sql str\n
     for example:
         select {colname1} from {tablename} where {colname2} = '{value}'
     """
-
-    # combine two dict  api_params will overwrite user_params
-    # params = {**user_params, **api_params}
-
     # convert dict to tuple for sql
     for k in params:
         if isinstance(params[k], list):
             params[k] = tuple(params[k])
-    print("#" * 40)
-    print(params)
     return sql.format(**params)
 
 
@@ -35,9 +29,14 @@ class Filter:
     def __repr__(self):
         return "Filter(" + self.id + ")"
 
-    def to_json(self):
+    def to_json(self, data):
         res = {}
         res["id"] = self.id
+
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError(
+                "expect get pd.DataFrame type but get {}".format(str(type(data)))
+            )
 
         # todo: json str from enumn tree improve
         for arg in self.setter:
@@ -51,7 +50,11 @@ class Filter:
             if isinstance(arg, FilterEnum.PROPS.SIZE):
                 res.update({"props": {"size": arg.value}})
             if isinstance(arg, dict):
-                res.update(arg)
+                colname = arg.get("option", None)
+                if isinstance(colname, str) and colname in data.columns:
+                    res.update({"option": data[colname].unique().tolist()})
+                else:
+                    res.update(arg)
 
         return res
 
@@ -70,13 +73,10 @@ def data_wrapper(data):
     print("changing the data into json str...")
     res = {}
     df = data["data"][0]
-    # check and change index to columns
-    # df.reset_index(level=0, inplace=True)
-
     filters = data["filters"]
 
     if isinstance(df, pd.DataFrame):
-        res["controls"] = [f.to_json() for f in filters]
+        res["controls"] = [f.to_json(df) for f in filters]
         res["columns"] = df.columns.tolist()
         res["dataSource"] = json.loads(
             df.to_json(

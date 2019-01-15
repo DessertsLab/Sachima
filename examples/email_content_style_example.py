@@ -57,6 +57,14 @@ def main(api_params={}):
         {"option": "行业"},
     )
 
+    s13 = (
+        _.TYPE.ITEMSELECT,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        _.PROPS.MODE.TAGS,
+        {"props": {"placeholder": "#请输入"}},
+        {"option": "所属商户"},
+    )
+
     set_data = (
         _.TYPE.DATE,
         _.PROPS.ALLOWCLEAR.TRUE,
@@ -83,6 +91,7 @@ def main(api_params={}):
     noshoptype = Filter("noshoptype", setter=s12)
     f5 = Filter("期数", setter=s12)
     yourlines = Filter("行数", setter=set_lines)
+    sssh = Filter("所属商户", setter=s13)
 
     PARAM_IN = {
         "model": [("email_content_style_example.sql", db.ENGINE_MYSQL_duckchat)],
@@ -96,7 +105,7 @@ def main(api_params={}):
             "排除行业": ["行业1", "行业2"],
             "yourlines": 3,
         },
-        "filters": [jjsj, rq, hy, noshoptype, f5, yourlines],
+        "filters": [sssh, jjsj, rq, hy, noshoptype, f5, yourlines],
     }
     return run(PARAM_IN, api_params)
 
