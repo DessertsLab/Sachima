@@ -25,7 +25,7 @@ def main(api_params={}):
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.SIZE.SMALL,
         _.PROPS.MODE.TAGS,
-        {"placeholder": "#请输入"},
+        {"props": {"placeholder": "#请输入"}},
         {"option": ["option1", "option2", "option3"]},
     )
 
@@ -33,7 +33,7 @@ def main(api_params={}):
         _.TYPE.DATE,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.SIZE.SMALL,
-        {"placeholder": "#请输入"},
+        {"props": {"placeholder": "#请输入"}},
         {"option": ["option1", "option2", "option3"]},
     )
 
