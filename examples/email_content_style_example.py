@@ -103,7 +103,7 @@ def main(api_params={}):
             "排除行业": ["行业1", "行业2"],
             "行数": 3,
         },
-        "filters": [sssh, jjsj, rq, hy, noshoptype, f5, yourlines],
+        "filters": [jjsj, rq, hy, noshoptype, f5, yourlines, sssh],
     }
     return run(PARAM_IN, api_params)
 
