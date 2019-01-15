@@ -54,7 +54,14 @@ class Filter:
             if isinstance(arg, dict):
                 colname = arg.get("option", None)
                 if isinstance(colname, str) and colname in data.columns:
-                    res.update({"option": data[colname].unique().tolist()})
+                    res.update(
+                        {
+                            "option": data[colname]
+                            .unique()
+                            .map(lambda x: str(x))
+                            .tolist()
+                        }
+                    )
                 else:
                     res["props"].update(arg)
         print(res)
