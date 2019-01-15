@@ -33,7 +33,7 @@ class Data(object):
     @rpc
     def get_report(self, params):
         print(params)  # {'name': 'email_content_style_example', 'params': {}}
-        m = importlib.import_module(params["name"])
+        m = importlib.import_module(params["params"]["name"])
         # print(params['params']['日期'])
 
         """
@@ -48,4 +48,4 @@ class Data(object):
         """
         # m.main(params["params"] ---> {"data":[DataFrames], "filters":[Filters]}
         #
-        return data_wrapper(m.main(params["params"]))
+        return data_wrapper(m.main(params))
