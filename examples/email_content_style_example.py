@@ -37,7 +37,7 @@ def main(api_params={}):
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
+        {"placeholder": "#请输入"},
         {"option": ["option1", "option2", "option3"]},
     )
 
@@ -45,7 +45,6 @@ def main(api_params={}):
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
         {"option": get_option_cola()},
     )
 
@@ -53,7 +52,6 @@ def main(api_params={}):
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
         {"option": "行业"},
     )
 
@@ -61,7 +59,6 @@ def main(api_params={}):
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
         {"option": "期数"},
     )
 
@@ -69,21 +66,15 @@ def main(api_params={}):
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
         {"option": "所属商户"},
     )
 
-    set_data = (
-        _.TYPE.DATE,
-        _.PROPS.ALLOWCLEAR.TRUE,
-        {"props": {"placeholder": "#请输入"}},
-    )
+    set_data = (_.TYPE.DATE, _.PROPS.ALLOWCLEAR.TRUE)
 
     set_lines = (
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
         _.PROPS.MODE.TAGS,
-        {"props": {"placeholder": "#请输入"}},
         {"option": list(range(0, 200, 20))},
     )
 

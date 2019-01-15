@@ -56,7 +56,7 @@ class Filter:
                 if isinstance(colname, str) and colname in data.columns:
                     res.update({"option": data[colname].unique().tolist()})
                 else:
-                    res.update(arg)
+                    res["props"].update(arg)
         print(res)
         return res
 
