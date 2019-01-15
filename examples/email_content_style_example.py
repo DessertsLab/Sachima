@@ -103,7 +103,7 @@ def main(api_params={}):
             "日期": "2019-01-11",
             "进件时间": "",
             "排除行业": ["行业1", "行业2"],
-            "yourlines": 3,
+            "行数": 3,
         },
         "filters": [sssh, jjsj, rq, hy, noshoptype, f5, yourlines],
     }
