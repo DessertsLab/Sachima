@@ -30,7 +30,7 @@ class Filter:
         return "Filter(" + self.id + ")"
 
     def to_json(self, data):
-        res = {}
+        res = {"id": "", "props": {}}
         res["id"] = self.id
 
         if not isinstance(data, pd.DataFrame):
@@ -44,18 +44,20 @@ class Filter:
             if isinstance(arg, FilterEnum.TYPE):
                 res["type"] = arg.value
             if isinstance(arg, FilterEnum.PROPS.MODE):  # bug++++
-                res.update({"props": {"mode": arg.value}})
+                print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+                res["props"].update({"mode": arg.value})
+                print(res)
             if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
-                res.update({"props": {"allowclear": arg.value}})
+                res["props"].update({"allowclear": arg.value})
             if isinstance(arg, FilterEnum.PROPS.SIZE):
-                res.update({"props": {"size": arg.value}})
+                res["props"].update({"size": arg.value})
             if isinstance(arg, dict):
                 colname = arg.get("option", None)
                 if isinstance(colname, str) and colname in data.columns:
                     res.update({"option": data[colname].unique().tolist()})
                 else:
                     res.update(arg)
-
+        print(res)
         return res
 
 
@@ -83,6 +85,8 @@ def data_wrapper(data):
                 orient="records", date_format="iso", date_unit="s", force_ascii=False
             )
         )
+        print("-----------return api-------------")
+        print(res)
         return json.dumps(res)
     else:
         raise TypeError("your handler should return pd.DataFrame")
