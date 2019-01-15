@@ -57,13 +57,15 @@ class Filter:
                     res.update(
                         {
                             "option": data[colname]
-                            .unique()
                             .map(lambda x: str(x))
+                            .unique()
                             .tolist()
                         }
                     )
+                elif colname:
+                    res.update(arg)
                 else:
-                    res["props"].update(arg)
+                    res["prop"].update(arg)
         print(res)
         return res
 

@@ -14,6 +14,6 @@ def run(data_in, params):
     df1["anotherhandler加的列"] = 1
     col_sssh = params.get("所属商户", None)
     if col_sssh:
-        df1 = df1[df1["所属商户"] in col_sssh]
+        df1 = df1[df1["所属商户"].isin(col_sssh)]
 
-    return df1[: params["行数"]]  # 通过参数来过滤行数 。
+    return df1[: int(params["行数"])]  # 通过参数来过滤行数 。

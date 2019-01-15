@@ -74,7 +74,6 @@ def main(api_params={}):
     set_lines = (
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
-        _.PROPS.MODE.TAGS,
         {"option": list(range(0, 200, 20))},
     )
 
