@@ -12,4 +12,4 @@ def run(data_in, params):
     # df1 = df1.describe()
     # df1.reset_index(level=0, inplace=True)
     df1["anotherhandler加的列"] = 1
-    return df1[: params["yourlines"]]  # 通过参数来过滤行数 。
+    return df1[: params["行数"]]  # 通过参数来过滤行数 。
