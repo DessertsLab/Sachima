@@ -14,9 +14,12 @@ def run(user_params, api_params):
     print("-----------------------user_params-----------------------------")
     print(user_params)
 
+    # combine two dict  api_params will overwrite user_params
+    params = {**user_params["params"], **api_params}
+
     if "model" in user_params and user_params["model"]:
         data_in = [
-            Data(dataname, source, user_params["params"], api_params).data
+            Data(dataname, source, params).data
             for dataname, source in user_params["model"]
         ]
     else:
@@ -27,4 +30,4 @@ def run(user_params, api_params):
     # or list of handler name
     handler = han.ReportsHandler(handler=user_params["handler"])
 
-    return {"data": handler.handle(data_in), "filters": user_params["filters"]}
+    return {"data": handler.handle(data_in, params), "filters": user_params["filters"]}

@@ -14,34 +14,75 @@ def get_debit_level():
     return 1 + 1
 
 
+def get_option_cola():
+    direcs = ["东", "南", "西", "北"]
+    return direcs
+
+
 # @only_in_night
 # @clock
 # @send
 # @api(type='grpc', platform='superset')
 def main(api_params={}):
     # 下拉选择 字体小  允许清除 多选
+    """
+    # option 第一种情况
+        如果 Filter的id和 返回数据的某一列相同 返回唯一值 在pandas中获取 优先级最低
+    # option 第二种情况
+        用户自定义sql 输出列表 {"option": "selct distinct industry from shop_basic_info"}/{"option": "r0001_option_col1.sql"},
+    # option 第三种情况
+        用户自定义函数 输出列表 {"option": ["option1", "option2", "option3"]} / {"option": get_option_cola()},
+    """
     s1 = (
         _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
-        _.PROPS.SIZE.SMALL,
         _.PROPS.MODE.TAGS,
         {"props": {"placeholder": "#请输入"}},
         {"option": ["option1", "option2", "option3"]},
     )
 
-    s2 = (
-        _.TYPE.DATE,
+    s11 = (
+        _.TYPE.ITEMSELECT,
         _.PROPS.ALLOWCLEAR.TRUE,
-        _.PROPS.SIZE.SMALL,
+        _.PROPS.MODE.TAGS,
         {"props": {"placeholder": "#请输入"}},
-        {"option": ["option1", "option2", "option3"]},
+        {"option": get_option_cola()},
     )
 
-    f1 = Filter("客户姓名", setter=s1)
-    f2 = Filter("筛选字段2", setter=s1)
-    f3 = Filter("noshoptype", setter=s2)
-    f4 = Filter("行业类型", setter=s2)
-    f5 = Filter("下拉", setter=s1)
+    s12 = (
+        _.TYPE.ITEMSELECT,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        _.PROPS.MODE.TAGS,
+        {"props": {"placeholder": "#请输入"}},
+        {"option": "行业"},
+    )
+
+    set_data = (
+        _.TYPE.DATE,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        {"props": {"placeholder": "#请输入"}},
+    )
+
+    set_lines = (
+        _.TYPE.ITEMSELECT,
+        _.PROPS.ALLOWCLEAR.TRUE,
+        _.PROPS.MODE.TAGS,
+        {"props": {"placeholder": "#请输入"}},
+        {"option": list(range(0, 200, 20))},
+    )
+
+    # set_data_range = (
+    #     _.TYPE.DATERANGE,
+    #     _.PROPS.ALLOWCLEAR.TRUE,
+    #     {"props": {"placeholder": "#请输入"}},
+    # )
+
+    jjsj = Filter("进件时间", setter=set_data)
+    rq = Filter("日期", setter=set_data)
+    hy = Filter("行业", setter=s12)
+    noshoptype = Filter("noshoptype", setter=s12)
+    f5 = Filter("期数", setter=s12)
+    yourlines = Filter("行数", setter=set_lines)
 
     PARAM_IN = {
         "model": [("email_content_style_example.sql", db.ENGINE_MYSQL_duckchat)],
@@ -51,9 +92,11 @@ def main(api_params={}):
             "noshoptype": "TEST",
             "debit_level": get_debit_level(),
             "日期": "2019-01-11",
-            "行业类型": ["yimei", "qudou"],
+            "进件时间": "",
+            "排除行业": ["行业1", "行业2"],
+            "yourlines": 3,
         },
-        "filters": [f3, f4, f1, f2, f5],
+        "filters": [jjsj, rq, hy, noshoptype, f5, yourlines],
     }
     return run(PARAM_IN, api_params)
 
@@ -61,5 +104,5 @@ def main(api_params={}):
 if __name__ == "__main__":
     # testing
     res = main()
-    # print(res)
+    print(res)
     # pass

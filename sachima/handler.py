@@ -8,12 +8,12 @@ class ReportsHandler(object):
         else:
             self.handlers = [kwargs["handler"]]  # only one in list
 
-    def handle(self, model_in):
+    def handle(self, model_in, params):
         data_in = model_in
         for handler_str in self.handlers:
             print("Calling handler --> " + handler_str)
             m = importlib.import_module("handler." + handler_str, handler_str)
-            res = m.run(data_in)  # each handler should has run function
+            res = m.run(data_in, params)  # each handler should has run function
             if res is not None:
                 # the previous handler's result with push to next handler
                 data_in = [res]

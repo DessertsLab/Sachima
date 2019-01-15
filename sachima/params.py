@@ -3,7 +3,7 @@ import json
 from sachima.filter_enum import FilterEnum
 
 
-def set_sql_params(sql, user_params, api_params):
+def set_sql_params(sql, params):
     """
     set sql params from user_params and api_params to sql
     return sql str\n
@@ -12,13 +12,14 @@ def set_sql_params(sql, user_params, api_params):
     """
 
     # combine two dict  api_params will overwrite user_params
-    params = {**user_params, **api_params}
+    # params = {**user_params, **api_params}
 
     # convert dict to tuple for sql
     for k in params:
         if isinstance(params[k], list):
             params[k] = tuple(params[k])
-
+    print("#" * 40)
+    print(params)
     return sql.format(**params)
 
 
