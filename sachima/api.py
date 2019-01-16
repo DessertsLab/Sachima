@@ -15,7 +15,7 @@ def api(type="grpc", platform="superset"):
         def api_called(*_args, **kw):
             # before
             _result = func(*_args, **kw)
-            name = "r00001"
+            name = inspect.getfile(func)
             # 调用supersetpost注册接口
             Publisher.to(platform, name)
             # after
