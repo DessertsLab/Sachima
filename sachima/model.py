@@ -22,10 +22,14 @@ class Data:
                 os.path.join(os.path.dirname(__file__), "data", dataname)
             )
         elif datatype in ("api",):
-            api_cls = importlib.import_module("services." + dataname, package="..")
+            api_cls = importlib.import_module(
+                "services." + dataname, package=".."
+            )
             api = api_cls.Api()
             self.data = api.data
         else:
-            str_sql = open(os.path.join("sqls", dataname), encoding="utf-8").read()
+            str_sql = open(
+                os.path.join("sqls", dataname), encoding="utf-8"
+            ).read()
             sql = set_sql_params(str_sql, params)
             self.data = pd.read_sql(sql, datatype)

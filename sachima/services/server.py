@@ -22,7 +22,7 @@ def serve(msg):
     r.setMsg = msg
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     sachima_pb2_grpc.add_ReporterServicer_to_server(r, server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port("[::]:50051")
     server.start()
     try:
         while True:

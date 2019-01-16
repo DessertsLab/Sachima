@@ -15,7 +15,6 @@ def api(type="grpc", platform="superset"):
         def api_called(*_args, **kw):
             # before
             _result = func(*_args, **kw)
-            # print(_result)  # None
             name = "r00001"
             # 调用supersetpost注册接口
             Publisher.to(platform, name)
@@ -32,20 +31,5 @@ class Data(object):
 
     @rpc
     def get_report(self, params):
-        print(params)  # {'name': 'email_content_style_example', 'params': {}}
         m = importlib.import_module(params["name"])
-        # print(params['params']['日期'])
-
-        """
-        {
-        'ApiUrl': 'http://0.0.0.0:8080/api/v1/reports/test1',
-        '日期': '2019-01-01T05:33:03.801Z',
-        '日期1': '2019-01-16T05:33:06.118Z',
-        '测试1': ['111', 'flutter'],
-        'Test2': 2,
-        '测试5': ['b', 'c']
-        }
-        """
-        # m.main(params["params"] ---> {"data":[DataFrames], "filters":[Filters]}
-        #
         return data_wrapper(m.main(params))

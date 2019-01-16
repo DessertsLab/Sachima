@@ -35,18 +35,17 @@ class Filter:
 
         if not isinstance(data, pd.DataFrame):
             raise TypeError(
-                "expect get pd.DataFrame type but get {}".format(str(type(data)))
+                "expect get pd.DataFrame type but get {}".format(
+                    str(type(data))
+                )
             )
 
         # todo: json str from enumn tree improve
         for arg in self.setter:
-            print(type(arg))
             if isinstance(arg, FilterEnum.TYPE):
                 res["type"] = arg.value
             if isinstance(arg, FilterEnum.PROPS.MODE):  # bug++++
-                print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
                 res["props"].update({"mode": arg.value})
-                print(res)
             if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
                 res["props"].update({"allowclear": arg.value})
             if isinstance(arg, FilterEnum.PROPS.SIZE):
@@ -74,7 +73,7 @@ def data_wrapper(data):
     """
     data: dict
     return: json str
-    return json str to api for frontend \n 
+    return json str to api for frontend \n
     for example:
         antd
     """
@@ -91,7 +90,10 @@ def data_wrapper(data):
         res["columns"] = df.columns.tolist()
         res["dataSource"] = json.loads(
             df.to_json(
-                orient="records", date_format="iso", date_unit="s", force_ascii=False
+                orient="records",
+                date_format="iso",
+                date_unit="s",
+                force_ascii=False,
             )
         )
         print("-----------return api-------------")
