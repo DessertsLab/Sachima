@@ -5,4 +5,4 @@ This is a package for Data Analyst who wants to get capabilities of Data Enginee
 - Working with BI platform like Superset.
 - Sending your data reports to email or sns.
 - Working with GrassJelly which is a Data Visulization project.
-- 
+- new
