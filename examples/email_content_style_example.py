@@ -23,7 +23,7 @@ def get_option_cola():
 # @only_in_night
 # @clock
 # @send
-@api(platform='superset', isRun=False, name='test', type_='rpc')
+@api(platform="superset", isRun=False, name="test", type_="rpc")
 def main(api_params={}):
     s12 = (
         _.TYPE.ITEMSELECT,

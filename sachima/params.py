@@ -65,7 +65,7 @@ class Filter:
                     res.update(arg)
                 else:
                     res["prop"].update(arg)
-        print(res)
+        # print(res)
         return res
 
 
@@ -82,7 +82,7 @@ def data_wrapper(data):
     if not data:
         return {"columns": ["提示信息"], "dataSource": [{"提示信息": "出现错误请联系管理员"}]}
 
-    print(data)
+    # print(data)
     print("changing the data into json str...")
     res = {}
     df = data["data"][0]
@@ -100,7 +100,7 @@ def data_wrapper(data):
             )
         )
         print("-----------return api-------------")
-        print(res)
+        # print(res)
         return json.dumps(res)
     else:
         raise TypeError("your handler should return pd.DataFrame")
