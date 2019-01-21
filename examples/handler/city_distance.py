@@ -77,11 +77,11 @@ def run(data_in, params):
         ],
     )
 
-    # return df1[: int(params["行数"])]
-    return df1
+    return df1[: int(params["行数"])]
+    # return df1
 
 
-if __name__ == "__main__":
-    d = run([], [])
-    d.to_csv("data/city_dis.csv")
+# if __name__ == "__main__":
+#     d = run([], [])
+#     d.to_csv("data/city_dis.csv")
 

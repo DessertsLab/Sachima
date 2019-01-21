@@ -99,8 +99,10 @@ def data_wrapper(data):
                 force_ascii=False,
             )
         )
-        print("-----------return api-------------")
+        print("------------------return api----------------------")
+        # print("{{{{{{{{{{{{{{{{{{{")
         # print(res)
-        return json.dumps(res)
+        # return json.dumps(res)
+        return res
     else:
         raise TypeError("your handler should return pd.DataFrame")
