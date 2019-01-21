@@ -63,10 +63,8 @@ def main(api_params={}):
     sssh = Filter("所属商户", setter=s13)
 
     PARAM_IN = {
-        "model": [
-            ("email_content_style_example.sql", db.ENGINE_MYSQL_duckchat)
-        ],
-        "handler": ["email_content_style_example", "another_handler"],
+        "model": [("sachima_example_filters.sql", db.ENGINE_MYSQL_duckchat)],
+        "handler": ["sachima_example_filters", "another_handler"],
         # "handler": "email_content_style_example",
         "params": {
             "noshoptype": "TEST",
@@ -84,5 +82,5 @@ def main(api_params={}):
 if __name__ == "__main__":
     # testing
     res = main()
-    print(res)
+    # print(res)
     # pass
