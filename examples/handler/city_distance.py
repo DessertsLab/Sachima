@@ -77,6 +77,13 @@ def run(data_in, params):
         ],
     )
 
+    col_from = params.get("出发城市", None)
+    col_to = params.get("终点城市", None)
+    if col_from:
+        df1 = df1[df1["出发城市"].isin(col_from)]
+    if col_to:
+        df1 = df1[df1["终点城市"].isin(col_to)]
+
     return df1[: int(params["行数"])]
     # return df1
 
