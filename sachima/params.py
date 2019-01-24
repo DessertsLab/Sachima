@@ -64,7 +64,7 @@ class Filter:
                 elif colname:
                     res.update(arg)
                 else:
-                    res["prop"].update(arg)
+                    res["props"].update(arg)
         # print(res)
         return res
 
