@@ -113,4 +113,5 @@ sqls/
 test_rpc_client.py
 
 sachima_config.py
+db_connects.py
 
