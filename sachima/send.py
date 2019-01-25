@@ -1,6 +1,6 @@
+from sachima import conf
 import sachima.sns as sns
 import datetime
-import yaml
 import functools
 
 
@@ -10,15 +10,10 @@ def send(func):
     https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.2vzwCr&treeId=257&articleId=105735&docType=1
     you should conif your token in sachima.yaml
     """
-    ERROR_GRP_TOKEN = ""
-    INFO_GRP_TOKEN = ""
-
-    with open("conf/sachima.yaml", "r") as f:
-        c = yaml.load(f)
-        ERROR_GRP_TOKEN = c["sns"]["dingding"]["ERROR_GRP_TOKEN"]
-        INFO_GRP_TOKEN = c["sns"]["dingding"]["INFO_GRP_TOKEN"]
-        SENDING_STR = c["sns"]["dingding"]["SENDING_STR"]
-        ERRSENT_STR = c["sns"]["dingding"]["ERRSENT_STR"]
+    ERROR_GRP_TOKEN = conf.get("SNS_DINGDING_ERROR_GRP_TOKEN")
+    INFO_GRP_TOKEN = conf.get("SNS_DINGDING_INFO_GRP_TOKEN")
+    SENDING_STR = conf.get("SNS_DINGDING_SENDING_STR")
+    ERRSENT_STR = conf.get("SNS_DINGDING_ERRSENT_STR")
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):

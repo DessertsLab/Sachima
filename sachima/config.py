@@ -14,6 +14,29 @@ SUPERSET_PASSWORD = "general"
 SUPERSET_API_TABLE_BP = "/sachima/v1/save_or_overwrite_slice/"
 
 # ---------------------------------------------------------
+# mail config
+# ---------------------------------------------------------
+MAIL_HOST = ""
+MAIL_ADD = ""
+MAIL_USER = ""
+MAIL_PASS = ""
+MAIL_SENDER = "MAIL_SENDER"
+
+# ---------------------------------------------------------
+# sns config
+# ---------------------------------------------------------
+SNS_DINGDING_ERROR_GRP_TOKEN = ""
+SNS_DINGDING_INFO_GRP_TOKEN = ""
+SNS_DINGDING_SENDING_STR = ""
+SNS_DINGDING_ERRSENT_STR = ""
+
+# ---------------------------------------------------------
+# db config
+# ---------------------------------------------------------
+DB_SUPERSET = "~/.superset/superset.db"
+
+
+# ---------------------------------------------------------
 # Custom config
 # ---------------------------------------------------------
 try:

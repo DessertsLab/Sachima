@@ -15,7 +15,7 @@ from pymysql import cursors as cursors
 # from impala.util import as_pandas
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy import Table, Column, Date, Integer, String, ForeignKey
-import yaml
+from sachima import conf
 
 # ENGINE_ORACLE = create_engine(
 #         "oracle+cx_oracle://xxx:xxxx@xxxxx:1521/POS",
@@ -24,44 +24,45 @@ import yaml
 
 class db(object):
     def __init__(self):
-        with open('conf/sachima.yaml', 'r') as f:
-            c = yaml.load(f)
-            self.impala_ip = c['db']['impala']['ip']
-            self.impala_port = c['db']['impala']['port']
-            self.impala_db = c['db']['impala']['db']
-            self.impala_timeout = c['db']['impala']['timeout']
-            self.impala_auth_mechanism = c['db']['impala']
-            ['impala_auth_mechanism']
-            self.mysql_h_db = c['db']['mysql_h']['db']
-            self.mysql_h_ip = c['db']['mysql_h']['ip']
-            self.mysql_h_port = c['db']['mysql_h']['port']
-            self.mysql_h_user = c['db']['mysql_h']['user']
-            self.mysql_h_pass = c['db']['mysql_h']['pass']
-            self.mysql_h_charset = c['db']['mysql_h']['charset']
-            self.mysql_d_db = c['db']['mysql_d']['db']
-            self.mysql_d_ip = c['db']['mysql_d']['ip']
-            self.mysql_d_port = c['db']['mysql_d']['port']
-            self.mysql_d_user = c['db']['mysql_d']['user']
-            self.mysql_d_pass = c['db']['mysql_d']['pass']
-            self.mysql_d_charset = c['db']['mysql_d']['charset']
-            self.mariadb_db = c['db']['mariadb']['db']
-            self.mariadb_ip = c['db']['mariadb']['ip']
-            self.mariadb_port = c['db']['mariadb']['port']
-            self.mariadb_user = c['db']['mariadb']['user']
-            self.mariadb_pass = c['db']['mariadb']['pass']
-            self.mariadb_charset = c['db']['mariadb']['charset']
-        print('Loading database config from conf/sachima.yaml')
+        self.impala_ip = conf.get("IMPALA_IP")
+        self.impala_port = conf.get("IMPALA_PORT")
+        self.impala_db = conf.get("IMPALA_DB")
+        self.impala_timeout = conf.get("IMPALA_TIMEOUT")
+        self.impala_auth_mechanism = conf.get("IMPALA_AUTH_MECHANISM")
+        self.mysql_h_db = conf.get("MYSQL_H_DB")
+        self.mysql_h_ip = conf.get("MYSQL_H_IP")
+        self.mysql_h_port = conf.get("MYSQL_H_PORT")
+        self.mysql_h_user = conf.get("MYSQL_H_USER")
+        self.mysql_h_pass = conf.get("MYSQL_H_PASS")
+        self.mysql_h_charset = conf.get("MYSQL_H_CHARSET")
+        self.mysql_d_db = conf.get("MYSQL_D_DB")
+        self.mysql_d_ip = conf.get("MYSQL_D_IP")
+        self.mysql_d_port = conf.get("MYSQL_D_PORT")
+        self.mysql_d_user = conf.get("MYSQL_D_USER")
+        self.mysql_d_pass = conf.get("MYSQL_D_PASS")
+        self.mysql_d_charset = conf.get("MYSQL_D_CHARSET")
+        self.mariadb_db = conf.get("MARIADB_DB")
+        self.mariadb_ip = conf.get("MARIADB_IP")
+        self.mariadb_port = conf.get("MARIADB_PORT")
+        self.mariadb_user = conf.get("MARIADB_USER")
+        self.mariadb_pass = conf.get("MARIADB_PASS")
+        self.mariadb_charset = conf.get("MARIADB_CHARSET")
+
+    @property
+    def ENGINE_SUPERSET(self):
+        return create_engine('sqlite:///{}'.format(conf.get("DB_SUPERSET")),
+                             echo=True)
 
     @property
     def ENGINE_MYSQL_hawaii(self):
         return create_engine(
             "mysql+pymysql://{}:{}@{}/{}"
-            .format(self.mysql_h_user,
+            .format(conf.get("MYSQL_H_USER"),
                     self.mysql_h_pass,
                     self.mysql_h_ip,
                     self.mysql_h_db),
             connect_args={'charset': self.mysql_h_charset}
-            )
+        )
 
     @property
     def ENGINE_MYSQL_duckchat(self):
@@ -72,22 +73,22 @@ class db(object):
                     self.mysql_d_ip,
                     self.mysql_d_db),
             connect_args={'charset': self.mysql_d_charset}
-            )
+        )
 
     @property
     def ENGINE_IMPALA_DW(self):
         _impala_conn = imp_connect(
-                host=self.impala_ip,
-                port=self.impala_port,
-                database=self.impala_db,
-                timeout=self.impala_timeout,
-                #      use_ssl=True,
-                #      ca_cert='some_pem',
-                #      user='cloudera',
-                #      password='cloudera',
-                auth_mechanism=self.impala_auth_mechanism,
-                #      kerberos_service_name='hive'
-            )
+            host=self.impala_ip,
+            port=self.impala_port,
+            database=self.impala_db,
+            timeout=self.impala_timeout,
+            #      use_ssl=True,
+            #      ca_cert='some_pem',
+            #      user='cloudera',
+            #      password='cloudera',
+            auth_mechanism=self.impala_auth_mechanism,
+            #      kerberos_service_name='hive'
+        )
         return create_engine(
             'impala://', creator=_impala_conn, echo=False)
 
@@ -100,7 +101,7 @@ class db(object):
                     self.mariadb_ip,
                     self.mariadb_db),
             connect_args={'charset': self.mariadb_charset}
-            )
+        )
 
     @property
     def CONN_IMPALA_DW(self):

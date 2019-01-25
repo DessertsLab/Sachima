@@ -5,15 +5,13 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate, formataddr, parseaddr
 from email.header import Header
-import yaml
+from sachima import conf
 
-with open('conf/sachima.yaml') as f:
-    c = yaml.load(f)
-    mail_host = c['mail']['mail_host']
-    mail_add = c['mail']['mail_add']
-    mail_user = c['mail']['mail_user']
-    mail_pass = c['mail']['mail_pass']
-    mail_sender = c['mail']['mail_sender']
+mail_host = conf.get("MAIL_HOST")
+MAIL_ADD = conf.get("MAIL_ADD")
+MAIL_USER = conf.get("MAIL_USER")
+MAIL_PASS = conf.get("MAIL_PASS")
+MAIL_SENDER = conf.get("MAIL_SENDER")
 
 
 def _format_addr(s):
@@ -26,7 +24,7 @@ def send_mail(send_to, cc_to, subject, text, files=None,
     assert isinstance(send_to, list)
 
     msg = MIMEMultipart()
-    msg['From'] = _format_addr(mail_sender+' <%s>' % mail_add)
+    msg['From'] = _format_addr(MAIL_SENDER+' <%s>' % MAIL_ADD)
     msg['To'] = COMMASPACE.join([_format_addr(x) for x in send_to])
     msg['CC'] = COMMASPACE.join([_format_addr(x) for x in cc_to])
     # msg['Date'] = formatdate(localtime=True)
@@ -49,7 +47,7 @@ def send_mail(send_to, cc_to, subject, text, files=None,
         msg.attach(part)
 
     smtp = smtplib.SMTP(server)
-    smtp.login(mail_user, mail_pass)
+    smtp.login(MAIL_USER, MAIL_PASS)
     send_list = send_to + cc_to
-    smtp.sendmail(mail_add, send_list, msg.as_string())
+    smtp.sendmail(MAIL_ADD, send_list, msg.as_string())
     smtp.close()
