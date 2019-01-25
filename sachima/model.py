@@ -30,7 +30,8 @@ class Data:
             self.data = api.data
         else:
             str_sql = open(
-                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname), encoding="utf-8"
+                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname),
+                encoding="utf-8",
             ).read()
             sql = set_sql_params(str_sql, params)
             self.data = pd.read_sql(sql, datatype)

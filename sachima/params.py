@@ -35,9 +35,7 @@ class Filter:
 
         if not isinstance(data, pd.DataFrame):
             raise TypeError(
-                "expect get pd.DataFrame type but get {}".format(
-                    str(type(data))
-                )
+                "pd.DataFrame expected but get {}".format(str(type(data)))
             )
 
         # todo: json str from enumn tree improve
@@ -47,7 +45,7 @@ class Filter:
             if isinstance(arg, FilterEnum.PROPS.MODE):  # bug++++
                 res["props"].update({"mode": arg.value})
             if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
-                res["props"].update({"allowclear": arg.value})
+                res["props"].update({"allowClear": arg.value})
             if isinstance(arg, FilterEnum.PROPS.SIZE):
                 res["props"].update({"size": arg.value})
             if isinstance(arg, dict):
@@ -56,6 +54,7 @@ class Filter:
                     res.update(
                         {
                             "option": data[colname]
+                            .sort_values()
                             .map(lambda x: str(x))
                             .unique()
                             .tolist()
