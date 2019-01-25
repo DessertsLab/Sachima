@@ -12,8 +12,8 @@ This is a package for Data Analyst who wants to get capabilities of Data Enginee
 - virtualenv -p python3 venv
 - source venv/bin/activate
 - pip install -r requirements.txt
-  if you get this error  remove cchardet==1.0.0 from requirements.txt and run again
-> https://stackoverflow.com/questions/52509602/cant-compile-c-program-on-a-mac-after-upgrade-to-mojave
+> if you get compile error  remove cchardet==1.0.0 from requirements.txt and run again
+https://stackoverflow.com/questions/52509602/cant-compile-c-program-on-a-mac-after-upgrade-to-mojave
 - pip install -r requirements-dev.txt
 - pip install -e .
 - fabmanager create-admin --app superset
