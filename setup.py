@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="sachima",
-    version="2019.1a2",
+    version="2019.1a3",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="A package for Data Analyst",
