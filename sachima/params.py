@@ -13,7 +13,7 @@ def set_sql_params(sql, params):
     # convert dict to tuple for sql
     for k in params:
         if isinstance(params[k], list):
-            params[k] = "(" + ",".join(params[k]) + ")"  # tuple(params[k])
+            params[k] = str(tuple(params[k])).replace(",)", "")
     return sql.format(**params)
 
 
