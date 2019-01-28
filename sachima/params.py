@@ -13,24 +13,26 @@ def set_sql_params(sql, params):
     # convert dict to tuple for sql
     for k in params:
         if isinstance(params[k], list):
-            params[k] = tuple(params[k])
+            params[k] = "(" + ",".join(params[k]) + ")"  # tuple(params[k])
     return sql.format(**params)
 
 
 class Filter:
-    def __init__(self, id, setter):
+    def __init__(self, id, setter, **kw):
         """
         id: str
         setter: tuple
         """
         self.id = id
         self.setter = setter
+        self.kw = kw
 
     def __repr__(self):
         return "Filter(" + self.id + ")"
 
     def to_json(self, data):
         res = {"id": "", "props": {}}
+        res.update(self.kw)
         res["id"] = self.id
 
         if not isinstance(data, pd.DataFrame):
