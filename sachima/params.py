@@ -10,11 +10,13 @@ def set_sql_params(sql, params):
     for example:
         select {colname1} from {tablename} where {colname2} = '{value}'
     """
+    copy_params = {}
+    copy_params.update(params)
     # convert dict to tuple for sql
     for k in params:
-        if isinstance(params[k], list):
-            params[k] = str(tuple(params[k])).replace(",)", ")")
-    return sql.format(**params)
+        if isinstance(copy_params[k], list):
+            copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
+    return sql.format(**copy_params)
 
 
 class Filter:

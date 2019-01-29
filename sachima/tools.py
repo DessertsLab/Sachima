@@ -119,3 +119,19 @@ def lengthOfLongestSubstring(s):
             if i - stub > max_len:
                 max_len = i - stub
     return max_len
+
+
+def tools_extract(df, p, *cols):
+    for c in cols:
+        filter_list = p.get(c, None)
+        if p.get(c, None) == "" or p.get(c, None) is None:
+            continue
+        if isinstance(p.get(c, None), str):
+            filter_list = [filter_list]
+        if filter_list:
+            print(df)
+            print("---------c------")
+            print(c)
+            print(filter_list)
+            df = df[df[c].isin(filter_list)]
+    return df
