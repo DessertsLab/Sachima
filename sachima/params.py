@@ -58,7 +58,6 @@ class Filter:
                     res.update(
                         {
                             "option": data[colname]
-                            .sort_values()
                             .map(lambda x: str(x))
                             .unique()
                             .tolist()
@@ -103,9 +102,6 @@ def data_wrapper(data):
             )
         )
         print("------------------return api----------------------")
-        # print("{{{{{{{{{{{{{{{{{{{")
-        # print(res)
-        # return json.dumps(res)
         return res
     else:
         raise TypeError("your handler should return pd.DataFrame")
