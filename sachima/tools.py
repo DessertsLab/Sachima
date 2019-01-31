@@ -1,6 +1,8 @@
 import functools
 import time
 import inspect
+import pandas as pd
+import datetime
 
 
 def timer(func):
@@ -121,17 +123,36 @@ def lengthOfLongestSubstring(s):
     return max_len
 
 
-def tools_extract(df, p, *cols):
+def extract(df, p, *cols):
+    """
+    用cols中的参数名从p中提取参数并过滤df
+    如果参数不存在 提取下一个 直到结束
+    """
     for c in cols:
-        filter_list = p.get(c, None)
-        if p.get(c, None) == "" or p.get(c, None) is None:
+        try:
+            theparam = p.get(c, None)
+        except KeyError:
+            print("params {} not exists get next...".format(c))
+            theparam = None
+        except:
+            raise
+
+        if theparam == "" or theparam is None:
             continue
-        if isinstance(p.get(c, None), str):
-            filter_list = [filter_list]
-        if filter_list:
-            print(df)
-            print("---------c------")
-            print(c)
-            print(filter_list)
-            df = df[df[c].isin(filter_list)]
+        if isinstance(theparam, str):
+            try:
+                # handle frontend param 2019-01-17T00:10:00.000Z
+                if type(df[c][0]) is datetime.date:
+                    theparam = pd.Timestamp(theparam).date()
+                    df = df[df[c].isin([theparam])]
+                elif type(df[c][0]) is pd.Timestamp:
+                    day_begin = (
+                        pd.Timestamp(theparam).floor(freq="D").tz_convert(None)
+                    )
+                    day_end = (
+                        pd.Timestamp(theparam).ceil(freq="D").tz_convert(None)
+                    )
+                    df = df[(df[c] >= day_begin) & (df[c] <= day_end)]
+            except:
+                raise
     return df
