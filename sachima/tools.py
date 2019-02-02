@@ -139,20 +139,95 @@ def extract(df, p, *cols):
 
         if theparam == "" or theparam is None:
             continue
-        if isinstance(theparam, str):
-            try:
-                # handle frontend param 2019-01-17T00:10:00.000Z
-                if type(df[c][0]) is datetime.date:
-                    theparam = pd.Timestamp(theparam).date()
-                    df = df[df[c].isin([theparam])]
-                elif type(df[c][0]) is pd.Timestamp:
-                    day_begin = (
-                        pd.Timestamp(theparam).floor(freq="D").tz_convert(None)
-                    )
-                    day_end = (
-                        pd.Timestamp(theparam).ceil(freq="D").tz_convert(None)
-                    )
-                    df = df[(df[c] >= day_begin) & (df[c] <= day_end)]
-            except:
-                raise
+        # if isinstance(theparam, list):
+        #     df = df[df[c].isin(theparam)]
+        # if isinstance(theparam, str):
+        # handle frontend param 2019-01-17T00:10:00.000Z
+        if len(df) == 0:
+            break
+        if type(df[c].iloc[0]) is datetime.date:
+            theparam = _to_date_list(theparam)
+            df = df[df[c].isin(theparam)]
+        elif type(df[c].iloc[0]) is pd.Timestamp:
+            if isinstance(theparam, list):
+                day_begin = (
+                    pd.Timestamp(theparam[0]).floor(freq="D").tz_convert(None)
+                )
+                day_end = (
+                    pd.Timestamp(theparam[1]).ceil(freq="D").tz_convert(None)
+                )
+                df[(df[c] >= day_begin) & (df[c] <= day_end)]
+            else:
+                day_begin = (
+                    pd.Timestamp(theparam).floor(freq="D").tz_convert(None)
+                )
+                day_end = (
+                    pd.Timestamp(theparam).ceil(freq="D").tz_convert(None)
+                )
+                df[(df[c] >= day_begin) & (df[c] <= day_end)]
+        elif isinstance(theparam, list):
+            df = df[df[c].isin(theparam)]
+        else:
+            df = df[df[c].isin([theparam])]
     return df
+
+
+def _to_date_list(p):
+    if type(p) is pd.Timestamp:
+        return [p.date()]
+    elif isinstance(p, list):
+        return [pd.Timestamp(val).date() for val in p]
+    elif isinstance(p, str):
+        return [pd.Timestamp(p).date()]
+
+
+if __name__ == "__main__":
+    YEAR = 2017
+    MONTH = 1
+    DAY = 1
+    HOUR = 12
+    MINUTES = 12
+    SECONDS = 12
+
+    case1 = (
+        pd.Timestamp(YEAR, MONTH, DAY),
+        [datetime.date(YEAR, MONTH, DAY)],
+        "#1 single timestamp input",
+    )
+    case2 = (
+        pd.Timestamp(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS),
+        [datetime.date(YEAR, MONTH, DAY)],
+        "#2 single timestamp input with time",
+    )
+    case3 = (
+        [pd.Timestamp(YEAR, MONTH, DAY)],
+        [datetime.date(YEAR, MONTH, DAY)],
+        "#3 single timestamp list",
+    )
+    case4 = (
+        [pd.Timestamp(YEAR, MONTH, DAY), pd.Timestamp(YEAR, MONTH + 1, DAY)],
+        [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+        "#4 multi timestamp list",
+    )
+    case5 = (
+        [
+            pd.Timestamp(YEAR, MONTH, DAY),
+            "{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
+        ],
+        [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+        "#5 mix timestamp and str list",
+    )
+    case6 = (
+        [
+            pd.Timestamp(YEAR, MONTH, DAY),
+            "boom!{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
+        ],
+        [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+        ValueError,
+    )
+
+    tests = [case1, case2, case3, case4, case5, case6]
+
+    for t in tests:
+        print(to_date_list(t[0]))
+        assert to_date_list(t[0]) == t[1], "{} not correct".format(t[2])
