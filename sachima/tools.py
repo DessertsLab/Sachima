@@ -147,7 +147,7 @@ def extract(df, p, *cols):
             break
         if type(df[c].iloc[0]) is datetime.date:
             theparam = _to_date_list(theparam)
-            df = df[df[c].isin(theparam)]
+            df = df[(df[c] >= theparam[0]) & (df[c] <= theparam[1])]
         elif type(df[c].iloc[0]) is pd.Timestamp:
             if isinstance(theparam, list):
                 day_begin = (
@@ -229,5 +229,5 @@ if __name__ == "__main__":
     tests = [case1, case2, case3, case4, case5, case6]
 
     for t in tests:
-        print(to_date_list(t[0]))
-        assert to_date_list(t[0]) == t[1], "{} not correct".format(t[2])
+        print(_to_date_list(t[0]))
+        assert _to_date_list(t[0]) == t[1], "{} not correct".format(t[2])

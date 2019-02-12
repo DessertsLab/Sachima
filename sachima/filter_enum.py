@@ -22,10 +22,10 @@ class FilterEnum(Enum):
 
         @skip
         class ALLOWCLEAR(Enum):
-            TRUE = "True"
-            FALSE = "False"
+            TRUE = True
+            FALSE = False
 
         @skip
-        class P(Enum):
-            A = "A"
-            B = "B"
+        class SHOWTIME(Enum):
+            TRUE = True
+            FALSE = False

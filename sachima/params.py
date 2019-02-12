@@ -14,8 +14,10 @@ def set_sql_params(sql, params):
     copy_params.update(params)
     # convert dict to tuple for sql
     for k in params:
+        print(k, copy_params[k], type(copy_params[k]))
         if isinstance(copy_params[k], list):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
+    print(sql.format(**copy_params))
     return sql.format(**copy_params)
 
 
@@ -52,13 +54,15 @@ class Filter:
                 res["props"].update({"allowClear": arg.value})
             if isinstance(arg, FilterEnum.PROPS.SIZE):
                 res["props"].update({"size": arg.value})
+            if isinstance(arg, FilterEnum.PROPS.SHOWTIME):
+                res["props"].update({"showTime": arg.value})
             if isinstance(arg, dict):
                 colname = arg.get("option", None)
                 if isinstance(colname, str) and colname in data.columns:
                     res.update(
                         {
                             "option": data[colname]
-                            .map(lambda x: str(x))
+                            .map(lambda x: x)
                             .unique()
                             .tolist()
                         }
@@ -82,7 +86,10 @@ def data_wrapper(data):
     # data["data"]
     # data["filters"]
     if not data:
-        return {"columns": ["提示信息"], "dataSource": [{"提示信息": "出现错误请联系管理员"}]}
+        return {
+            "columns": ["提示信息"],
+            "dataSource": [{"提示信息": "服务器数据出现错误请联系管理员"}],
+        }
 
     # print(data)
     print("changing the data into json str...")
@@ -93,6 +100,7 @@ def data_wrapper(data):
     if isinstance(df, pd.DataFrame):
         res["controls"] = [f.to_json(df) for f in filters]
         res["columns"] = df.columns.tolist()
+        df = df.applymap(str)
         res["dataSource"] = json.loads(
             df.to_json(
                 orient="records",
