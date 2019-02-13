@@ -137,7 +137,7 @@ def extract(df, p, *cols):
         except:
             raise
 
-        if theparam == "" or theparam is None:
+        if theparam == "" or theparam is None or theparam == []:
             continue
         # if isinstance(theparam, list):
         #     df = df[df[c].isin(theparam)]
@@ -150,21 +150,13 @@ def extract(df, p, *cols):
             df = df[(df[c] >= theparam[0]) & (df[c] <= theparam[1])]
         elif type(df[c].iloc[0]) is pd.Timestamp:
             if isinstance(theparam, list):
-                day_begin = (
-                    pd.Timestamp(theparam[0]).floor(freq="D").tz_convert(None)
-                )
-                day_end = (
-                    pd.Timestamp(theparam[1]).ceil(freq="D").tz_convert(None)
-                )
-                df[(df[c] >= day_begin) & (df[c] <= day_end)]
+                day_begin = pd.Timestamp(theparam[0])
+                day_end = pd.Timestamp(theparam[1])
+                df = df[(df[c] >= day_begin) & (df[c] <= day_end)]
             else:
-                day_begin = (
-                    pd.Timestamp(theparam).floor(freq="D").tz_convert(None)
-                )
-                day_end = (
-                    pd.Timestamp(theparam).ceil(freq="D").tz_convert(None)
-                )
-                df[(df[c] >= day_begin) & (df[c] <= day_end)]
+                day_begin = pd.Timestamp(theparam).floor(freq="D")
+                day_end = pd.Timestamp(theparam).ceil(freq="D")
+                df = df[(df[c] >= day_begin) & (df[c] <= day_end)]
         elif isinstance(theparam, list):
             df = df[df[c].isin(theparam)]
         else:
