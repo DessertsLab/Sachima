@@ -129,6 +129,9 @@ def extract(df, p, *cols):
     如果参数不存在 提取下一个 直到结束
     """
     for c in cols:
+        print("过滤前数据量" + "*" * 80)
+        print(len(df))
+
         try:
             theparam = p.get(c, None)
         except KeyError:
@@ -137,7 +140,9 @@ def extract(df, p, *cols):
         except:
             raise
 
+        print("过滤条件：" + str(theparam))
         if theparam == "" or theparam is None or theparam == []:
+            print("过滤条件为空跳过")
             continue
         # if isinstance(theparam, list):
         #     df = df[df[c].isin(theparam)]
@@ -161,6 +166,8 @@ def extract(df, p, *cols):
             df = df[df[c].isin(theparam)]
         else:
             df = df[df[c].isin([theparam])]
+        print("过滤后数据量" + "*" * 30)
+        print(len(df))
     return df
 
 

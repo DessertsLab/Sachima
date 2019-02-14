@@ -1,6 +1,29 @@
 import pandas as pd
 import json
+import io
 from sachima.filter_enum import FilterEnum
+
+
+def delfunc(sql, e):
+    buf = io.StringIO(sql)
+    temp = ""
+    for line in buf.readlines():
+        if "{" + e + "}" in line and "-- ifnulldel" in line:
+            print("删除：" + line)
+        elif "{" + e + "}" in line and "-- ifnulldel" not in line:
+            temp += line.replace("{" + e + "}", "")
+        else:
+            temp += line
+    return temp
+
+
+def sql_format(sql, params):
+    res = ""
+    try:
+        return sql.format(**params)
+    except KeyError as e:
+        newsql = delfunc(sql, str(e).replace("'", ""))
+        return sql_format(newsql, params)
 
 
 def set_sql_params(sql, params):
@@ -17,8 +40,10 @@ def set_sql_params(sql, params):
         print(k, copy_params[k], type(copy_params[k]))
         if isinstance(copy_params[k], list):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
-    print(sql.format(**copy_params))
-    return sql.format(**copy_params)
+    # print(sql.format(**copy_params))
+    finalsql = sql_format(sql, params)
+    print(finalsql)
+    return finalsql
 
 
 class Filter:
@@ -32,7 +57,7 @@ class Filter:
         self.kw = kw
 
     def __repr__(self):
-        return "Filter(" + self.id + ")"
+        return "Filter({!r})".format(self.id)
 
     def to_json(self, data):
         res = {"id": "", "props": {}}
