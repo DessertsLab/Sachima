@@ -5,9 +5,7 @@ import os
 import numpy as np
 import pandas as pd
 import json
-from nameko.rpc import rpc, RpcProxy
 from sachima.publish import Publisher
-from sachima.params import Filter, data_wrapper
 
 
 def api(platform="superset", isRun=False, **kw_api):
@@ -36,12 +34,3 @@ def api(platform="superset", isRun=False, **kw_api):
         return api_called
 
     return wrapper
-
-
-class Data(object):
-    name = "data"
-
-    @rpc
-    def get_report(self, params):
-        m = importlib.import_module(params["name"])
-        return data_wrapper(m.main(params))

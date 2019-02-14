@@ -1,7 +1,39 @@
-import pandas as pd
 import json
 import io
+
+import pandas as pd
 from sachima.filter_enum import FilterEnum
+
+# from sachima.log import logger
+import logging
+
+logging.config.dictConfig(
+    {
+        "version": 1,
+        "disable_existing_loggers": False,  # this fixes the problem
+        "formatters": {
+            "standard": {
+                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+            }
+        },
+        "handlers": {
+            "default": {
+                "level": "INFO",
+                "class": "logging.StreamHandler",
+                "formatter": "standard",
+            }
+        },
+        "loggers": {
+            __name__: {
+                "handlers": ["default"],
+                "level": "INFO",
+                "propagate": True,
+            }
+        },
+    }
+)
+
+logger = logging.getLogger(__name__)
 
 
 def delfunc(sql, e):
@@ -9,7 +41,7 @@ def delfunc(sql, e):
     temp = ""
     for line in buf.readlines():
         if "{" + e + "}" in line and "-- ifnulldel" in line:
-            print("删除：" + line)
+            pass
         elif "{" + e + "}" in line and "-- ifnulldel" not in line:
             temp += line.replace("{" + e + "}", "")
         else:
@@ -18,8 +50,10 @@ def delfunc(sql, e):
 
 
 def sql_format(sql, params):
-    res = ""
     try:
+        print(logger)
+        print(logger.handlers)
+        logger.error("sql：" + str(len(sql)))
         return sql.format(**params)
     except KeyError as e:
         newsql = delfunc(sql, str(e).replace("'", ""))
@@ -42,7 +76,6 @@ def set_sql_params(sql, params):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
     # print(sql.format(**copy_params))
     finalsql = sql_format(sql, params)
-    print(finalsql)
     return finalsql
 
 

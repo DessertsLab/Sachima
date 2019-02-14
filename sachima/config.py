@@ -1,4 +1,5 @@
 import os
+import logging.config
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -35,6 +36,10 @@ SNS_DINGDING_ERRSENT_STR = ""
 # ---------------------------------------------------------
 DB_SUPERSET = "~/.superset/superset.db"
 
+# ---------------------------------------------------------
+# logging config
+# ---------------------------------------------------------
+LOG_LEVEL = logging.DEBUG
 
 # ---------------------------------------------------------
 # Custom config
