@@ -1,5 +1,6 @@
 import sachima.handler as han
 from sachima.model import Data
+from sachima.log import logger
 
 
 def run(user_params, api_params):
@@ -9,14 +10,21 @@ def run(user_params, api_params):
     api_params: dict
     return: json str
     """
-    print("-----------------------api_params-----------------------------")
-    print(api_params)
-    print("-----------------------user_params-----------------------------")
-    print(user_params)
+    logger.info(
+        "-----------------------api_params-----------------------------"
+    )
+    logger.info(api_params)
+    logger.info(
+        "-----------------------user_params-----------------------------"
+    )
+    logger.info(user_params)
 
     # combine two dict  api_params will overwrite user_params
     params = {**user_params["params"], **api_params}
-    print("=" * 10 + "combined params ====> " + str(params))
+    logger.info(
+        "-----------------------user_params-----------------------------"
+    )
+    logger.info(str(params))
 
     if "model" in user_params and user_params["model"]:
         data_in = [

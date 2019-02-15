@@ -3,6 +3,7 @@ from sachima import conf
 import os
 import importlib
 from sachima.params import set_sql_params
+from sachima.log import logger
 
 
 class Data:
@@ -13,7 +14,7 @@ class Data:
         """
         self.source = dataname
         self.type = datatype
-        print(dataname + "------------" + str(datatype))
+        logger.info(dataname + str(datatype))
         if datatype in ("xls", "xlsx"):
             self.data = pd.read_excel(
                 os.path.join(conf.get("PROJ_DIR"), "data", dataname)

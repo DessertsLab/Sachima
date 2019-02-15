@@ -24,9 +24,12 @@ LOGGING_CONFIG_DEFAULTS = dict(
     },
     handlers={
         "console": {
-            "class": "logging.StreamHandler",
+            "class": "logging.handlers.RotatingFileHandler",
             "formatter": "generic",
-            "stream": sys.stdout,
+            "filename": "logs/sachima.log",  # noqa
+            "maxBytes": 1024000,
+            "backupCount": 10,
+            # "stream": sys.stdout,
         },
         "error_console": {
             "class": "logging.StreamHandler",
@@ -54,13 +57,8 @@ LOGGING_CONFIG_DEFAULTS = dict(
     },
 )
 
-# logger = logging.getLogger("sachima.root")
-# error_logger = logging.getLogger("sachima.error")
-# access_logger = logging.getLogger("sachima.access")
-
-
-def logger():
-    logger = logging.getLogger("sachima.root")
-    logging.config.dictConfig(LOGGING_CONFIG_DEFAULTS)
-    logger.setLevel(conf.get("LOG_LEVEL"))
-    return logger
+logging.config.dictConfig(LOGGING_CONFIG_DEFAULTS)
+logger = logging.getLogger("sachima.root")
+error_logger = logging.getLogger("sachima.error")
+access_logger = logging.getLogger("sachima.access")
+logger.setLevel(conf.get("LOG_LEVEL"))

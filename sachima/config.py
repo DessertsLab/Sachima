@@ -1,5 +1,7 @@
 import os
-import logging.config
+import logging
+
+# from sachima.log import logger
 
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))

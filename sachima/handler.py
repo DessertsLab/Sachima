@@ -1,4 +1,5 @@
 import importlib
+from sachima.log import logger
 
 
 class ReportsHandler(object):
@@ -11,7 +12,7 @@ class ReportsHandler(object):
     def handle(self, model_in, params):
         data_in = model_in
         for handler_str in self.handlers:
-            print("Calling handler --> " + handler_str)
+            logger.info("Call handler: " + handler_str)
             m = importlib.import_module("handler." + handler_str, handler_str)
             # each handler should has run function
             res = m.run(data_in, params)

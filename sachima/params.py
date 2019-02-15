@@ -4,36 +4,7 @@ import io
 import pandas as pd
 from sachima.filter_enum import FilterEnum
 
-# from sachima.log import logger
-import logging
-
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": False,  # this fixes the problem
-        "formatters": {
-            "standard": {
-                "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
-            }
-        },
-        "handlers": {
-            "default": {
-                "level": "INFO",
-                "class": "logging.StreamHandler",
-                "formatter": "standard",
-            }
-        },
-        "loggers": {
-            __name__: {
-                "handlers": ["default"],
-                "level": "INFO",
-                "propagate": True,
-            }
-        },
-    }
-)
-
-logger = logging.getLogger(__name__)
+from sachima.log import logger
 
 
 def delfunc(sql, e):
@@ -41,6 +12,7 @@ def delfunc(sql, e):
     temp = ""
     for line in buf.readlines():
         if "{" + e + "}" in line and "-- ifnulldel" in line:
+            logger.debug("del sql line: " + line)
             pass
         elif "{" + e + "}" in line and "-- ifnulldel" not in line:
             temp += line.replace("{" + e + "}", "")
@@ -51,9 +23,7 @@ def delfunc(sql, e):
 
 def sql_format(sql, params):
     try:
-        print(logger)
-        print(logger.handlers)
-        logger.error("sql：" + str(len(sql)))
+        logger.info("sql lens：" + str(len(sql)))
         return sql.format(**params)
     except KeyError as e:
         newsql = delfunc(sql, str(e).replace("'", ""))
@@ -76,6 +46,8 @@ def set_sql_params(sql, params):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
     # print(sql.format(**copy_params))
     finalsql = sql_format(sql, params)
+    logger.debug("run sql")
+    logger.debug(finalsql)
     return finalsql
 
 
@@ -132,42 +104,3 @@ class Filter:
         # print(res)
         return res
 
-
-def data_wrapper(data):
-    """
-    data: dict
-    return: json str
-    return json str to api for frontend \n
-    for example:
-        antd
-    """
-    # data["data"]
-    # data["filters"]
-    if not data:
-        return {
-            "columns": ["提示信息"],
-            "dataSource": [{"提示信息": "服务器数据出现错误请联系管理员"}],
-        }
-
-    # print(data)
-    print("changing the data into json str...")
-    res = {}
-    df = data["data"][0]
-    filters = data["filters"]
-
-    if isinstance(df, pd.DataFrame):
-        res["controls"] = [f.to_json(df) for f in filters]
-        res["columns"] = df.columns.tolist()
-        df = df.applymap(str)
-        res["dataSource"] = json.loads(
-            df.to_json(
-                orient="records",
-                date_format="iso",
-                date_unit="s",
-                force_ascii=False,
-            )
-        )
-        print("------------------return api----------------------")
-        return res
-    else:
-        raise TypeError("your handler should return pd.DataFrame")

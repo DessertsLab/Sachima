@@ -3,6 +3,7 @@ import time
 import inspect
 import pandas as pd
 import datetime
+from sachima.log import logger
 
 
 def timer(func):
@@ -14,7 +15,7 @@ def timer(func):
         value = func(*args, **kwargs)
         end_time = time.perf_counter()  # 2
         run_time = end_time - start_time  # 3
-        print(f"Finished {inspect.getfile(func)} in {run_time:.4f} secs")
+        logger.info(f"Finished {inspect.getfile(func)} in {run_time:.4f} secs")
         return value
 
     return wrapper_timer
@@ -28,9 +29,9 @@ def debug(func):
         args_repr = [repr(a) for a in args]  # 1
         kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]  # 2
         signature = ", ".join(args_repr + kwargs_repr)  # 3
-        print(f"Calling {func.__name__}({signature})")
+        logger.info(f"Calling {func.__name__}({signature})")
         value = func(*args, **kwargs)
-        print(f"{func.__name__!r} returned {value!r}")  # 4
+        logger.info(f"{func.__name__!r} returned {value!r}")  # 4
         return value
 
     return wrapper_debug
@@ -97,7 +98,7 @@ def clock(func):
             pairs = ["%s=%r" % (k, w) for k, w in sorted(kwargs.items())]
             arg_lst.append(", ".join(pairs))
         arg_str = ", ".join(arg_lst)
-        print("[%0.8fs] %s(%s) => %r" % (elapsed, name, arg_str, result))
+        logger.info("[%0.8fs] %s(%s) => %r" % (elapsed, name, arg_str, result))
         return result
 
     return wrapper
@@ -129,20 +130,17 @@ def extract(df, p, *cols):
     如果参数不存在 提取下一个 直到结束
     """
     for c in cols:
-        print("过滤前数据量" + "*" * 80)
-        print(len(df))
-
         try:
             theparam = p.get(c, None)
         except KeyError:
-            print("params {} not exists get next...".format(c))
+            logger.info("params {} not exists get next...".format(c))
             theparam = None
         except:
             raise
 
-        print("过滤条件：" + str(theparam))
+        logger.info("extract {} by {}".format(type(df), str(theparam)))
         if theparam == "" or theparam is None or theparam == []:
-            print("过滤条件为空跳过")
+            logger.info("empty param continue...")
             continue
         # if isinstance(theparam, list):
         #     df = df[df[c].isin(theparam)]
@@ -166,8 +164,7 @@ def extract(df, p, *cols):
             df = df[df[c].isin(theparam)]
         else:
             df = df[df[c].isin([theparam])]
-        print("过滤后数据量" + "*" * 30)
-        print(len(df))
+        logger.info("data remain {} lines".format(str(len(df))))
     return df
 
 
