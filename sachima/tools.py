@@ -138,7 +138,7 @@ def extract(df, p, *cols):
         except:
             raise
 
-        logger.info("extract {} by {}".format(type(df), str(theparam)))
+        logger.info("extract {} by {} : {}".format(type(df), c, str(theparam)))
         if theparam == "" or theparam is None or theparam == []:
             logger.info("empty param continue...")
             continue
