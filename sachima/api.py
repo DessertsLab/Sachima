@@ -13,7 +13,6 @@ def api(platform="superset", isRun=False, **kw_api):
         @functools.wraps(func)
         def api_called(*args, **kw):
 
-            # 调用对应注册接口
             if platform == "superset":
                 fpath = inspect.getfile(func)
                 fname = os.path.split(fpath)[1]
@@ -26,7 +25,6 @@ def api(platform="superset", isRun=False, **kw_api):
             else:
                 pass
 
-            # 默认不运行
             if isRun:
                 _result = func(*args, **kw)
                 return _result

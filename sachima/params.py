@@ -41,10 +41,13 @@ def set_sql_params(sql, params):
     copy_params.update(params)
     # convert dict to tuple for sql
     for k in params:
-        print(k, copy_params[k], type(copy_params[k]))
+        logger.info(
+            "set sql param {} {} type {} ".format(
+                k, copy_params[k], type(copy_params[k])
+            )
+        )
         if isinstance(copy_params[k], list):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
-    # print(sql.format(**copy_params))
     finalsql = sql_format(sql, params)
     logger.debug("run sql")
     logger.debug(finalsql)
@@ -101,6 +104,4 @@ class Filter:
                     res.update(arg)
                 else:
                     res["props"].update(arg)
-        # print(res)
         return res
-

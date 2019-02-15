@@ -15,12 +15,6 @@ LOGGING_CONFIG_DEFAULTS = dict(
             "propagate": True,
             "qualname": "sachima.error",
         },
-        "sachima.access": {
-            "level": "INFO",
-            "handlers": ["access_console"],
-            "propagate": True,
-            "qualname": "sachima.access",
-        },
     },
     handlers={
         "console": {
@@ -36,29 +30,16 @@ LOGGING_CONFIG_DEFAULTS = dict(
             "formatter": "generic",
             "stream": sys.stderr,
         },
-        "access_console": {
-            "class": "logging.StreamHandler",
-            "formatter": "access",
-            "stream": sys.stdout,
-        },
     },
     formatters={
         "generic": {
             "format": "%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
             "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
             "class": "logging.Formatter",
-        },
-        "access": {
-            "format": "%(asctime)s - (%(name)s)[%(levelname)s][%(host)s]: "
-            + "%(request)s %(message)s %(status)d %(byte)d",
-            "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
-            "class": "logging.Formatter",
-        },
+        }
     },
 )
 
 logging.config.dictConfig(LOGGING_CONFIG_DEFAULTS)
 logger = logging.getLogger("sachima.root")
-error_logger = logging.getLogger("sachima.error")
-access_logger = logging.getLogger("sachima.access")
 logger.setLevel(conf.get("LOG_LEVEL"))
