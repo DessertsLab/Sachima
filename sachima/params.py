@@ -48,7 +48,8 @@ def set_sql_params(sql, params):
         )
         if isinstance(copy_params[k], list):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
-    finalsql = sql_format(sql, params)
+            logger.debug("convert dict to tuple for sql: " + copy_params[k])
+    finalsql = sql_format(sql, copy_params)
     logger.debug("run sql")
     logger.debug(finalsql)
     return finalsql
@@ -89,6 +90,14 @@ class Filter:
                 res["props"].update({"size": arg.value})
             if isinstance(arg, FilterEnum.PROPS.SHOWTIME):
                 res["props"].update({"showTime": arg.value})
+            if isinstance(arg, FilterEnum.PROPS.DEFAULTOPEN):
+                res["props"].update({"defaultOpen": arg.value})
+            if isinstance(arg, FilterEnum.PROPS.OPEN):
+                res["props"].update({"defaultOpen": arg.value})
+            if isinstance(arg, FilterEnum.PROPS.LOADING):
+                res["props"].update({"loading": arg.value})
+            if isinstance(arg, FilterEnum.PROPS.SHOWSEARCH):
+                res["props"].update({"showSearch": arg.value})
             if isinstance(arg, dict):
                 colname = arg.get("option", None)
                 if isinstance(colname, str) and colname in data.columns:

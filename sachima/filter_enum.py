@@ -29,3 +29,23 @@ class FilterEnum(Enum):
         class SHOWTIME(Enum):
             TRUE = True
             FALSE = False
+
+        @skip
+        class DEFAULTOPEN(Enum):
+            TRUE = True
+            FALSE = False
+
+        @skip
+        class OPEN(Enum):
+            TRUE = True
+            FALSE = False
+
+        @skip
+        class LOADING(Enum):
+            TRUE = True
+            FALSE = False
+
+        @skip
+        class SHOWSEARCH(Enum):
+            TRUE = True
+            FALSE = False
