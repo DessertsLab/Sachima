@@ -15,24 +15,22 @@ Sachima | Better data analyst
     * - Docs
       - | |Documentation|
     * - Package
-      - | |PyPI| |PyPI version| |Wheel| |Supported implementations| |Code style black|
+      - | |PyPI| |PyPI version| |Code style black|
     * - Support
-      - | |Wechat| |Join the chat at https://gitter.im/sachima-python/community|
+      - | |Join the chat at https://gitter.im/sachima-python/community|
 
-.. |Wechat| image:: https://img.shields.io/badge/wechat-sachima-7bb321.svg?style=popout-square?logo=wechat
-   :target: https://community.sanicframework.org/
-.. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sachima-python/community.svg
+.. |Build Status| image:: https://travis-ci.org/de/sachima.svg?branch=master?style=popout-square
+   :target: https://travis-ci.org/DessertsLab/Sachima
+.. |Codecov| image:: https://codecov.io/gh/DessertsLab/Sachima/branch/master/graph/badge.svg?style=popout-square
+    :target: https://codecov.io/gh/DessertsLab/Sachima
+.. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sachima-python/community.svg?style=popout-square
    :target: https://gitter.im/sachima-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-.. |Codecov| image:: https://codecov.io/gh/huge-success/sanic/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/huge-success/sanic
-.. |Build Status| image:: https://travis-ci.org/huge-success/sanic.svg?branch=master
-   :target: https://travis-ci.org/huge-success/sanic
-.. |Documentation| image:: https://readthedocs.org/projects/sanic/badge/?version=latest
-   :target: http://sanic.readthedocs.io/en/latest/?badge=latest
-.. |PyPI| image:: https://img.shields.io/pypi/v/sanic.svg
-   :target: https://pypi.python.org/pypi/sanic/
-.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sanic.svg
-   :target: https://pypi.python.org/pypi/sanic/
+.. |Documentation| image:: https://readthedocs.org/projects/sachima/badge/?version=latest
+   :target: http://sachima.readthedocs.io/en/latest/?badge=latest
+.. |PyPI| image:: https://img.shields.io/pypi/v/sachima.svg?style=popout-square
+   :target: https://pypi.python.org/pypi/sachima/
+.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sachima.svg?style=popout-square&logo=python
+   :target: https://pypi.python.org/pypi/sachima/
 .. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=popout-square
     :target: https://github.com/ambv/black
 
