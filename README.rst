@@ -1,4 +1,8 @@
-# Sachima
+.. image:: https://github.com/DessertsLab/assets/blob/master/png/sachima_logo.png 
+    :alt: Sachima | Better data analyst.
+
+Sachima | Better data analyst 
+=============================
 
 This is a package for Data Analyst who wants to get capabilities of Data Engineer:
 - Publishing your code as a http or rpc api.
