@@ -17,11 +17,11 @@ Sachima | Better data analyst
     * - Package
       - | |PyPI| |PyPI version| |Wheel| |Supported implementations| |Code style black|
     * - Support
-      - | |Forums| |Join the chat at https://gitter.im/sanic-python/Lobby|
+      - | |Wechat| |Join the chat at https://gitter.im/sanic-python/Lobby|
 
-.. |Forums| image:: https://img.shields.io/badge/forums-community-ff0068.svg
+.. |Wechat| image:: https://img.shields.io/badge/wechat-sachima-7bb321.svg?style=popout-square?logo=wechat
    :target: https://community.sanicframework.org/
-.. |Join the chat at https://gitter.im/sanic-python/Lobby| image:: https://badges.gitter.im/sanic-python/Lobby.svg
+.. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sanic-python/Lobby.svg
    :target: https://gitter.im/sanic-python/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 .. |Codecov| image:: https://codecov.io/gh/huge-success/sanic/branch/master/graph/badge.svg
     :target: https://codecov.io/gh/huge-success/sanic
@@ -33,8 +33,9 @@ Sachima | Better data analyst
    :target: https://pypi.python.org/pypi/sanic/
 .. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sanic.svg
    :target: https://pypi.python.org/pypi/sanic/
-.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=popout-square&logo=appveyor
+.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=popout-square
     :target: https://github.com/ambv/black
+
 
 .. end-badges
 
@@ -52,7 +53,7 @@ Installation
 
 
 Get 
----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - git clone https://github.com/pphszx/incubator-superset.git
 - git checkout pp_feat_apitable_0.29_new
