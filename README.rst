@@ -1,6 +1,9 @@
 .. image:: https://github.com/DessertsLab/assets/blob/master/png/sachima_logo.png 
     :alt: Sachima | LOGO.
 
+.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/ambv/black
+    
 Sachima | Better data analyst 
 =============================
 
