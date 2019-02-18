@@ -98,3 +98,8 @@ Get
 - open browser http://127.0.0.1:8088/login/
 - ref:https://github.com/apache/incubator-superset/blob/master/CONTRIBUTING.md#flask-server
 
+
+
+.. image:: https://badges.gitter.im/sachima-python/community.svg
+   :alt: Join the chat at https://gitter.im/sachima-python/community
+   :target: https://gitter.im/sachima-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
