@@ -19,8 +19,8 @@ Sachima | Better data analyst
     * - Support
       - | |Join the chat at https://gitter.im/sachima-python/community|
 
-.. |Build Status| image:: https://travis-ci.org/de/sachima.svg?branch=master&style=flat-square
-   :target: https://travis-ci.org/DessertsLab/Sachima
+.. |Build Status| image:: https://travis-ci.com/DessertsLab/Sachima.svg?branch=master
+    :target: https://travis-ci.com/DessertsLab/Sachima
 .. |Codecov| image:: https://codecov.io/gh/DessertsLab/Sachima/branch/master/graph/badge.svg?style=flat-square
     :target: https://codecov.io/gh/DessertsLab/Sachima
 .. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sachima-python/community.svg?style=flat-square
