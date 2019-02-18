@@ -1,13 +1,45 @@
 .. image:: https://github.com/DessertsLab/assets/blob/master/png/sachima_logo.png 
     :alt: Sachima | LOGO.
 
-.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg
-    :target: https://github.com/ambv/black
-    
+
 Sachima | Better data analyst 
 =============================
 
-This is a package for Data Analyst who wants to get capabilities of Data Engineer:
+.. start-badges
+
+.. list-table::
+    :stub-columns: 1
+
+    * - Build
+      - | |Build Status| |Codecov|
+    * - Docs
+      - | |Documentation|
+    * - Package
+      - | |PyPI| |PyPI version| |Wheel| |Supported implementations| |Code style black|
+    * - Support
+      - | |Forums| |Join the chat at https://gitter.im/sanic-python/Lobby|
+
+.. |Forums| image:: https://img.shields.io/badge/forums-community-ff0068.svg
+   :target: https://community.sanicframework.org/
+.. |Join the chat at https://gitter.im/sanic-python/Lobby| image:: https://badges.gitter.im/sanic-python/Lobby.svg
+   :target: https://gitter.im/sanic-python/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+.. |Codecov| image:: https://codecov.io/gh/huge-success/sanic/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/huge-success/sanic
+.. |Build Status| image:: https://travis-ci.org/huge-success/sanic.svg?branch=master
+   :target: https://travis-ci.org/huge-success/sanic
+.. |Documentation| image:: https://readthedocs.org/projects/sanic/badge/?version=latest
+   :target: http://sanic.readthedocs.io/en/latest/?badge=latest
+.. |PyPI| image:: https://img.shields.io/pypi/v/sanic.svg
+   :target: https://pypi.python.org/pypi/sanic/
+.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sanic.svg
+   :target: https://pypi.python.org/pypi/sanic/
+.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=popout-square&logo=appveyor
+    :target: https://github.com/ambv/black
+
+.. end-badges
+
+
+Sachima is a package for Data Analyst who wants to get capabilities of Data Engineer:
 
 - Publishing your code as a http or rpc api.
 - Working with BI platform like Superset.
