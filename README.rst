@@ -19,19 +19,19 @@ Sachima | Better data analyst
     * - Support
       - | |Join the chat at https://gitter.im/sachima-python/community|
 
-.. |Build Status| image:: https://travis-ci.org/de/sachima.svg?branch=master?style=popout-square
+.. |Build Status| image:: https://travis-ci.org/de/sachima.svg?branch=master&style=flat-square
    :target: https://travis-ci.org/DessertsLab/Sachima
-.. |Codecov| image:: https://codecov.io/gh/DessertsLab/Sachima/branch/master/graph/badge.svg?style=popout-square
+.. |Codecov| image:: https://codecov.io/gh/DessertsLab/Sachima/branch/master/graph/badge.svg?style=flat-square
     :target: https://codecov.io/gh/DessertsLab/Sachima
-.. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sachima-python/community.svg?style=popout-square
+.. |Join the chat at https://gitter.im/sachima-python/community| image:: https://badges.gitter.im/sachima-python/community.svg?style=flat-square
    :target: https://gitter.im/sachima-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 .. |Documentation| image:: https://readthedocs.org/projects/sachima/badge/?version=latest
    :target: http://sachima.readthedocs.io/en/latest/?badge=latest
-.. |PyPI| image:: https://img.shields.io/pypi/v/sachima.svg?style=popout-square
+.. |PyPI| image:: https://img.shields.io/pypi/v/sachima.svg?style=flat-square
    :target: https://pypi.python.org/pypi/sachima/
-.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sachima.svg?style=popout-square&logo=python
+.. |PyPI version| image:: https://img.shields.io/pypi/pyversions/sachima.svg?style=flat-square&logo=python
    :target: https://pypi.python.org/pypi/sachima/
-.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=popout-square
+.. |Code style black| image:: https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square
     :target: https://github.com/ambv/black
 
 .. image:: https://badges.gitter.im/sachima-python/community.svg
