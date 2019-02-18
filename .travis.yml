@@ -4,6 +4,6 @@ python: 3.6
 script: pytest
 install:
   - pip install codecov
-  - coverage run tests/test_sachima.py
+  - coverage run test/test_sachima.py
 after_success:
   - codecov
