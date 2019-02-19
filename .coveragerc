@@ -1,0 +1,6 @@
+[run]
+branch = True
+source = sachima
+omit = site-packages, sachima/mail.py
+[html]
+directory = coverage
