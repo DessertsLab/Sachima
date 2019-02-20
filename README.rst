@@ -45,7 +45,7 @@ Sachima is a package for Data Analyst who wants to get capabilities of Data Engi
 - Working with GrassJelly which is a Data Visulization project.
 
 Installation
----------------------------------
+-----------------------------------
 ``pip3 install sachima``
 
 
