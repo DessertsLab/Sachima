@@ -170,11 +170,11 @@ def extract(df, p, *cols):
 
 def _to_date_list(p):
     if type(p) is pd.Timestamp:
-        return [p.date()]
+        return [p.date(), p.date()]
     elif isinstance(p, list):
         return [pd.Timestamp(val).date() for val in p]
     elif isinstance(p, str):
-        return [pd.Timestamp(p).date()]
+        return [pd.Timestamp(p).date(), pd.Timestamp(p).date()]
 
 
 if __name__ == "__main__":
