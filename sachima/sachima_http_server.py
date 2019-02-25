@@ -11,9 +11,11 @@ CONFIG = conf.get("BROKER")
 
 def sachima_rpc_reports(req):
     with ClusterRpcProxy(CONFIG) as rpc:
-        # print(req)
         res = rpc.data.get_report(req.json)
-        return res
+        if req.json["dataonly"] == "True":
+            return res["dataSource"]
+        else:
+            return res
 
 
 @app.route("/reports", methods=["POST"])
