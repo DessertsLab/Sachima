@@ -8,4 +8,5 @@ git tag -a 2019.1a11 -m '2019.1a11'
 git push origin --tags
 
 # remove remote tag
-git push origin --delete tag remove
+
+git push origin --delete tag 2019.1a11

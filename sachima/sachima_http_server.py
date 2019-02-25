@@ -13,7 +13,10 @@ def sachima_rpc_reports(req):
     with ClusterRpcProxy(CONFIG) as rpc:
         res = rpc.data.get_report(req.json)
         if req.json.get("dataonly") == "True":
-            return res["dataSource"]
+            return {
+                "dataSource": res.get("dataSource", []),
+                "columns": res.get("columns", []),
+            }
         else:
             return res
 
