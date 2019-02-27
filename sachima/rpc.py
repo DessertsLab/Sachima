@@ -52,6 +52,6 @@ class Data(object):
 
     @rpc
     def get_report(self, params):
-        logger.debug("call rpc service: " + params["name"])
+        logger.debug("call service: " + params["name"])
         m = importlib.import_module(params["name"])
         return data_wrapper(m.main(params))
