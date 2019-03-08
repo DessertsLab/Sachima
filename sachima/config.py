@@ -42,6 +42,7 @@ DB_SUPERSET = "~/.superset/superset.db"
 # logging config
 # ---------------------------------------------------------
 LOG_LEVEL = logging.DEBUG
+LOG_DIR = PROJ_DIR + "/logs"
 
 # ---------------------------------------------------------
 # Custom config

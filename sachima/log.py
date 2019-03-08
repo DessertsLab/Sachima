@@ -20,7 +20,7 @@ LOGGING_CONFIG_DEFAULTS = dict(
         "console": {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "generic",
-            "filename": "logs/sachima.log",  # noqa
+            "filename": conf.get("LOG_DIR") + "/sachima.log",  # noqa
             "maxBytes": 1024000,
             "backupCount": 10,
             # "stream": sys.stdout,
