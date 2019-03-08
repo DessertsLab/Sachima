@@ -60,7 +60,10 @@ class Data(object):
     @rpc
     def writecache(self, name, value, conn=RedisClient().conn):
         logger.debug("writecache to: " + name)
-        conn.rpush(name, value)
+        conn.rpush(
+            name,
+            json.dumps(value, indent=2, ensure_ascii=False).encode("utf-8"),
+        )
 
     @rpc
     def popcache(self, name, conn=RedisClient().conn):

@@ -22,6 +22,7 @@ class RedisClient(metaclass=Singleton):
         self.pool = redis.ConnectionPool(
             host=conf.get("REDIS_HOST"),
             port=conf.get("REDIS_PORT"),
+            decode_responses=True
             # password=conf.get("REDIS_PASS"),
         )
 
@@ -32,4 +33,6 @@ class RedisClient(metaclass=Singleton):
         return self._conn
 
     def getConnection(self):
-        self._conn = redis.Redis(connection_pool=self.pool)
+        self._conn = redis.StrictRedis(
+            connection_pool=self.pool, charset="utf-8"
+        )
