@@ -6,6 +6,7 @@ import pandas as pd
 import json
 
 from sachima.log import logger
+from sachima.cache import RedisClient
 
 
 def data_wrapper(data):
@@ -52,6 +53,16 @@ class Data(object):
 
     @rpc
     def get_report(self, params):
-        logger.debug("call service: " + params["name"])
-        m = importlib.import_module(params["name"])
+        logger.debug("call service: " + params.get("name"))
+        m = importlib.import_module(params.get("name"))
         return data_wrapper(m.main(params))
+
+    @rpc
+    def writecache(self, name, value, conn=RedisClient().conn):
+        logger.debug("writecache to: " + name)
+        conn.rpush(name, value)
+
+    @rpc
+    def popcache(self, name, conn=RedisClient().conn):
+        logger.debug("lpopcache: " + name)
+        return conn.lpop(name)
