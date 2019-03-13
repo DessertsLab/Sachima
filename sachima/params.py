@@ -109,8 +109,18 @@ class Filter:
                             .tolist()
                         }
                     )
-                elif colname:
+                elif isinstance(colname, list):
                     res.update(arg)
+                elif isinstance(colname, str):
+                    res.update(
+                        {
+                            "option": [
+                                "handler返回的数据没有字段名" + colname + " 请手动输入数据"
+                            ]
+                        }
+                    )
+                    res["props"].update({"mode": "tags"})
                 else:
                     res["props"].update(arg)
+        print(res)
         return res
