@@ -13,6 +13,13 @@ def run(user_params, api_params):
 
     logger.info("api_params: " + str(api_params))
     logger.info("user_params: " + str(user_params["params"]))
+    del_k = None
+    for k in api_params:
+        if api_params[k] == []:
+            del_k = k
+
+    if del_k:
+        del api_params[del_k]
     # combine two dict  api_params will overwrite user_params
     params = {**user_params["params"], **api_params}
     logger.info("combined params: " + str(params))
