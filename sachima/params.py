@@ -1,9 +1,9 @@
-import json
 import io
+import json
 
 import pandas as pd
+from pyparsing import empty
 from sachima.filter_enum import FilterEnum
-
 from sachima.log import logger
 
 
@@ -47,6 +47,8 @@ def set_sql_params(sql, params):
             )
         )
         if isinstance(copy_params[k], list):
+            if len(copy_params[k]) == 0:
+                copy_params[k] = [""]
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
             logger.debug("convert dict to tuple for sql: " + copy_params[k])
     finalsql = sql_format(sql, copy_params)
@@ -82,7 +84,7 @@ class Filter:
         for arg in self.setter:
             if isinstance(arg, FilterEnum.TYPE):
                 res["type"] = arg.value
-            if isinstance(arg, FilterEnum.PROPS.MODE):  # bug++++
+            if isinstance(arg, FilterEnum.PROPS.MODE):
                 res["props"].update({"mode": arg.value})
             if isinstance(arg, FilterEnum.PROPS.ALLOWCLEAR):
                 res["props"].update({"allowClear": arg.value})
@@ -122,5 +124,4 @@ class Filter:
                     res["props"].update({"mode": "tags"})
                 else:
                     res["props"].update(arg)
-        print(res)
         return res
