@@ -39,17 +39,21 @@ Sachima | Better data analyst
 
 Sachima is a package for Data Analyst who wants to get capabilities of Data Engineer:
 
-- Publishing your code as a http or rpc api.
-- Working with BI platform like Superset.
+- Publishing your python codes as a http/rpc api.
+- Working with BI platform Superset.
 - Sending your data reports to email or sns.
 - Working with GrassJelly which is a Data Visulization project.
+
+Getting Started
+-----------------------------------
+
 
 Installation
 -----------------------------------
 ``pip3 install sachima``
 
 
-Get 
+Working with superset
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - git clone https://github.com/pphszx/incubator-superset.git

@@ -1,18 +1,18 @@
-import setuptools
+from setuptools import setup, find_packages
 
 with open("README.rst", "r") as fh:
     long_description = fh.read()
 
-setuptools.setup(
+setup(
     name="sachima",
-    version="2019.3.8",
+    version="2019.3.9",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="A package for Data Analyst",
     long_description=long_description,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     url="https://github.com/DessertsLab/Sachima",
-    packages=setuptools.find_packages(),
+    packages=find_packages(),
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Programming Language :: Python :: 3.5",
