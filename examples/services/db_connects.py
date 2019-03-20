@@ -1,4 +1,4 @@
-'''
+"""
 if you need to connect Oracle  you shoud install cx_Oracle
 
 mac instanclient install
@@ -7,11 +7,12 @@ http://www.oracle.com/technetwork/topics/intel-macsoft-096467.html?ssSourceSiteI
 mkdir ~/lib
 ln -s ~/instantclient_12_2/libclntsh.dylib ~/lib/
 ln -s ~/instantclient_12_2/libclntsh.dylib.12.1 ~/lib/
-'''
+"""
 # https://github.com/cloudera/impyla
 from impala.dbapi import connect as imp_connect
 from pymysql import connect as my_connect
 from pymysql import cursors as cursors
+
 # from impala.util import as_pandas
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy import Table, Column, Date, Integer, String, ForeignKey
@@ -23,60 +24,64 @@ from sachima import conf
 
 
 class db(object):
-
     @property
     def ENGINE_SUPERSET(self):
-        return create_engine('sqlite:///{}'.format(conf.get("DB_SUPERSET")),
-                             echo=True)
+        return create_engine(
+            "sqlite:///{}".format(conf.get("DB_SUPERSET")), echo=True
+        )
 
     @property
     def ENGINE_MYSQL_h(self):
         return create_engine(
-            "mysql+pymysql://{}:{}@{}/{}"
-            .format(conf.get("MYSQL_H_USER"),
-                    conf.get("MYSQL_H_PASS"),
-                    conf.get("MYSQL_H_IP"),
-                    conf.get("MYSQL_H_DB")),
-            connect_args={'charset': conf.get("MYSQL_H_CHARSET")}
+            "mysql+pymysql://{}:{}@{}/{}".format(
+                conf.get("MYSQL_H_USER"),
+                conf.get("MYSQL_H_PASS"),
+                conf.get("MYSQL_H_IP"),
+                conf.get("MYSQL_H_DB"),
+            ),
+            connect_args={"charset": conf.get("MYSQL_H_CHARSET")},
         )
 
     @property
     def ENGINE_MYSQL_d(self):
         return create_engine(
-            "mysql+pymysql://{}:{}@{}/{}"
-            .format(conf.get("MYSQL_D_USER"),
-                    conf.get("MYSQL_D_PASS"),
-                    conf.get("MYSQL_D_IP"),
-                    conf.get("MYSQL_D_DB")),
-            connect_args={'charset': conf.get("MYSQL_D_CHARSET")}
+            "mysql+pymysql://{}:{}@{}/{}".format(
+                conf.get("MYSQL_D_USER"),
+                conf.get("MYSQL_D_PASS"),
+                conf.get("MYSQL_D_IP"),
+                conf.get("MYSQL_D_DB"),
+            ),
+            connect_args={"charset": conf.get("MYSQL_D_CHARSET")},
         )
 
     @property
     def ENGINE_IMPALA_DW(self):
-        _impala_conn = imp_connect(
-            host=conf.get("IMPALA_IP"),
-            port=conf.get("IMPALA_PORT"),
-            database=conf.get("IMPALA_DB"),
-            timeout=conf.get("IMPALA_TIMEOUT"),
-            #      use_ssl=True,
-            #      ca_cert='some_pem',
-            #      user='cloudera',
-            #      password='cloudera',
-            auth_mechanism=conf.get("IMPALA_AUTH_MECHANISM"),
-            #      kerberos_service_name='hive'
-        )
-        return create_engine(
-            'impala://', creator=_impala_conn, echo=False)
+        def _impala_conn():
+            return imp_connect(
+                host=conf.get("IMPALA_IP"),
+                port=conf.get("IMPALA_PORT"),
+                database=conf.get("IMPALA_DB"),
+                timeout=conf.get("IMPALA_TIMEOUT"),
+                #      use_ssl=True,
+                #      ca_cert='some_pem',
+                #      user='cloudera',
+                #      password='cloudera',
+                auth_mechanism=conf.get("IMPALA_AUTH_MECHANISM"),
+                #      kerberos_service_name='hive'
+            )
+
+        return create_engine("impala://", creator=_impala_conn, echo=False)
 
     @property
     def ENGINE_MARIADB_dw(self):
         return create_engine(
-            "mysql+pymysql://{}:{}@{}/{}"
-            .format(conf.get("MARIADB_USER"),
-                    conf.get("MARIADB_PASS"),
-                    conf.get("MARIADB_IP"),
-                    conf.get("MARIADB_DB")),
-            connect_args={'charset': conf.get("MARIADB_CHARSET")}
+            "mysql+pymysql://{}:{}@{}/{}".format(
+                conf.get("MARIADB_USER"),
+                conf.get("MARIADB_PASS"),
+                conf.get("MARIADB_IP"),
+                conf.get("MARIADB_DB"),
+            ),
+            connect_args={"charset": conf.get("MARIADB_CHARSET")},
         )
 
     # ---------------------------------
@@ -89,7 +94,8 @@ class db(object):
             host=conf.get("IMPALA_IP"),
             port=conf.get("IMPALA_PORT"),
             database=conf.get("IMPALA_DB"),
-            auth_mechanism=conf.get("IMPALA_AUTH_MECHANISM"))
+            auth_mechanism=conf.get("IMPALA_AUTH_MECHANISM"),
+        )
 
     @property
     def CONN_MYSQL_h(self):
@@ -99,8 +105,10 @@ class db(object):
             password=conf.get("MYSQL_H_PASS"),
             port=conf.get("MYSQL_H_PORT"),
             database=conf.get("MYSQL_H_DB"),
-            charset=conf.get("mysql_h_charset"),
-            cursorclass=cursors.SSDictCursor)
+            charset=conf.get("MYSQL_H_CHARSET"),
+            use_unicode=True,
+            cursorclass=cursors.SSDictCursor,
+        )
 
     @property
     def CONN_MYSQL_d(self):
@@ -111,7 +119,8 @@ class db(object):
             port=conf.get("MYSQL_D_PORT"),
             database=conf.get("MYSQL_D_DB"),
             charset=conf.get("MYSQL_D_CHARSET"),
-            cursorclass=cursors.SSDictCursor)
+            cursorclass=cursors.SSDictCursor,
+        )
 
     # ---------------------------------
     # meta

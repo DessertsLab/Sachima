@@ -51,7 +51,9 @@ def run(data_in, params):
         from_city_lat = city_dict[c[0]][1]
         to_city_lng = city_dict[c[1]][0]
         to_city_lat = city_dict[c[1]][1]
-        dist = haversine(from_city_lng, from_city_lat, to_city_lng, to_city_lat)
+        dist = haversine(
+            from_city_lng, from_city_lat, to_city_lng, to_city_lat
+        )
         res.append(
             (
                 c[0],
@@ -91,10 +93,3 @@ def run(data_in, params):
         df1 = df1[df1["终点城市"].isin(col_to)]
 
     return df1[: int(params["行数"])]
-    # return df1
-
-
-# if __name__ == "__main__":
-#     d = run([], [])
-#     d.to_csv("data/city_dis.csv")
-

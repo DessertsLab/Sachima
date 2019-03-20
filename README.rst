@@ -1,4 +1,4 @@
-.. image:: https://github.com/DessertsLab/assets/blob/master/png/sachima_logo.png 
+.. image:: https://github.com/DessertsLab/assets/blob/master/png/sachima_logo.png
     :alt: Sachima | LOGO
 
 
@@ -46,6 +46,7 @@ Sachima is a package for Data Analyst who wants to get capabilities of Data Engi
 
 Getting Started
 -----------------------------------
+First you should have python3 and nodejs installed on your os
 
 
 Installation
