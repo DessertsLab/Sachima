@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2019.3.10",
+    version="2019.3.11",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="A package for Data Analyst",
@@ -21,7 +21,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["aenum >= 2.12", "pandas >= 0.24.2", "Flask >= 1.0.2"],
+    install_requires=["aenum >= 2.1.2", "pandas >= 0.24.2", "Flask >= 1.0.2"],
     include_package_data=True,
     package_data={"": ["*.css"]},
 )
