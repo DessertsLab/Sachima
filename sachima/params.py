@@ -2,7 +2,6 @@ import io
 import json
 
 import pandas as pd
-from pyparsing import empty
 from sachima.filter_enum import FilterEnum
 from sachima.log import logger
 
@@ -47,6 +46,9 @@ def set_sql_params(sql, params):
             )
         )
         if isinstance(copy_params[k], list):
+            if k + "0" in sql or k + "1" in sql:
+                copy_params[k + "0"] = copy_params[k][0]
+                copy_params[k + "1"] = copy_params[k][1]
             if len(copy_params[k]) == 0:
                 copy_params[k] = [""]
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
