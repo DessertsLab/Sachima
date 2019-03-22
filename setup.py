@@ -21,6 +21,7 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    install_requires=["aenum >= 2.12", "pandas >= 0.24.2", "Flask >= 1.0.2"],
     include_package_data=True,
     package_data={"": ["*.css"]},
 )

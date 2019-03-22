@@ -46,7 +46,42 @@ Sachima is a package for Data Analyst who wants to get capabilities of Data Engi
 
 Getting Started
 -----------------------------------
-First you should have python3 and nodejs installed on your os
+First you should have python3(https://www.python.org/downloads/) and nodejs(https://nodejs.org/en/download/) installed on your os
+
+you should check your installation by
+
+``python3 -V``
+
+.. code::
+
+    Python 3.7.2
+
+``node -v``
+
+.. code::
+
+    v11.6.0
+
+then you will need a separate environment to run Sachima, cd to your working dir and run commands
+``pip3 install virtualenv``
+
+``mkdir sachima_start``
+
+``python3 -m venv sachima_start/venv``
+
+``source sachima_start/venv/bin/activate``
+
+``pip3 install sachima``
+
+``sachima init```
+
+``sachima run``
+
+...
+
+
+``deactivate``
+
 
 
 Installation
@@ -60,7 +95,7 @@ Working with superset
 - git clone https://github.com/pphszx/incubator-superset.git
 - git checkout pp_feat_apitable_0.29_new
 - virtualenv -p python3 venv
-- source venv/bin/activate
+- source sachima_workspace/bin/activate
 - pip install -r requirements.txt
 
     if you get compile error  remove cchardet==1.0.0 from requirements.txt and run again
