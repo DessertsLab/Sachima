@@ -16,22 +16,23 @@ MAIL_SENDER = conf.get("MAIL_SENDER")
 
 def _format_addr(s):
     name, addr = parseaddr(s)
-    return formataddr((Header(name, 'utf-8').encode(), addr))
+    return formataddr((Header(name, "utf-8").encode(), addr))
 
 
-def send_mail(send_to, cc_to, subject, text, files=None,
-              server=mail_host, ishtml=False):
+def send_mail(
+    send_to, cc_to, subject, text, files=None, server=mail_host, ishtml=False
+):
     assert isinstance(send_to, list)
 
     msg = MIMEMultipart()
-    msg['From'] = _format_addr(MAIL_SENDER+' <%s>' % MAIL_ADD)
-    msg['To'] = COMMASPACE.join([_format_addr(x) for x in send_to])
-    msg['CC'] = COMMASPACE.join([_format_addr(x) for x in cc_to])
+    msg["From"] = _format_addr(MAIL_SENDER + " <%s>" % MAIL_ADD)
+    msg["To"] = COMMASPACE.join([_format_addr(x) for x in send_to])
+    msg["CC"] = COMMASPACE.join([_format_addr(x) for x in cc_to])
     # msg['Date'] = formatdate(localtime=True)
-    msg['Subject'] = subject
+    msg["Subject"] = subject
 
     if ishtml:
-        msg.attach(MIMEText(text, 'html', 'utf-8'))
+        msg.attach(MIMEText(text, "html", "utf-8"))
     else:
         msg.attach(MIMEText(text))
 
@@ -40,10 +41,10 @@ def send_mail(send_to, cc_to, subject, text, files=None,
             part = MIMEApplication(
                 fil.read(),
                 # Name=('gbk', '', basename(f))
-                Name=basename(f)
+                Name=basename(f),
             )
         # After the file is closed
-        part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+        part["Content-Disposition"] = 'attachment; filename="%s"' % basename(f)
         msg.attach(part)
 
     smtp = smtplib.SMTP(server)

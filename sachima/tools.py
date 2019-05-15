@@ -1,4 +1,6 @@
 import functools
+import hashlib
+import operator
 import time
 import inspect
 import pandas as pd
@@ -192,61 +194,102 @@ def _to_date_list(p):
         return [pd.Timestamp(p).date(), pd.Timestamp(p).date()]
 
 
-if __name__ == "__main__":
-    # YEAR = 2017
-    # MONTH = 1
-    # DAY = 1
-    # HOUR = 12
-    # MINUTES = 12
-    # SECONDS = 12
+class Tools:
+    @classmethod
+    def get_md5_value(cls, s):
+        myMd5 = hashlib.md5()
+        myMd5.update(s.encode("utf8"))
+        myMd5_Digest = myMd5.hexdigest()
+        return myMd5_Digest
 
-    # case1 = (
-    #     pd.Timestamp(YEAR, MONTH, DAY),
-    #     [datetime.date(YEAR, MONTH, DAY)],
-    #     "#1 single timestamp input",
-    # )
-    # case2 = (
-    #     pd.Timestamp(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS),
-    #     [datetime.date(YEAR, MONTH, DAY)],
-    #     "#2 single timestamp input with time",
-    # )
-    # case3 = (
-    #     [pd.Timestamp(YEAR, MONTH, DAY)],
-    #     [datetime.date(YEAR, MONTH, DAY)],
-    #     "#3 single timestamp list",
-    # )
-    # case4 = (
-    #     [pd.Timestamp(YEAR, MONTH, DAY), pd.Timestamp(YEAR, MONTH + 1, DAY)],
-    #     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-    #     "#4 multi timestamp list",
-    # )
-    # case5 = (
-    #     [
-    #         pd.Timestamp(YEAR, MONTH, DAY),
-    #         "{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
-    #     ],
-    #     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-    #     "#5 mix timestamp and str list",
-    # )
-    # case6 = (
-    #     [
-    #         pd.Timestamp(YEAR, MONTH, DAY),
-    #         "boom!{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
-    #     ],
-    #     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-    #     ValueError,
-    # )
-
-    # tests = [case1, case2, case3, case4, case5, case6]
-
-    # for t in tests:
-    #     print(_to_date_list(t[0]))
-    #     assert _to_date_list(t[0]) == t[1], "{} not correct".format(t[2])
-
-    print(
-        longest_common_substring(
-            "曝光:上海港华医院、上海鲁南门诊网红医院黑心骗子不要..._新浪博客",
-            "曝光:上海港华医院、上海鲁南门诊网红医院黑心骗子不要脸害人|...",
+    @classmethod
+    def special_char_remove(self, s):
+        """
+        特殊字符替换处理函数, 在windows下这些字符无法在文件名中存在
+        """
+        return (
+            s.replace(",", " ")
+            .replace("<", "小于")
+            .replace(">", "大于")
+            .replace("*", "_")
         )
-    )
 
+    @classmethod
+    def get_truth(cls, inp, relate, cut):
+        ops = {
+            ">": operator.gt,
+            "<": operator.lt,
+            ">=": operator.ge,
+            "<=": operator.le,
+            "=": operator.eq,
+        }
+        return ops[relate](inp, cut)
+
+    @classmethod
+    def maybe_float(cls, s):
+        try:
+            return float(s)
+        except (ValueError, TypeError):
+            return s
+
+    @classmethod
+    def excel_colnum_string(cls, n):
+        string = ""
+        while n > 0:
+            n, remainder = divmod(n - 1, 26)
+            string = chr(65 + remainder) + string
+        return string
+
+
+# if __name__ == "__main__":
+# YEAR = 2017
+# MONTH = 1
+# DAY = 1
+# HOUR = 12
+# MINUTES = 12
+# SECONDS = 12
+
+# case1 = (
+#     pd.Timestamp(YEAR, MONTH, DAY),
+#     [datetime.date(YEAR, MONTH, DAY)],
+#     "#1 single timestamp input",
+# )
+# case2 = (
+#     pd.Timestamp(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS),
+#     [datetime.date(YEAR, MONTH, DAY)],
+#     "#2 single timestamp input with time",
+# )
+# case3 = (
+#     [pd.Timestamp(YEAR, MONTH, DAY)],
+#     [datetime.date(YEAR, MONTH, DAY)],
+#     "#3 single timestamp list",
+# )
+# case4 = (
+#     [pd.Timestamp(YEAR, MONTH, DAY), pd.Timestamp(YEAR, MONTH + 1, DAY)],
+#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+#     "#4 multi timestamp list",
+# )
+# case5 = (
+#     [
+#         pd.Timestamp(YEAR, MONTH, DAY),
+#         "{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
+#     ],
+#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+#     "#5 mix timestamp and str list",
+# )
+# case6 = (
+#     [
+#         pd.Timestamp(YEAR, MONTH, DAY),
+#         "boom!{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
+#     ],
+#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
+#     ValueError,
+# )
+
+# tests = [case1, case2, case3, case4, case5, case6]
+
+# for t in tests:
+#     print(_to_date_list(t[0]))
+#     assert _to_date_list(t[0]) == t[1], "{} not correct".format(t[2])
+
+# print(longest_common_substring("曝光:不要..._新浪博客", "曝光:人|..."))
