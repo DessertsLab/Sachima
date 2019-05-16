@@ -1,6 +1,9 @@
 import random
 import colorsys
+import matplotlib as mpl
 import seaborn as sns
+
+mpl.use("Agg")
 
 
 def get_random_color(pastel_factor=0.5):
