@@ -1,9 +1,11 @@
 import random
 import colorsys
 import matplotlib as mpl
-import seaborn as sns
 
+# must befor seaborn import for ImportError: libGL.so.1: cannot open shared object file: No such file or directory
+#
 mpl.use("Agg")
+import seaborn as sns
 
 
 def get_random_color(pastel_factor=0.5):
