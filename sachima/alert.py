@@ -314,17 +314,17 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
         obj["down"] = np.select(conditios_down, choices, default=False)
         # alerttext = dim_str+"为"+str(groupset)+'的[' + column + ']的'+str(diff_deep)+'阶差分值超过' + str(window_value) + '日窗口的' + str(std_times) + '个标准差'
 
-        if obj.loc[obj.index[-1]]["res"] is False:  # 最后一个点必须是预警点  否则不输出预警
+        if obj.loc[obj.index[-1]]["res"] == False:  # 最后一个点必须是预警点  否则不输出预警
             print("最后一个点必须是预警点  否则不输出预警")
             continue
 
         # 只记录最后一个点的预警
-        last_dt = obj[obj["res"] is True].index[-1]
+        last_dt = obj[obj["res"] == True].index[-1]
         vv = obj.loc[last_dt][column]  # 触发预警数值
         sBD = "向上波动"
-        if obj.loc[last_dt]["up"] is True:
+        if obj.loc[last_dt]["up"] == True:
             sBD = "向上波动"
-        elif obj.loc[last_dt]["up"] is False:
+        elif obj.loc[last_dt]["up"] == False:
             sBD = "向下波动"
 
         alerttext = (
@@ -343,7 +343,8 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
         data_file = os.path.join(
             "..", foldername, filename + ".xlsx"
         )  # 对应的数据文件 可以在excel中直接连接到源数据
-        f_last_alerts.write(
+
+        f.write(
             str(uuid.uuid1())
             + ","
             + ruleid
@@ -357,17 +358,17 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             + str(vv)
             + ","
             + '=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + ',=HYPERLINK("'
             + data_file
             + '")'
             + ',=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + "\n"
         )
-        f_last_alerts.flush()
+        f.flush()
 
 
 # 规则处理过程，以ruleid命名
@@ -461,7 +462,9 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + str(value)
         )
 
-        if obj.loc[obj.index[-1]]["res"] is False:  # 最后一个点必须是预警点  否则不输出预警
+        if (
+            obj.loc[obj.index[-1]]["res"] == False
+        ):  # 最后一个点必须是预警点  否则不输出预警  不能用is 必须 == 会有bug
             continue
 
         # print(obj[obj['res'] == True].index)
@@ -483,13 +486,13 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + str(vv)
             + ","
             + '=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + ',=HYPERLINK("'
             + data_file
             + '")'
             + ',=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + "\n"
         )
@@ -553,7 +556,8 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         if type(dt_end) == str and dt_end == "":
             continue
 
-        obj = dd[:dt_end][column_lists]
+
+        obj = dd[:dt_end][set(column_lists)]
         # if len(index) > 1:
         #     obj = df.loc[groupset][:dt_end][column_lists]
         # else:
@@ -562,14 +566,18 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         # c 字段   v 预警线   o 操作
         c_markers_lists = []
         for c, v, o in zip(column_lists, value_lists, oper_lists):
+            keyname = c + o + str(v)  # 字段 操作符 和值形成唯一的keyname 形成新的列
+            print(keyname)
+            # print(obj[c])
+            # print(obj[keyname + "_thresholdvalue"])
             # 把预警线放在一个字段
-            obj[c + "_thresholdvalue"] = v
+            obj[keyname + "_thresholdvalue"] = v
             # 条件构造
             # print(c)
-            obj[c + "markers"] = Tools.get_truth(
-                obj[c], o, obj[c + "_thresholdvalue"]
+            obj[keyname + "markers"] = Tools.get_truth(
+                obj[c], o, obj[keyname + "_thresholdvalue"]
             )
-            c_markers_lists.append(c + "markers")
+            c_markers_lists.append(keyname + "markers")
 
         obj["res"] = obj[c_markers_lists].all(axis=1)  # 必须满足所有的条件才触发预警
 
@@ -598,7 +606,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + ruleid
             + ",R00003,[多条件预警],"
-            + time_dim_to_str(dt)
+            + time_dim_to_str(last_dt)
             + ",["
             + time_str
             + "],"
@@ -607,13 +615,13 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             + Tools.special_char_remove(str(vv))
             + ","
             + '=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + ',=HYPERLINK("'
             + data_file
             + '")'
             + ',=HYPERLINK("'
-            + url
+            + str(url)
             + '")'
             + "\n"
         )
