@@ -556,8 +556,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         if type(dt_end) == str and dt_end == "":
             continue
 
-
-        obj = dd[:dt_end][set(column_lists)]
+        obj = dd[:dt_end][list(set(column_lists))]
         # if len(index) > 1:
         #     obj = df.loc[groupset][:dt_end][column_lists]
         # else:
