@@ -357,9 +357,9 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + str(vv)
             + ","
-            + '=HYPERLINK("'
+            + ""
             + str(url)
-            + '")'
+            + ""
             + ',=HYPERLINK("'
             + data_file
             + '")'
@@ -485,9 +485,9 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + str(vv)
             + ","
-            + '=HYPERLINK("'
+            + ""
             + str(url)
-            + '")'
+            + ""
             + ',=HYPERLINK("'
             + data_file
             + '")'
@@ -613,9 +613,9 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + Tools.special_char_remove(str(vv))
             + ","
-            + '=HYPERLINK("'
+            + ""
             + str(url)
-            + '")'
+            + ""
             + ',=HYPERLINK("'
             + data_file
             + '")'
