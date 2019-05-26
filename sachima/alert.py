@@ -174,7 +174,9 @@ def rulerun(ruleid, table, index, column, rule, param, url, f):
     foldername = table.split(".")[0]
     filename = table.split(".")[1]
     filepath = os.path.join(BASE_FILES_PATH, foldername, filename + ".xlsx")
-    index = index.split(" ")  # 维度字段   最后一个是时间维度  用空格隔开
+    index = index.split(
+        " "
+    )  # 维度字段   最后一个是时间维度  用空格隔开  example: d_绿通标识 td_统计日期
     df = pd.read_excel(
         filepath, index_col=None, na_values="999"
     )  # 替换999为NaN 执行效率慢了很多 建议张杰在生成excel的时候把数据留空   读取速度能优化吗？
@@ -238,7 +240,7 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
         time_str = str(index[-1])  # 最后一个作为时间  x轴
         dimention = df.groupby(index[0:-1]).count().index  # 维度组合
     else:
-        dim_str = "_"  # 为了在win上运行 不能试用星号  小于大于号等特殊字符
+        dim_str = "_"  # 为了在win上运行 不能使用星号  小于大于号等特殊字符
         time_str = str(index[0])
         dimention = ["_"]  # 除了时间没有其它维度的情况
 
@@ -442,12 +444,19 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + oper
             + " obj['thresholdvalue'], 1 == 1]"
         )
-        oper_str = oper
+
+        if oper == ">":
+            oper_str = "大于"
+        elif oper == "<":
+            oper_str = "小于"
+        elif oper == "=":
+            oper_str = "等于"
 
         choices = [True, False]
         obj["res"] = np.select(conditions, choices, default=False)
 
         # a = obj[obj['res'] == True].index
+
         alerttext = (
             special_char_remove(dim_str)
             + ","
@@ -627,18 +636,18 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         f.flush()
 
 
-def get(t="csv"):
-    """
-    cp -rf /Users/zhangmk/Downloads/CODE/MEIHAO/alert/* /Volumes/share/code/alert
-    """
-    days = 1  # 默认需要当天的数据 作为sys参数传入  如果传入5 就是跑近5天的数据
-    stoday = datetime.strftime(datetime.now(), "%Y%m%d")
-    jiankong_path = "/data/jiankongdata/zhangj"
+def get(t="csv", days=1, conf_path=CONF_PATH):
 
-    if len(sys.argv) == 2 and isinstance(int(sys.argv[1]), int):
-        days = int(sys.argv[1])
+    """
+    用户调用 get获取输出预警规则输出结果 可以使用excel csv 或者 dataframe类型
+    """
+    # 默认需要当天的数据 作为sys参数传入  如果传入5 就是跑近5天的数据
 
+    ## 命令行运行的时候第二个参数是天数，这里get在sachima项目总调用暂时注释掉
+    # if len(sys.argv) == 2 and isinstance(int(sys.argv[1]), int):
+    #     days = int(sys.argv[1])
     for d in range(0, days):
+        # 批量日期 默认是当天 days=1
         BATCH_DATE = datetime.strptime(
             datetime.strftime(datetime.today(), "%Y-%m-%d"), "%Y-%m-%d"
         ) + timedelta(days=-d)
@@ -651,8 +660,8 @@ def get(t="csv"):
         # # conf['param']   # [2 30 2]
         # '''
 
-        # handle_conf(CONF_PATH)
-        conf = pd.read_csv(CONF_PATH, index_col=None, sep=",")
+        # 配置文件是一个csv，包含了预警规则
+        conf = pd.read_csv(conf_path, index_col=None, sep=",")
         conf = conf[conf["active"] == "Y"]
 
         last_path = os.path.join(
@@ -667,9 +676,6 @@ def get(t="csv"):
             "alertlist" + datetime.strftime(BATCH_DATE, "%Y%m%d") + ".csv",
         )
 
-        print("--------------------------")
-        print(last_path)
-
         f_last_alerts = open(csv_file_name, "w", encoding="GBK")
         f_last_alerts.write(
             "预警编号,规则编号,触发规则,规则类型,日期,日期类型,维度名称,维度值,表格,字段,描述,参数,值,图,数据,url"
@@ -679,14 +685,6 @@ def get(t="csv"):
 
         # 遍历规则
         for index, row in conf.iterrows():
-            print(
-                row["ruleid"],
-                row["table"],
-                row["index"],
-                row["column"],
-                row["rule"],
-                row["param"],
-            )
             rulerun(
                 row["ruleid"],
                 row["table"],
@@ -702,13 +700,15 @@ def get(t="csv"):
 
         # 转换成excel并格式化
         # filename = '/Users/zhangmk/Downloads/监控指标制作/lastest_alerts20180523/alertlist20180521.csv'
-        ehl = ExcelHighLighter(
-            csv_file_name,
-            highcols=["触发规则", "规则类型", "日期类型", "维度名称", "表格", "字段"],
-            hide=["A", "B", "N", "O"],
-            colfilter=True,
-        )
-        ehl.to_excel()
+
+        # excel的处理不该在alert中做 alert应该负责规则处理  统一生成df后由调用方处理
+        # ehl = ExcelHighLighter(
+        #     csv_file_name,
+        #     highcols=["触发规则", "规则类型", "日期类型", "维度名称", "表格", "字段"],
+        #     hide=["A", "B", "N", "O"],
+        #     colfilter=True,
+        # )
+        # ehl.to_excel()
 
         if t == "csv":
             return csv_file_name
@@ -721,3 +721,22 @@ def get(t="csv"):
 
         # 调用 mail发送邮件 在mail中定义一个handler用于发送结果excel
         # os.system('/data/anaconda/bin/python /data/app/reports/r_00120_main.py ' + str(-d))
+
+
+def add(name, df):
+    """
+    add函数增加数据到alert中，使用get可以通过规则配置文件得到数据结果，配置文件中的table字段就对应这里设置的name
+    name: 数据名称
+    df: 传入的数据 pandas Dataframe
+    """
+    a = name.split(".")
+    catelog = a[0]
+    filename = a[1] + ".xlsx"
+    folder = "d:\\share"
+    if sys.platform == "win32":
+        folder = "d:\\share"
+    elif sys.platform == "linux":
+        folder = "/data/jiankongdata/zhangj"
+    elif sys.platform == "darwin":
+        folder = "~/Desktop/alert"
+    df.to_excel(os.path.join(folder,catelog,filename),index=False)
