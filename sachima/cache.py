@@ -22,7 +22,8 @@ class RedisClient(metaclass=Singleton):
         self.pool = redis.ConnectionPool(
             host=conf.get("REDIS_HOST"),
             port=conf.get("REDIS_PORT"),
-            decode_responses=True
+            decode_responses=True,
+            socket_connect_timeout=1
             # password=conf.get("REDIS_PASS"),
         )
 
