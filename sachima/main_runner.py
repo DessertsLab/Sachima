@@ -38,5 +38,6 @@ def run(user_params, api_params):
     handler = han.ReportsHandler(handler=user_params["handler"])
     data = handler.handle(data_in, params)
     filters = user_params["filters"]
+    links = user_params.get("links", {})
 
-    return {"data": data, "filters": filters}
+    return {"data": data, "filters": filters, "links": links}

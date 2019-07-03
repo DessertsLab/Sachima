@@ -20,9 +20,11 @@ def data_wrapper(data):
     """
     # data["data"]
     # data["filters"]
+    # data["link"]
+    print(data)
     if not data:
         return {
-            "columns": ["提示信息"],
+            "columns": [{"title": "提示信息", "dataIndex": "提示信息", "key": "提示信息"}],
             "dataSource": [{"提示信息": "服务器数据出现错误请联系管理员"}],
         }
 
@@ -30,10 +32,25 @@ def data_wrapper(data):
     res = {}
     df = data["data"][0]
     filters = data["filters"]
+    links = data.get("links", {})
 
     if isinstance(df, pd.DataFrame):
         res["controls"] = [f.to_json(df) for f in filters]
-        res["columns"] = df.columns.tolist()
+        res["columns"] = [
+            {
+                "title": x,
+                "dataIndex": x,
+                "key": x,
+                "render": {"action": links[x]},
+            }
+            if x in links
+            else {"title": x, "dataIndex": x, "key": x}
+            for x in df.columns
+        ]
+        # for colname in links:
+        #     res["columns"][colname]["render"] = {
+        #         "action": "http://www.baidu.com/s?wd="
+        #     }
         df = df.applymap(str)
         res["dataSource"] = json.loads(
             df.to_json(
@@ -66,7 +83,7 @@ class Data(object):
         logger.info(params)
         logger.info("=" * 50)
         need_fallback = False
-        force_flash = params.get("cache", 0)  # 0 使用缓存  1 不使用缓存
+        force_flash = params.get("isForce", 0)  # 0 使用缓存  1 不使用缓存
         req = json.dumps(params)
         req_md5 = Tools.get_md5_value(req)
 
