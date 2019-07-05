@@ -84,6 +84,7 @@ class Data(object):
         logger.info("=" * 50)
         need_fallback = False
         force_flash = params.get("isForce", 0)  # 0 使用缓存  1 不使用缓存
+        params.pop("isForce", None)  # 把请求中控制是否强制刷新的flag去掉
         req = json.dumps(params)
         req_md5 = Tools.get_md5_value(req)
 
@@ -97,8 +98,8 @@ class Data(object):
             logger.info("cache exception, fallbacking..... will not use cache")
             need_fallback = True  # 缓存出现异常，需要降级回退处理
 
-        # 不需要降级并且有返回值并且前端没有要求强制刷新
-        if not need_fallback and ret:
+        # 不需要降级并且有返回值并且前端没有要求强制刷新并且命中缓存
+        if not need_fallback and not force_flash and ret:
             # cache hit
             logger.debug("cache hit")
             return json.loads(ret)
