@@ -357,7 +357,7 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             + "],"
             + alerttext
             + ","
-            + str(vv)
+            + Tools.special_char_remove(str(vv))
             + ","
             + ""
             + str(url)
@@ -492,7 +492,7 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + "],"
             + alerttext
             + ","
-            + str(vv)
+            + Tools.special_char_remove(str(vv))
             + ","
             + ""
             + str(url)
@@ -739,4 +739,5 @@ def add(name, df):
         folder = "/data/jiankongdata/zhangj"
     elif sys.platform == "darwin":
         folder = "~/Desktop/alert"
-    df.to_excel(os.path.join(folder,catelog,filename),index=False)
+    df.to_excel(os.path.join(folder, catelog, filename), index=False)
+
