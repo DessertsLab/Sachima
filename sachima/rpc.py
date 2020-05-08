@@ -107,6 +107,7 @@ class Data(object):
             # cache miss
             logger.debug("cache miss")
             logger.debug("call service: " + params.get("name"))
+            importlib.invalidate_caches()
             m = importlib.import_module(params.get("name"))
             res = data_wrapper(m.main(params))
 
