@@ -107,8 +107,9 @@ class Data(object):
             # cache miss
             logger.debug("cache miss")
             logger.debug("call service: " + params.get("name"))
-            importlib.invalidate_caches()
+            # importlib.invalidate_caches()
             m = importlib.import_module(params.get("name"))
+            m = importlib.reload(m)
             res = data_wrapper(m.main(params))
 
             if not need_fallback:
