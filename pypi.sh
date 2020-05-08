@@ -12,4 +12,4 @@ git push origin --tags
 
 # remove remote tag
 
-# git push origin --delete tag 2020.5.8
+git push origin --delete tag 2020.5.8
