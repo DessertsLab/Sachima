@@ -13,8 +13,8 @@ def send_request(host, path, webhook, querys, data):
         )
         response = request.urlopen(req)
         content = response.read().decode("utf-8")
-    except:
-        raise
+    except e:
+        raise e
     return content
 
 

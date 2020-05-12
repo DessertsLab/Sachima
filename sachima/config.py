@@ -54,3 +54,11 @@ try:
     print("Loading local config file: [{}]".format(sachima_config.__file__))
 except ImportError:
     pass
+
+
+try:
+    from cache_list import CACHE_LIST  # noqa
+
+    print("Loading cache_list file: [{}]".format(cache_list.__file__))
+except ImportError:
+    pass

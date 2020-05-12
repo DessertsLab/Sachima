@@ -9,6 +9,12 @@ from sachima.log import logger
 from sachima.cache import RedisClient
 from sachima.tools import Tools
 
+from sachima import conf
+
+# ERROR_GRP_TOKEN = conf.get("SNS_DINGDING_ERROR_GRP_TOKEN")
+# INFO_GRP_TOKEN = conf.get("SNS_DINGDING_INFO_GRP_TOKEN")
+CACHE_LIST = conf.get("CACHE_LIST", [])
+
 
 def data_wrapper(data):
     """
@@ -99,7 +105,12 @@ class Data(object):
             need_fallback = True  # 缓存出现异常，需要降级回退处理
 
         # 不需要降级并且有返回值并且前端没有要求强制刷新并且命中缓存
-        if not need_fallback and not force_flash and ret:
+        if (
+            params.get("name") in CACHE_LIST
+            and not need_fallback
+            and not force_flash
+            and ret
+        ):
             # cache hit
             logger.debug("cache hit")
             return json.loads(ret)
