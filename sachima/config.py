@@ -58,6 +58,7 @@ except ImportError:
 
 try:
     from cache_list import CACHE_LIST  # noqa
+    import cache_list
 
     print("Loading cache_list file: [{}]".format(cache_list.__file__))
 except ImportError:
