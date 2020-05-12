@@ -123,7 +123,7 @@ class Data(object):
             m = importlib.reload(m)
             res = data_wrapper(m.main(params))
 
-            if not need_fallback:
+            if not need_fallback and params.get("name") in CACHE_LIST:
                 conn.hset("sachima_req", req_md5, req)
                 conn.hset("sachima_results", req_md5, json.dumps(res))  # 更新缓存
         return res
