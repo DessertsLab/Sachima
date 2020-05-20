@@ -14,6 +14,7 @@ class ReportsHandler(object):
         for handler_str in self.handlers:
             logger.info("Call handler: " + handler_str)
             m = importlib.import_module("handler." + handler_str, handler_str)
+            m = importlib.reload(m)
             # each handler should has run function
             res = m.run(data_in, params)
             logger.info(
