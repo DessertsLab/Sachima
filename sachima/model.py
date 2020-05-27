@@ -7,7 +7,7 @@ from sachima.log import logger
 
 
 class Data:
-    def __init__(self, dataname, datatype, params):
+    def __init__(self, dataname, datatype, params, prefunc):
         """
         dataname: sql filename
         datatype: db engine  or filetype in str
@@ -24,15 +24,16 @@ class Data:
                 os.path.join(conf.get("PROJ_DIR"), "data", dataname)
             )
         elif datatype in ("api",):
-            api_cls = importlib.import_module(
-                "services." + dataname, package=".."
-            )
+            api_cls = importlib.import_module("services." + dataname, package="..")
             api = api_cls.Api()
             self.data = api.data
         else:
             str_sql = open(
-                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname),
-                encoding="utf-8",
+                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname), encoding="utf-8",
             ).read()
-            sql = set_sql_params(str_sql, params)
+            sql = str_sql
+            if prefunc:
+                sql = prefunc(set_sql_params(str_sql, params), params)
+            else:
+                sql = set_sql_params(str_sql, params)
             self.data = pd.read_sql(sql, datatype)

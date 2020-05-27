@@ -24,9 +24,13 @@ def run(user_params, api_params):
     params = {**user_params["params"], **api_params}
     logger.info("combined params: " + str(params))
 
+    pre_func = None
+    if "pre" in user_params:
+        pre_func = user_params["pre"]
+
     if "model" in user_params and user_params["model"]:
         data_in = [
-            Data(dataname, source, params).data
+            Data(dataname, source, params, pre_func).data
             for dataname, source in user_params["model"]
         ]
     else:
