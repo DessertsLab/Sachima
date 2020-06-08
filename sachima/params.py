@@ -54,7 +54,6 @@ def set_sql_params(sql, params):
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
             logger.debug("convert dict to tuple for sql: " + copy_params[k])
     finalsql = sql_format(sql, copy_params)
-    logger.debug("run sql")
     logger.debug(finalsql)
     return finalsql
 
@@ -78,9 +77,7 @@ class Filter:
         res["id"] = self.id
 
         if not isinstance(data, pd.DataFrame):
-            raise TypeError(
-                "pd.DataFrame expected but get {}".format(str(type(data)))
-            )
+            raise TypeError("pd.DataFrame expected but get {}".format(str(type(data))))
 
         # todo: json str from enumn tree improve
         for arg in self.setter:
@@ -106,23 +103,12 @@ class Filter:
                 colname = arg.get("option", None)
                 if isinstance(colname, str) and colname in data.columns:
                     res.update(
-                        {
-                            "option": data[colname]
-                            .map(lambda x: x)
-                            .unique()
-                            .tolist()
-                        }
+                        {"option": data[colname].map(lambda x: x).unique().tolist()}
                     )
                 elif isinstance(colname, list):
                     res.update(arg)
                 elif isinstance(colname, str):
-                    res.update(
-                        {
-                            "option": [
-                                "handler返回的数据没有字段名" + colname + " 请手动输入数据"
-                            ]
-                        }
-                    )
+                    res.update({"option": ["handler返回的数据没有字段名" + colname + " 请手动输入数据"]})
                     res["props"].update({"mode": "tags"})
                 else:
                     res["props"].update(arg)
