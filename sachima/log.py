@@ -8,7 +8,7 @@ LOGGING_CONFIG_DEFAULTS = dict(
     version=1,
     disable_existing_loggers=False,
     loggers={
-        "sachima.root": {"level": "INFO", "handlers": ["console"]},
+        "sachima.root": {"level": "INFO", "handlers": ["file", "console1"]},
         "sachima.error": {
             "level": "INFO",
             "handlers": ["error_console"],
@@ -17,13 +17,18 @@ LOGGING_CONFIG_DEFAULTS = dict(
         },
     },
     handlers={
-        "console": {
+        "file": {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "generic",
             "filename": conf.get("LOG_DIR") + "/sachima.log",  # noqa
             "maxBytes": 1024000,
             "backupCount": 10,
             # "stream": sys.stdout,
+        },
+        "console1": {
+            "class": "logging.StreamHandler",
+            "formatter": "generic",
+            "level": "DEBUG",
         },
         "error_console": {
             "class": "logging.StreamHandler",
@@ -33,7 +38,7 @@ LOGGING_CONFIG_DEFAULTS = dict(
     },
     formatters={
         "generic": {
-            "format": "%(asctime)s [%(process)d] [%(levelname)s] %(message)s",
+            "format": "%(asctime)s [%(process)d] [%(processName)s] [%(levelname)s] %(message)s",
             "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
             "class": "logging.Formatter",
         }
