@@ -46,8 +46,8 @@ class Data:
                 sql = prefunc(set_sql_params(str_sql, params), params)
             else:
                 sql = set_sql_params(str_sql, params)
-            start = time.time()
 
+            start = time.time()
             done = False
 
             def animate(log):
@@ -73,7 +73,7 @@ class Data:
             t.join()
             df = pd.DataFrame()
             logger.info("<{}> start loading data... ".format(dataname))
-            for chunk in tqdm(chunks, total=2000):
+            for chunk in tqdm(chunks, total=200):
                 df = pd.concat([df, chunk])
             loading_data_elapsed_time = time.time() - start
             logger.info(
