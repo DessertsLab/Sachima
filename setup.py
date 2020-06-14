@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="1.0.1",
+    version="2016.6.14.1",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="A package for Data Analyst",
