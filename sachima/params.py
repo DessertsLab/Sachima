@@ -11,7 +11,7 @@ def delfunc(sql, e):
     temp = ""
     for line in buf.readlines():
         if "{" + e + "}" in line and "-- ifnulldel" in line:
-            logger.debug("del sql line: " + line)
+            # logger.debug("del sql line: " + line)
             pass
         elif "{" + e + "}" in line and "-- ifnulldel" not in line:
             temp += line.replace("{" + e + "}", "")
@@ -52,7 +52,7 @@ def set_sql_params(sql, params):
             if len(copy_params[k]) == 0:
                 copy_params[k] = [""]
             copy_params[k] = str(tuple(copy_params[k])).replace(",)", ")")
-            logger.debug("convert dict to tuple for sql: " + copy_params[k])
+            # logger.debug("convert dict to tuple for sql: " + copy_params[k])
     finalsql = sql_format(sql, copy_params)
     logger.debug(finalsql)
     return finalsql

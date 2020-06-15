@@ -39,9 +39,7 @@ def send(func):
             # after
             return value
         except Exception as ex:
-            title = ERRSENT_STR.format(
-                args[0]["handler"], str(datetime.datetime.now())
-            )
+            title = ERRSENT_STR.format(args[0]["handler"], str(datetime.datetime.now()))
             data = str(ex)
             sns.send_dingding(title, title + data, ERROR_GRP_TOKEN)
             sns.send_dingding(title, title + data, INFO_GRP_TOKEN)
@@ -58,7 +56,8 @@ def timer(func):
         value = func(*args, **kwargs)
         end_time = time.perf_counter()  # 2
         run_time = end_time - start_time  # 3
-        logger.info(f"Finished {inspect.getfile(func)} in {run_time:.4f} secs")
+        # logger.info(f"Finished {inspect.getfile(func)} in {run_time:.4f} secs")
+        logger.info(f"Finished {func.__name__!r} in {run_time:.4f} secs")
         return value
 
     return wrapper_timer
