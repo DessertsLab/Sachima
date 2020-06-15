@@ -13,6 +13,10 @@ import threading
 import itertools
 
 
+def sql_data(sql, datatype):
+    return pd.read_sql(sql, datatype)
+
+
 class Data:
     def __init__(self, dataname, datatype, params, prefunc):
         """

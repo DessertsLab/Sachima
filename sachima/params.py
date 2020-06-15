@@ -22,7 +22,7 @@ def delfunc(sql, e):
 
 def sql_format(sql, params):
     try:
-        logger.info("sql lens：" + str(len(sql)))
+        # logger.info("sql lens：" + str(len(sql)))
         return sql.format(**params)
     except KeyError as e:
         newsql = delfunc(sql, str(e).replace("'", ""))
