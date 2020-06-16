@@ -4,6 +4,7 @@ import os
 import importlib
 from sachima.params import set_sql_params
 from sachima.log import logger
+from sachima.wrappers import timer
 from tqdm import tqdm
 import io
 import time
@@ -11,6 +12,15 @@ import logging
 import sys
 import threading
 import itertools
+
+
+@timer
+def sql(sql, datatype):
+    """
+    return DataFrame
+    """
+    logger.info("running sql {}".format(sql))
+    return pd.read_sql(sql, datatype)
 
 
 class Data:
@@ -68,8 +78,12 @@ class Data:
             t.daemon = True
             t.start()
 
-            chunks = pd.read_sql(sql, datatype, chunksize=100)
-            done = True
+            # todo: try cache if sql get error still need to run done = True
+            try:
+                chunks = pd.read_sql(sql, datatype, chunksize=100)
+            finally:
+                done = True
+
             t.join()
             df = pd.DataFrame()
             logger.info("<{}> start loading data... ".format(dataname))
