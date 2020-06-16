@@ -79,8 +79,11 @@ class Data:
             t.start()
 
             # todo: try cache if sql get error still need to run done = True
-            chunks = pd.read_sql(sql, datatype, chunksize=100)
-            done = True
+            try:
+                chunks = pd.read_sql(sql, datatype, chunksize=100)
+            finally:
+                done = True
+
             t.join()
             df = pd.DataFrame()
             logger.info("<{}> start loading data... ".format(dataname))
