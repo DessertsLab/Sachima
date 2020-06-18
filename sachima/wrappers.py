@@ -42,7 +42,7 @@ def send(func):
             title = ERRSENT_STR.format(file_name, time_str)
             exception_info = str(ex)
             sns.send_dingding(title, title + exception_info, ERROR_GRP_TOKEN)
-            sns.send_dingding(title, title + exception_info, INFO_GRP_TOKEN)
+            # sns.send_dingding(title, title + exception_info, INFO_GRP_TOKEN)
 
     return wrapper
 
