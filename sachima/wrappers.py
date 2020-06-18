@@ -1,9 +1,11 @@
+import os
 import functools
 import time
 import sachima.sns as sns
 import datetime
 from sachima.log import logger
 from sachima import conf
+import inspect
 
 
 def only_in_night(func):
@@ -29,20 +31,18 @@ def send(func):
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        file_name = os.path.basename(inspect.getsourcefile(func))
+        time_str = str(datetime.datetime.now())
         try:
-            # before
-            time_str = str(datetime.datetime.now())
-            print(args)
-            # t = SENDING_STR.format(args[0]["handler"], time_str)
-            # sns.send_dingding(t, t, ERROR_GRP_TOKEN)
+            t = SENDING_STR.format(file_name, time_str)
+            sns.send_dingding(t, t, INFO_GRP_TOKEN)
             value = func(*args, **kwargs)
-            # after
             return value
         except Exception as ex:
-            title = ERRSENT_STR.format(args[0]["handler"], str(datetime.datetime.now()))
-            data = str(ex)
-            sns.send_dingding(title, title + data, ERROR_GRP_TOKEN)
-            sns.send_dingding(title, title + data, INFO_GRP_TOKEN)
+            title = ERRSENT_STR.format(file_name, time_str)
+            exception_info = str(ex)
+            sns.send_dingding(title, title + exception_info, ERROR_GRP_TOKEN)
+            sns.send_dingding(title, title + exception_info, INFO_GRP_TOKEN)
 
     return wrapper
 
