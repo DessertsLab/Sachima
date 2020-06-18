@@ -9,13 +9,17 @@ import inspect
 
 
 def only_in_night(func):
-    def wrapper(a):
-        if 7 <= datetime.now().hour < 22:
-            pass
-        else:
-            func(a)
+    """this task can only run in 19:00 to 22:00"""
 
-    return wrapper
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if 7 <= datetime.datetime.now().hour < 22:
+            logger.info("this task can only run in 19:00 to 22:00")
+            return {}
+        else:
+            return func(*args, **kwargs)
+
+    # return wrapper
 
 
 def send(func):
