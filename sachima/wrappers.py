@@ -19,7 +19,7 @@ def only_in_night(func):
         else:
             return func(*args, **kwargs)
 
-    # return wrapper
+    return wrapper
 
 
 def send(func):
