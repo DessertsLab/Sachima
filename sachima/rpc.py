@@ -27,7 +27,7 @@ def data_wrapper(data):
     # data["data"]
     # data["filters"]
     # data["link"]
-    print(data)
+    # print(data)
     if not data:
         return {
             "columns": [{"title": "提示信息", "dataIndex": "提示信息", "key": "提示信息"}],
