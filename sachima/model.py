@@ -5,7 +5,8 @@ import importlib
 from sachima.params import set_sql_params
 from sachima.log import logger
 from sachima.wrappers import timer
-from tqdm import tqdm
+
+# from tqdm import tqdm
 import io
 import time
 import logging
@@ -57,42 +58,46 @@ class Data:
             else:
                 sql = set_sql_params(str_sql, params)
 
-            start = time.time()
-            done = False
+            self.data = _get_df(sql, datatype, dataname)
 
-            def animate(log):
-                elapsed_time = 0
-                for c in itertools.cycle(["|", "/", "-", "\\"]):
-                    if done:
-                        break
-                    sys.stdout.write(
-                        "\r<{}> parsing sql {} {} ms".format(dataname, c, elapsed_time)
-                    )
-                    sys.stdout.flush()
-                    time.sleep(0.1)
-                    elapsed_time += 100
-                log("<{}> parsing elapsed time: {} ms".format(dataname, elapsed_time))
-                # sys.stdout.write("\r\n Done!     ")
 
-            t = threading.Thread(target=animate, args=(logger.info,))
-            t.daemon = True
-            t.start()
+def animate(dataname, log):
+    t = threading.currentThread()
+    elapsed_time = 0
+    for c in itertools.cycle(["|", "/", "-", "\\"]):
+        if getattr(t, "Done", True):
+            break
+        sys.stdout.write(
+            "\r<{}> parsing sql {} {} ms".format(dataname, c, elapsed_time)
+        )
+        sys.stdout.flush()
+        time.sleep(0.1)
+        elapsed_time += 100
 
-            # todo: try cache if sql get error still need to run done = True
-            try:
-                chunks = pd.read_sql(sql, datatype, chunksize=100)
-            finally:
-                done = True
+    log("<{}> parsing elapsed time: {} ms".format(dataname, elapsed_time))
+    # sys.stdout.write("\r\n Done!     ")
 
-            t.join()
-            df = pd.DataFrame()
-            logger.info("<{}> start loading data... ".format(dataname))
-            for chunk in tqdm(chunks, total=200):
-                df = pd.concat([df, chunk])
-            loading_data_elapsed_time = time.time() - start
-            logger.info(
-                "<{}> loading data elapsed time: {} seconds".format(
-                    dataname, loading_data_elapsed_time
-                )
-            )
-            self.data = df
+
+def _get_df(sql, datatype, dataname):
+    animate_thread = threading.Thread(target=animate, args=(dataname, logger.info,))
+    animate_thread.daemon = True
+    animate_thread.Done = False
+    animate_thread.start()
+
+    try:
+        df = pd.read_sql(sql, datatype)
+    finally:
+        animate_thread.Done = True  # no matter how break the animate loop
+    # logger.info("<{}> start loading data... ".format(dataname))
+
+    # start = time.time()
+    # # df = pd.concat(first + [chunk for chunk in tqdm(chunks, total=200)])
+    # loading_data_elapsed_time = time.time() - start
+
+    # logger.info(
+    #     "<{}> loading data elapsed time: {} seconds".format(
+    #         dataname, loading_data_elapsed_time
+    #     )
+    # )
+    return df
+
