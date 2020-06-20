@@ -37,7 +37,7 @@ def longest_common_substring(s1, s2):
                     x_longest = x
             else:
                 m[x][y] = 0
-    return s1[x_longest - longest : x_longest], x_longest
+    return s1[x_longest - longest: x_longest], x_longest
 
 
 def extract(df, p, *cols):
@@ -51,8 +51,8 @@ def extract(df, p, *cols):
         except KeyError:
             logger.info("params {} not exists get next...".format(c))
             theparam = None
-        except:
-            raise
+        except Exception ex:
+            raise ex
 
         logger.info("extract {} by {} : {}".format(type(df), c, str(theparam)))
         if theparam == "" or theparam is None or theparam == []:
