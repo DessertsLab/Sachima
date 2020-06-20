@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.6.19.1",
+    version="2020.6.20.1",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="A package for Data Analyst",
@@ -22,7 +22,7 @@ setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        # "aenum",
+        "aenum",
         # "pandas",
         # "Flask",
         # "nameko",
@@ -32,7 +32,7 @@ setup(
         # "impyla == 0.16.2",
         # "pymysql",
         # "SQLAlchemy",
-        "tqdm",
+        # "tqdm"
     ],
     include_package_data=True,
     package_data={"": ["*.css"]},
