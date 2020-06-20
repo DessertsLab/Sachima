@@ -17,11 +17,6 @@ class ReportsHandler(object):
             m = importlib.reload(m)
             # each handler should has run function
             res = m.run(data_in, params)
-            logger.info(
-                "HANDLER: {} RETURN TYPE: {} SIZE: {}".format(
-                    handler_str, type(res), len(res)
-                )
-            )
             if res is not None:
                 # the previous handler's result with push to next handler
                 data_in = [res]

@@ -43,13 +43,16 @@ class Data:
                 os.path.join(conf.get("PROJ_DIR"), "data", dataname)
             )
         elif datatype in ("api",):
-            api_cls = importlib.import_module("services." + dataname, package="..")
+            api_cls = importlib.import_module(
+                "services." + dataname, package=".."
+            )
             api = api_cls.Api()
             self.data = api.data
         else:
             # read sql file from ./sqls
             str_sql = open(
-                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname), encoding="utf-8",
+                os.path.join(conf.get("PROJ_DIR"), "sqls", dataname),
+                encoding="utf-8",
             ).read()
             sql = str_sql
             # pre process before sql loaded
@@ -79,7 +82,9 @@ def animate(dataname, log):
 
 
 def _get_df(sql, datatype, dataname):
-    animate_thread = threading.Thread(target=animate, args=(dataname, logger.info,))
+    animate_thread = threading.Thread(
+        target=animate, args=(dataname, logger.info)
+    )
     animate_thread.daemon = True
     animate_thread.Done = False
     animate_thread.start()
