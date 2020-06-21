@@ -37,7 +37,7 @@ Sachima | Better data analyst
 .. end-badges
 
 
-Sachima is a package for Data Analyst who wants to get capabilities of Data Engineer:
+Sachima is a package for Data Analyst:
 
 - Publishing your python codes as a http/rpc api.
 - Working with BI platform Superset.
