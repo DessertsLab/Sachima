@@ -43,12 +43,7 @@ def data_wrapper(data):
     if isinstance(df, pd.DataFrame):
         res["controls"] = [f.to_json(df) for f in filters]
         res["columns"] = [
-            {
-                "title": x,
-                "dataIndex": x,
-                "key": x,
-                "render": {"action": links[x]},
-            }
+            {"title": x, "dataIndex": x, "key": x, "render": {"action": links[x]},}
             if x in links
             else {"title": x, "dataIndex": x, "key": x}
             for x in df.columns
@@ -60,10 +55,7 @@ def data_wrapper(data):
         df = df.applymap(str)
         res["dataSource"] = json.loads(
             df.to_json(
-                orient="records",
-                date_format="iso",
-                date_unit="s",
-                force_ascii=False,
+                orient="records", date_format="iso", date_unit="s", force_ascii=False,
             )
         )
         # logger.debug("res dataSource lens: " + str(len(res["dataSource"])))
@@ -136,8 +128,7 @@ class Data(object):
     def writecache(self, name, value, conn=RedisClient().conn):
         logger.debug("writecache to: " + name)
         conn.rpush(
-            name,
-            json.dumps(value, indent=2, ensure_ascii=False).encode("utf-8"),
+            name, json.dumps(value, indent=2, ensure_ascii=False).encode("utf-8"),
         )
 
     @rpc
