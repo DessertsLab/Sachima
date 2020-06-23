@@ -37,7 +37,7 @@ def longest_common_substring(s1, s2):
                     x_longest = x
             else:
                 m[x][y] = 0
-    return s1[x_longest - longest: x_longest], x_longest
+    return s1[x_longest - longest : x_longest], x_longest
 
 
 def extract(df, p, *cols):
@@ -51,7 +51,7 @@ def extract(df, p, *cols):
         except KeyError:
             logger.info("params {} not exists get next...".format(c))
             theparam = None
-        except Exception ex:
+        except Exception as ex:
             raise ex
 
         logger.info("extract {} by {} : {}".format(type(df), c, str(theparam)))
@@ -107,10 +107,7 @@ class Tools:
         特殊字符替换处理函数, 在windows下这些字符无法在文件名中存在
         """
         return (
-            s.replace(",", " ")
-            .replace("<", "小于")
-            .replace(">", "大于")
-            .replace("*", "_")
+            s.replace(",", " ").replace("<", "小于").replace(">", "大于").replace("*", "_")
         )
 
     @classmethod
