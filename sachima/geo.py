@@ -60,27 +60,26 @@ def fetchQQLatLng(address):
         r = requests.get(url, params=values).json()
         print(r)
         time.sleep(0.2)
-        lat, lng = (
+        return (
             r.get("result").get("location").get("lat"),
             r.get("result").get("location").get("lng"),
+            r.get("result").get("title"),
+            r.get("result").get("ad_info").get("adcode"),
+            r.get("result").get("address_components").get("province"),
+            r.get("result").get("address_components").get("city"),
+            r.get("result").get("address_components").get("district"),
+            r.get("result").get("address_components").get("street"),
+            r.get("result").get("address_components").get("street_number"),
+            r.get("result").get("similarity"),
+            r.get("result").get("deviation"),
+            r.get("result").get("reliability"),
+            r.get("result").get("level"),
+            r.get("status"),
+            r.get("message"),
         )
-        return lat, lng
     except Exception as e:
         logger.info("fetchQQGeo for %s error: %s 发生异常！" % (address, e))
         raise e
-
-    # def geocoder(self, address, region='', ret_coordtype='', callback=''):
-    #     self.url = 'https://apis.map.qq.com/ws/geocoder/v1/'
-    #     self.values['address'] = address
-    #     self.values['region'] = region
-    #     self.values['ret_coordtype'] = ret_coordtype
-    #     self.values['callback'] = callback
-    #     try:
-    #         r = requests.get(self.url, params=self.values).json()
-    #         self.lat, self.lng = r['result']['location']['lat'], r['result']['location']['lng']
-    #         return self.lat, self.lng
-    #     except:
-    #         print('城市: %s 发生异常！' % (address,))
 
 
 def district(self):
