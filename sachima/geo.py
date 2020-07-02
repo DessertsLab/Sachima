@@ -9,6 +9,7 @@ from sachima import conf
 
 BAIDU_GEO_TOKEN = conf.get("BAIDU_GEO_TOKEN")
 QQ_GEO_TOKEN = conf.get("QQ_GEO_TOKEN")
+AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
 
 
 def fetchBaiduLatLng(address):
@@ -33,16 +34,15 @@ def fetchBaiduLatLng(address):
     values["address"] = address
     try:
         r = requests.get(url, params=values).json()
-        lat, lng, precise, confidence, comprehension, level, status = (
-            r.get("result").get("location").get("lat"),
-            r.get("result").get("location").get("lng"),
-            r.get("result").get("precise"),
-            r.get("result").get("confidence"),
-            r.get("result").get("comprehension"),
-            r.get("result").get("level"),
-            r.get("status"),
-        )
-        return lat, lng, precise, confidence, comprehension, level, status
+        return {
+            "baidu_lat": r.get("result").get("location").get("lat"),
+            "baidu_lng": r.get("result").get("location").get("lng"),
+            "baidu_precise": r.get("result").get("precise"),
+            "baidu_confidence": r.get("result").get("confidence"),
+            "baidu_comprehension": r.get("result").get("comprehension"),
+            "baidu_level": r.get("result").get("level"),
+            "baidu_status": r.get("status"),
+        }
     except Exception as e:
         logger.info("fetchBaiduGeo for %s error: %s 发生异常！" % (address, e))
         raise e
@@ -53,33 +53,72 @@ def fetchQQLatLng(address):
     利用qq map api从网上获取city的经纬度。
     https://lbs.qq.com/miniProgram/jsSdk/jsSdkGuide/methodGeocoder
     """
+    if QQ_GEO_TOKEN is None:
+        logger.info("error: Must config QQ_GEO_TOKEN in sachima_config.py")
+        raise "Must config QQ_GEO_TOKEN in sachima_config.py"
+
     values = {"key": QQ_GEO_TOKEN, "output": "json", "address": address}
 
     url = "https://apis.map.qq.com/ws/geocoder/v1/"
     try:
         r = requests.get(url, params=values).json()
-        print(r)
-        time.sleep(0.2)
-        return (
-            r.get("result").get("location").get("lat"),
-            r.get("result").get("location").get("lng"),
-            r.get("result").get("title"),
-            r.get("result").get("ad_info").get("adcode"),
-            r.get("result").get("address_components").get("province"),
-            r.get("result").get("address_components").get("city"),
-            r.get("result").get("address_components").get("district"),
-            r.get("result").get("address_components").get("street"),
-            r.get("result").get("address_components").get("street_number"),
-            r.get("result").get("similarity"),
-            r.get("result").get("deviation"),
-            r.get("result").get("reliability"),
-            r.get("result").get("level"),
-            r.get("status"),
-            r.get("message"),
-        )
+        return {
+            "qq_lat": r.get("result").get("location").get("lat"),
+            "qq_lng": r.get("result").get("location").get("lng"),
+            "qq_title": r.get("result").get("title"),
+            "qq_adcode": r.get("result").get("ad_info").get("adcode"),
+            "qq_province": r.get("result").get("address_components").get("province"),
+            "qq_city": r.get("result").get("address_components").get("city"),
+            "qq_district": r.get("result").get("address_components").get("district"),
+            "qq_street": r.get("result").get("address_components").get("street"),
+            "qq_street_number": r.get("result")
+            .get("address_components")
+            .get("street_number"),
+            "qq_similarity": r.get("result").get("similarity"),
+            "qq_deviation": r.get("result").get("deviation"),
+            "qq_reliability": r.get("result").get("reliability"),
+            "qq_level": r.get("result").get("level"),
+            "qq_status": r.get("status"),
+            "qq_message": r.get("message"),
+        }
     except Exception as e:
         logger.info("fetchQQGeo for %s error: %s 发生异常！" % (address, e))
         raise e
+
+
+def fetchAmapLatLng(address):
+    """
+    使用高德API
+    """
+    if AMAP_GEO_TOKEN is None:
+        logger.info("error: Must config AMAP_GEO_TOKEN in sachima_config.py")
+        raise "Must config AMAP_GEO_TOKEN in sachima_config.py"
+    par = {"address": address, "key": AMAP_GEO_TOKEN}
+    base = "http://restapi.amap.com/v3/geocode/geo"
+    r = requests.get(base, par).json()
+    logger.info(r)
+    geocodes = {}
+    GPS = [None, None]
+    if r.get("count") != "0":
+        geocodes = r.get("geocodes")[0]
+        GPS = geocodes.get("location").split(",")
+    return {
+        "amap_lat": GPS[1],
+        "amap_lng": GPS[0],
+        "amap_status": r.get("status"),
+        "amap_info": r.get("info"),
+        "amap_infocode": r.get("infocode"),
+        "amap_count": r.get("count"),
+        "amap_formatted_address": geocodes.get("formatted_address"),
+        "amap_country": geocodes.get("country"),
+        "amap_province": geocodes.get("province"),
+        "amap_citycode": geocodes.get("citycode"),
+        "amap_city": geocodes.get("city"),
+        "amap_adcode": geocodes.get("adcode"),
+        "amap_street": geocodes.get("street"),
+        "amap_number": geocodes.get("number"),
+        "amap_level": geocodes.get("level"),
+    }
 
 
 def district(self):
@@ -148,46 +187,3 @@ class ISO3166(object):
 #                     return response['result']['location']['lat'], response['result']['location']['lng']
 #                 else:
 #                     return 0,0
-
-if __name__ == "__main__":
-    print(fetchBaiduGeo("中山市东区中山三路1号之二"))
-    # geo = GeoQQ()
-    # # geo = GeoBaidu()
-    # # geo = GeoBaidu()、
-    # for i in range(1):
-    #     cityName = "安徽省阜阳市"
-    #     longitude, latitude = geo.geocoder(cityName)
-    #     print("%s \n经度：%f\n纬度：%f\n" % (cityName, longitude, latitude))
-    # # print(geo.district())
-
-    # # 异步调用例子
-    # users = 'asset/users.csv'
-    # df_users = pd.read_csv(users,encoding='utf-8',sep='>')
-    # df_users['address'] = df_users['current_address'].fillna(df_users['company_address'])
-    # # df_users[['longitude','latitude']] = df_users['address'].apply(lambda x: get_geo(x)).apply(pd.Series)
-    # # df_users['current_address'] = ''
-    # # df_users['company_address'] = ''
-    # tasks = [async_get_geo(addr) for addr in  df_users['address'][:5]]
-    # a = loop.run_until_complete(asyncio.gather(*tasks))
-    # print(a)
-    # # df_users.to_csv('asset/users_withgeo.csv')
-    # # get_geo('莆田市福建省莆田市荔城区镇海街道八二一南街185号')
-    # exit()
-
-
-# #使用高德API
-# def geocodeG(address):
-#     par = {'address': address, 'key': ''}
-#     base = 'http://restapi.amap.com/v3/geocode/geo'
-#     response = requests.get(base, par)
-#     answer = response.json()
-#     GPS=answer['geocodes'][0]['location'].split(",")
-#     return GPS[0],GPS[1]
-
-# #使用百度API
-# def geocodeB(address):
-#     base = url = "http://api.map.baidu.com/geocoder?address=" + address + "&output=json&key="
-#     response = requests.get(base)
-#     answer = response.json()
-#     return answer['result']['location']['lng'],answer['result']['location']['lat']
-
