@@ -16,10 +16,12 @@ AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
 
 
 # poi
-def poi(lat, lng, keywords, redius=1000):
+def poi(lat, lng, keywords, radius=1000):
     """
-    高德地图获取poi信息
+    高德地图获取poi信息 \n
+    https://lbs.amap.com/api/webservice/guide/api/search \n
     """
+    logger.info((lat, lng))
     if AMAP_GEO_TOKEN is None:
         logger.info("error: Must config AMAP_GEO_TOKEN in sachima_config.py")
         raise "Must config AMAP_GEO_TOKEN in sachima_config.py"
@@ -28,8 +30,9 @@ def poi(lat, lng, keywords, redius=1000):
     values = {
         "key": AMAP_GEO_TOKEN,
         "location": "{},{}".format(lng, lat),
-        "redius": redius,  # default one mile
         "keywords": keywords,
+        "types": "",
+        "radius": radius,  # default one mile
     }
     try:
         r = requests.get(url, values).json()
