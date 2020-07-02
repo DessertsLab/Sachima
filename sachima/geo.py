@@ -7,22 +7,69 @@ import time
 from sachima.log import logger
 from sachima import conf
 
+from PIL import Image
+from io import BytesIO
+
 BAIDU_GEO_TOKEN = conf.get("BAIDU_GEO_TOKEN")
 QQ_GEO_TOKEN = conf.get("QQ_GEO_TOKEN")
 AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
+
+
+# poi
+def poi(lat, lng, keywords, redius=1000):
+    """
+    高德地图获取poi信息
+    """
+    if AMAP_GEO_TOKEN is None:
+        logger.info("error: Must config AMAP_GEO_TOKEN in sachima_config.py")
+        raise "Must config AMAP_GEO_TOKEN in sachima_config.py"
+
+    url = "https://restapi.amap.com/v3/place/around"
+    values = {
+        "key": AMAP_GEO_TOKEN,
+        "location": "{},{}".format(lng, lat),
+        "redius": redius,  # default one mile
+        "keywords": keywords,
+    }
+    try:
+        r = requests.get(url, values).json()
+        logger.info(r)
+        return r
+    except Exception as e:
+        raise e
+
+
+def panorama(lat, lng):
+    """
+    全景信息查询
+    """
+    if BAIDU_GEO_TOKEN is None:
+        logger.info("error: Must config BAIDU_GEO_TOKEN in sachima_config.py")
+        raise "Must config BAIDU_GEO_TOKEN in sachima_config.py"
+
+    url = "http://api.map.baidu.com/panorama/v2"
+    values = {"ak": BAIDU_GEO_TOKEN, "fov": 180, "location": "{},{}".format(lng, lat)}
+    try:
+        logger.info("正在获取{},{}全景图片。。。".format(lat, lng))
+        r = requests.get(url, values).content
+        b = BytesIO()
+        b.write(r)
+        return Image.open(b)
+        # logger.info(r)
+    except Exception as e:
+        raise e
 
 
 def fetchBaiduLatLng(address):
     """
     利用baidu map api从网上获取city的经纬度。\n
     http://lbsyun.baidu.com/index.php?title=webapi \n
-    return lat, lng, precise, confidence, comprehension, level
     """
     if BAIDU_GEO_TOKEN is None:
         logger.info("error: Must config BAIDU_GEO_TOKEN in sachima_config.py")
         raise "Must config BAIDU_GEO_TOKEN in sachima_config.py"
     values = {
-        "address": "",
+        "address": address,
         "ret_coordtype": "",
         "ak": BAIDU_GEO_TOKEN,
         "sn": "",
@@ -31,7 +78,6 @@ def fetchBaiduLatLng(address):
         "callback": "",
     }
     url = "http://api.map.baidu.com/geocoder/v2/"
-    values["address"] = address
     try:
         r = requests.get(url, params=values).json()
         return {
@@ -96,7 +142,7 @@ def fetchAmapLatLng(address):
     par = {"address": address, "key": AMAP_GEO_TOKEN}
     base = "http://restapi.amap.com/v3/geocode/geo"
     r = requests.get(base, par).json()
-    logger.info(r)
+    # logger.info(r)
     geocodes = {}
     GPS = [None, None]
     if r.get("count") != "0":

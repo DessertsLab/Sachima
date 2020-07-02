@@ -84,12 +84,12 @@ def find(img_name):
     return im_r
 
 
-# 展示图像
-def showimg(img):
-    cv2.namedWindow("contours", 0)
-    # cv2.resizeWindow("contours", 1600, 1200);
-    cv2.imshow("contours", img)
-    cv2.waitKey()
+# # 展示图像
+# def showimg(img):
+#     cv2.namedWindow("contours", 0)
+#     # cv2.resizeWindow("contours", 1600, 1200);
+#     cv2.imshow("contours", img)
+#     cv2.waitKey()
 
 
 def ocr(imgname):
@@ -203,11 +203,11 @@ def find_object(crop_gray, crop_org, maskname, p1, p2):
     return cv2.UMat(result)
 
 
-# def showimg(img):
-#     cv2.namedWindow("contours", 0)
-#     cv2.resizeWindow("contours", 1280, 720)
-#     cv2.imshow("contours", img)
-#     cv2.waitKey()
+def showimg(img):
+    cv2.namedWindow("contours", 0)
+    cv2.resizeWindow("contours", 1280, 720)
+    cv2.imshow("contours", img)
+    cv2.waitKey()
 
 
 # psm model:
