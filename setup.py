@@ -13,6 +13,7 @@ setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/DessertsLab/Sachima",
     packages=find_packages(),
+    scripts=["sachima/bin/sachima"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.5",
