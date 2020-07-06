@@ -5,10 +5,10 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.7.5.3",
+    version="2020.7.6.1",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
-    description="A package for Data Analyst",
+    description="Better data analysis",
     long_description=long_description,
     long_description_content_type="text/x-rst",
     url="https://github.com/DessertsLab/Sachima",
