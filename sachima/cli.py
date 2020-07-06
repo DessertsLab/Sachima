@@ -36,11 +36,16 @@ Better Data Analysis                  version 2020.7.6.3
 
 
 @click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
-@click.option("--path", default="./", help="project path")
+@click.option("--path", default="./middleware", help="project path")
 @click.argument("middleware_name")
 def get(path, middleware_name):
-    click.echo("Get middleware from https://github.com/{} and save to {}".format(middleware_name, path))
-    # os.system("git clone https://github.com/{} middleware".format(middleware))
+    if not  os.path.isfile("./sachima_config.py"):
+        click.echo("Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init")
+        return
+    if not os.path.exists(path):
+        os.makedirs(path)
+    click.echo("Getting middleware from https://github.com/{} and save to {}".format(middleware_name, path))
+    os.system("git clone https://github.com/{} {}".format(middleware_name, os.path.join(path,middleware_name)))
 
 
 @click.command(help="Init a sachima project")
