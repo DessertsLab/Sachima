@@ -11,11 +11,13 @@ class ReportsHandler(object):
 
     def handle(self, model_in, params):
         data_in = model_in
-        for handler_str in self.handlers:
-            logger.info("Call handler: " + handler_str)
-            m = importlib.import_module("handler." + handler_str, handler_str)
-            m = importlib.reload(m)
-            # each handler should has run function
+        for handler in self.handlers:
+            logger.info("Call handler: " + handler)
+            m = handler
+            if isinstance(handler,str):
+                m = importlib.import_module("handler." + handler, handler)
+                m = importlib.reload(m)
+                # each handler should has run function
             res = m.run(data_in, params)
             if res is not None:
                 # the previous handler's result with push to next handler
