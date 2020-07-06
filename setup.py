@@ -24,6 +24,7 @@ setup(
     ],
     install_requires=[
         "aenum",
+        "click"
         # "pandas",
         # "Flask",
         # "nameko",
