@@ -8,6 +8,7 @@ import subprocess
 import pkg_resources
 
 sachima_version = pkg_resources.require("sachima")[0].version
+sys.path.insert(0, os.getcwd())
 
 COLORS = {
     "black": "\u001b[30;1m",
