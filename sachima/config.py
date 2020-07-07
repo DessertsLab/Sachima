@@ -55,7 +55,7 @@ try:
 
     print("Loading local config file: [{}]".format(sachima_config.__file__))
 except ImportError as error:
-    raise(error)
+    print("[There is no sachima_config.py. You're not in sachima project.]")
 
 
 try:
@@ -64,4 +64,4 @@ try:
 
     print("Loading cache_list file: [{}]".format(cache_list.__file__))
 except ImportError as error:
-    raise(error)
+    print("[There is no cache_list.py.]")
