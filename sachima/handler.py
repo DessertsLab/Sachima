@@ -12,7 +12,7 @@ class ReportsHandler(object):
     def handle(self, model_in, params):
         data_in = model_in
         for handler in self.handlers:
-            logger.info("Call handler: " + handler)
+            logger.info("Call handler: " + str(handler))
             m = handler
             if isinstance(handler,str):
                 m = importlib.import_module("handler." + handler, handler)

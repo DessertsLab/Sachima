@@ -3,6 +3,10 @@ import os
 import click
 import random
 
+import sys
+from sachima.sachima_http_server_flask import app
+import subprocess
+
 COLORS = {
     "black": "\u001b[30;1m",
     "red": "\u001b[31;1m",
@@ -29,7 +33,7 @@ ___  __ _  ___| |__  _ _ __ ___   __ _
 \__ \ (_| | (__| | | | | | | | | | (_| |
 |___/\__,_|\___|_| |_|_|_| |_| |_|\__,_|
 
-Better Data Analysis                  version 2020.7.6.3
+Better Data Analysis                  version 2020.7.7.1
 ********************************************************
     """
     click.echo(random.choice(list(COLORS.values())) + logo)
@@ -60,9 +64,73 @@ def start():
     # os.system("git clone https://github.com/{} middleware".format(middleware))
 
 
+
+def sync_waffle_and_sachima():
+    """
+    DessertsLab/Waffle is frontend for sachima dev env
+    pre download Waffle from github to the parent dir
+    or update Waffle and Sachima 
+    """
+    WAFFLE_DIR = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
+    )
+    if not os.path.exists(WAFFLE_DIR):
+        os.system(
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(
+                WAFFLE_DIR
+            )
+        )
+        os.system("npm install --prefix {}".format(WAFFLE_DIR))
+        # 更新sachima到最新版本
+        os.system("pip install -U --no-cache-dir sachima")
+    else:
+        os.system(
+            "git -C {0} pull origin master".format(
+                os.path.join(
+                    os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
+                )
+            )
+        )
+        os.system("pip install -U --no-cache-dir sachima")
+
+def start_sachima():
+    sys.dont_write_bytecode = True
+    app.run(host="0.0.0.0", port=80, debug=True)
+
+
+@click.command(help="Run sachima dev server Waffle")
+def run():
+    if not  os.path.isfile("./sachima_config.py"):
+        click.echo("Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init")
+        return
+    sync_waffle_and_sachima()
+
+    # --prefix means start npm in a different directory
+    cmd_line = "npm start --prefix {0}".format(
+        os.path.join(
+            os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
+        )
+    )
+
+    w = subprocess.Popen(
+        cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+
+    s = subprocess.Popen(
+        start_sachima(),
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+
+    w.wait()
+    s.wait()
+
+
 sachima.add_command(get)
 sachima.add_command(init)
 sachima.add_command(start)
+sachima.add_command(run)
 
 
 if __name__ == "__main__":
