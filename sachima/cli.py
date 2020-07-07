@@ -47,7 +47,7 @@ Better Data Analysis                  version {}
 
 
 def is_in_sachima_project():
-    if not os.path.isfile(os.path.join(os.getcwd(), "./sachima_config.py")):
+    if os.path.isfile(os.path.join(os.getcwd(), "./sachima_config.py")):
         click.echo(
             "Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init"
         )
@@ -149,6 +149,7 @@ sachima.add_command(get)
 sachima.add_command(init)
 sachima.add_command(start)
 sachima.add_command(run)
+sachima.add_command(version)
 
 
 if __name__ == "__main__":
