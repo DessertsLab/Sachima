@@ -6,6 +6,9 @@ import random
 import sys
 from sachima.sachima_http_server_flask import app
 import subprocess
+import pkg_resources
+
+sachima_version = pkg_resources.require("sachima")[0].version
 
 COLORS = {
     "black": "\u001b[30;1m",
@@ -21,6 +24,8 @@ COLORS = {
     # "cyan-background":"\u001b[46;1m",
 }
 
+# sachima_config_file =
+
 
 @click.group()
 def sachima():
@@ -33,23 +38,48 @@ ___  __ _  ___| |__  _ _ __ ___   __ _
 \__ \ (_| | (__| | | | | | | | | | (_| |
 |___/\__,_|\___|_| |_|_|_| |_| |_|\__,_|
 
-Better Data Analysis                  version 2020.7.7.1
+Better Data Analysis                  version {} 
 ********************************************************
-    """
+    """.format(
+        sachima_version
+    )
     click.echo(random.choice(list(COLORS.values())) + logo)
 
 
+def is_in_sachima_project():
+    if not os.path.isfile(os.path.join(os.getcwd(), "./sachima_config.py")):
+        click.echo(
+            "Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init"
+        )
+        return True
+    return False
+
+
+@click.command(help="Print sachima version")
+def version():
+    click.echo(sachima_version)
+
+
 @click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
-@click.option("--path", default="./middleware", help="project path")
+@click.option(
+    "--path", default=os.path.join(os.getcwd(), "/middleware"), help="project path"
+)
 @click.argument("middleware_name")
 def get(path, middleware_name):
-    if not  os.path.isfile("./sachima_config.py"):
-        click.echo("Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init")
+    if not is_in_sachima_project():
         return
     if not os.path.exists(path):
         os.makedirs(path)
-    click.echo("Getting middleware from https://github.com/{} and save to {}".format(middleware_name, path))
-    os.system("git clone https://github.com/{} {}".format(middleware_name, os.path.join(path,middleware_name)))
+    click.echo(
+        "Getting middleware from https://github.com/{} and save to {}".format(
+            middleware_name, path
+        )
+    )
+    os.system(
+        "git clone https://github.com/{} {}".format(
+            middleware_name, os.path.join(path, middleware_name)
+        )
+    )
 
 
 @click.command(help="Init a sachima project")
@@ -64,7 +94,6 @@ def start():
     # os.system("git clone https://github.com/{} middleware".format(middleware))
 
 
-
 def sync_waffle_and_sachima():
     """
     DessertsLab/Waffle is frontend for sachima dev env
@@ -72,26 +101,21 @@ def sync_waffle_and_sachima():
     or update Waffle and Sachima 
     """
     WAFFLE_DIR = os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
+        os.getcwd(),
+        "..",
+        "Waffle",
     )
     if not os.path.exists(WAFFLE_DIR):
         os.system(
-            "git clone https://github.com/DessertsLab/Waffle.git {}".format(
-                WAFFLE_DIR
-            )
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
         )
         os.system("npm install --prefix {}".format(WAFFLE_DIR))
         # 更新sachima到最新版本
         os.system("pip install -U --no-cache-dir sachima")
     else:
-        os.system(
-            "git -C {0} pull origin master".format(
-                os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
-                )
-            )
-        )
+        os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
         os.system("pip install -U --no-cache-dir sachima")
+
 
 def start_sachima():
     sys.dont_write_bytecode = True
@@ -100,16 +124,13 @@ def start_sachima():
 
 @click.command(help="Run sachima dev server Waffle")
 def run():
-    if not  os.path.isfile("./sachima_config.py"):
-        click.echo("Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init")
+    if not is_in_sachima_project():
         return
     sync_waffle_and_sachima()
 
     # --prefix means start npm in a different directory
     cmd_line = "npm start --prefix {0}".format(
-        os.path.join(
-            os.path.dirname(os.path.realpath(__file__)), "..", "Waffle"
-        )
+        os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "Waffle")
     )
 
     w = subprocess.Popen(
@@ -117,10 +138,7 @@ def run():
     )
 
     s = subprocess.Popen(
-        start_sachima(),
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
 
     w.wait()
