@@ -48,10 +48,11 @@ Better Data Analysis                  version {}
 
 def is_in_sachima_project():
     if os.path.isfile(os.path.join(os.getcwd(), "./sachima_config.py")):
-        click.echo(
-            "Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init"
-        )
         return True
+
+    click.echo(
+        "Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init"
+    )
     return False
 
 
@@ -110,11 +111,8 @@ def sync_waffle_and_sachima():
             "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
         )
         os.system("npm install --prefix {}".format(WAFFLE_DIR))
-        # 更新sachima到最新版本
-        os.system("pip install -U --no-cache-dir sachima")
     else:
         os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
-        os.system("pip install -U --no-cache-dir sachima")
 
 
 def start_sachima():
