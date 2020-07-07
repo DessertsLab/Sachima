@@ -2,7 +2,7 @@
     :alt: Sachima | LOGO
 
 
-Sachima | Better data analyst 
+Sachima | Better data analysis 
 ==============================
 
 .. start-badges
