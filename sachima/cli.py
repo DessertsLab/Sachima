@@ -4,7 +4,6 @@ import click
 import random
 
 import sys
-from sachima.sachima_http_server_flask import app
 import subprocess
 import pkg_resources
 
@@ -24,7 +23,7 @@ COLORS = {
     # "cyan-background":"\u001b[46;1m",
 }
 
-# sachima_config_file =
+WAFFLE_DIR = os.path.join(os.getcwd(), "..", "Waffle",)
 
 
 @click.group()
@@ -63,7 +62,7 @@ def version():
 
 @click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
 @click.option(
-    "--path", default=os.path.join(os.getcwd(), "/middleware"), help="project path"
+    "--path", default=os.path.join(os.getcwd(), "middleware"), help="project path"
 )
 @click.argument("middleware_name")
 def get(path, middleware_name):
@@ -95,17 +94,12 @@ def start():
     # os.system("git clone https://github.com/{} middleware".format(middleware))
 
 
-def sync_waffle_and_sachima():
+def sync_waffle():
     """
     DessertsLab/Waffle is frontend for sachima dev env
     pre download Waffle from github to the parent dir
-    or update Waffle and Sachima 
+    or update Waffle 
     """
-    WAFFLE_DIR = os.path.join(
-        os.getcwd(),
-        "..",
-        "Waffle",
-    )
     if not os.path.exists(WAFFLE_DIR):
         os.system(
             "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
@@ -116,29 +110,28 @@ def sync_waffle_and_sachima():
 
 
 def start_sachima():
+    from sachima.sachima_http_server_flask import app
+    sys.path.insert(0, os.getcwd())
     sys.dont_write_bytecode = True
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host="0.0.0.0", port=80)
 
 
 @click.command(help="Run sachima dev server Waffle")
 def run():
     if not is_in_sachima_project():
         return
-    sync_waffle_and_sachima()
-
+    sync_waffle()
+    print("-" * 80)
+    print(WAFFLE_DIR)
+    print("-" * 80)
     # --prefix means start npm in a different directory
-    cmd_line = "npm start --prefix {0}".format(
-        os.path.join(os.path.dirname(os.path.realpath(__file__)), "..", "Waffle")
-    )
-
+    cmd_line = "npm start --prefix {0}".format(WAFFLE_DIR)
     w = subprocess.Popen(
         cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
-
     s = subprocess.Popen(
         start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
-
     w.wait()
     s.wait()
 

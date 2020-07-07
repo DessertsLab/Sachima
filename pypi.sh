@@ -8,7 +8,7 @@ python3 -m twine upload dist/*
 
 
 
-git tag -a 2020.7.7.4 -m '2020.7.7.4'
+git tag -a 2020.7.7.5 -m '2020.7.7.5'
 git push origin --tags
 
 # remove remote tag
