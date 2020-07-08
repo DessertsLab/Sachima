@@ -52,7 +52,7 @@ def data_wrapper(data):
         #     res["columns"][colname]["render"] = {
         #         "action": "http://www.baidu.com/s?wd="
         #     }
-        df = df.applymap(str)
+        # df = df.applymap(str)
         res["dataSource"] = json.loads(
             df.to_json(
                 orient="records", date_format="iso", date_unit="s", force_ascii=False,
