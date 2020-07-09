@@ -24,8 +24,8 @@ COLORS = {
     # "cyan-background":"\u001b[46;1m",
 }
 
-CURRENT_DIR = os. getcwd()
-WAFFLE_DIR = os.path.join(CURRENT_DIR, "..", "Waffle",)
+CURRENT_DIR = os.getcwd()
+WAFFLE_DIR = os.path.join(CURRENT_DIR, "..", "Waffle")
 
 
 @click.group()
@@ -62,9 +62,13 @@ def version():
     click.echo(sachima_version)
 
 
-@click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
+@click.command(
+    help="Get sachima middleware from github : get DessertsLab/pivot_table"
+)
 @click.option(
-    "--path", default=os.path.join(os.getcwd(), "middleware"), help="project path"
+    "--path",
+    default=os.path.join(os.getcwd(), "middleware"),
+    help="project path",
 )
 @click.argument("middleware_name")
 def get(path, middleware_name):
@@ -105,29 +109,34 @@ def sync_waffle():
     if not os.path.exists(WAFFLE_DIR):
         click.echo("Cloneing  DessertsLab/Waffle...")
         os.system(
-            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(
+                WAFFLE_DIR
+            )
         )
         click.echo("Installing  DessertsLab/Waffle...")
 
-        os.system("cd {}".format(WAFFLE_DIR))
+        # os.system("cd {}".format(WAFFLE_DIR))
+        os.chdir(WAFFLE_DIR)
         os.system("npm install")
-        os.system("cd {}".format(CURRENT_DIR))
+        # os.system("cd {}".format(CURRENT_DIR))
         # os.system("npm install --prefix {}".format(WAFFLE_DIR))
     else:
         click.echo("Pulling  DessertsLab/Waffle...")
         os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
         click.echo("Installing  DessertsLab/Waffle...")
-        os.system("cd {}".format(WAFFLE_DIR))
+        os.chdir(WAFFLE_DIR)
         os.system("npm install")
-        os.system("cd {}".format(CURRENT_DIR))
+        # click.echo("cd {}".format(CURRENT_DIR))
+        # os.system("cd {}".format(CURRENT_DIR))
         # os.system("npm install --prefix {}".format(WAFFLE_DIR))
 
 
 def start_sachima():
     from sachima.sachima_http_server_flask import app
+
     sys.path.insert(0, os.getcwd())
     sys.dont_write_bytecode = True
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host="0.0.0.0", port=80, debug=False)
 
 
 @click.command(help="Run sachima dev server Waffle")
@@ -144,7 +153,10 @@ def run():
         cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
     s = subprocess.Popen(
-        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        start_sachima(),
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
     )
     w.wait()
     s.wait()
