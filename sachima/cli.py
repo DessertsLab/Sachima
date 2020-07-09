@@ -91,13 +91,11 @@ def get(path, middleware_name):
 @click.command(help="Init a sachima project")
 def init():
     click.echo("get something")
-    # os.system("git clone https://github.com/{} middleware".format(middleware))
 
 
 @click.command(help="Start sachima server")
 def start():
     click.echo("start sachima server")
-    # os.system("git clone https://github.com/{} middleware".format(middleware))
 
 
 def sync_waffle():

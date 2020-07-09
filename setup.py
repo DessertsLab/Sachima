@@ -38,9 +38,5 @@ setup(
     include_package_data=True,
     package_data={"": ["*.css"]},
     # scripts=["sachima/bin/sachima"],
-    entry_points={
-        'console_scripts':[
-            'sachima = sachima.cli:sachima',
-        ]
-    }
+    entry_points={"console_scripts": ["sachima = sachima.cli:sachima"]},
 )
