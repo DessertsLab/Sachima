@@ -36,11 +36,11 @@ class Data:
         logger.info("=" * 12 + " " + title + " " + "=" * 12)
         if datatype in ("xls", "xlsx"):
             self.data = pd.read_excel(
-                os.path.join(conf.get("PROJ_DIR"), "data", dataname)
+                os.path.join(conf.get("PROJ_DIR"), dataname)
             )
         elif datatype in ("csv", "txt"):
             self.data = pd.read_csv(
-                os.path.join(conf.get("PROJ_DIR"), "data", dataname)
+                os.path.join(conf.get("PROJ_DIR"), dataname)
             )
         elif datatype in ("api",):
             api_cls = importlib.import_module(
@@ -71,13 +71,14 @@ def animate(dataname, log):
         if getattr(t, "Done", True):
             break
         sys.stdout.write(
-            "\r<{}> parsing sql {} {} ms".format(dataname, c, elapsed_time)
+            "\r<{}> running {} {} ms\r".format(dataname, c, elapsed_time)
         )
         sys.stdout.flush()
         time.sleep(0.1)
         elapsed_time += 100
 
-    log("<{}> parsing elapsed time: {} ms".format(dataname, elapsed_time))
+    # log("<{}> parsing elapsed time: {} ms".format(dataname, elapsed_time))
+    log("\r")
     # sys.stdout.write("\r\n Done!     ")
 
 
@@ -89,15 +90,18 @@ def _get_df(sql, datatype, dataname):
     animate_thread.Done = False
     animate_thread.start()
 
-    try:
-        df = pd.read_sql(sql, datatype)
-    finally:
-        animate_thread.Done = True  # no matter how break the animate loop
+    # try:
+    start = time.time()
+    df = pd.read_sql(sql, datatype)
+    consumed_time = time.time() - start
+
+    logger.info("<{}> time: {} secs".format(dataname, consumed_time))
+    animate_thread.Done = True  # no matter how break the animate loop
+    # finally:
+    # animate_thread.Done = True  # no matter how break the animate loop
     # logger.info("<{}> start loading data... ".format(dataname))
 
-    # start = time.time()
     # # df = pd.concat(first + [chunk for chunk in tqdm(chunks, total=200)])
-    # loading_data_elapsed_time = time.time() - start
 
     # logger.info(
     #     "<{}> loading data elapsed time: {} seconds".format(

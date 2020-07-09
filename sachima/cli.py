@@ -139,11 +139,19 @@ def start_sachima():
     app.run(host="0.0.0.0", port=80, debug=False)
 
 
-@click.command(help="Run sachima dev server Waffle")
+@click.command(help="Update sachima")
+def update():
+    click.echo("Updating sachima...")
+    os.system("pip3 install -U sachima")
+    click.echo("Updating waffle...")
+    sync_waffle()
+
+
+@click.command(help="Run sachima dev server with Waffle")
 def run():
     if not is_in_sachima_project():
         return
-    sync_waffle()
+    # sync_waffle()
     print("-" * 80)
     print(WAFFLE_DIR)
     print("-" * 80)
@@ -167,6 +175,7 @@ sachima.add_command(init)
 sachima.add_command(start)
 sachima.add_command(run)
 sachima.add_command(version)
+sachima.add_command(update)
 
 
 if __name__ == "__main__":
