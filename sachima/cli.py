@@ -24,7 +24,8 @@ COLORS = {
     # "cyan-background":"\u001b[46;1m",
 }
 
-WAFFLE_DIR = os.path.join(os.getcwd(), "..", "Waffle",)
+CURRENT_DIR = os. getcwd()
+WAFFLE_DIR = os.path.join(CURRENT_DIR, "..", "Waffle",)
 
 
 @click.group()
@@ -107,12 +108,19 @@ def sync_waffle():
             "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
         )
         click.echo("Installing  DessertsLab/Waffle...")
-        os.system("npm install --prefix {}".format(WAFFLE_DIR))
+
+        os.system("cd {}".format(WAFFLE_DIR))
+        os.system("npm install")
+        os.system("cd {}".format(CURRENT_DIR))
+        # os.system("npm install --prefix {}".format(WAFFLE_DIR))
     else:
         click.echo("Pulling  DessertsLab/Waffle...")
         os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
         click.echo("Installing  DessertsLab/Waffle...")
-        os.system("npm install --prefix {}".format(WAFFLE_DIR))
+        os.system("cd {}".format(WAFFLE_DIR))
+        os.system("npm install")
+        os.system("cd {}".format(CURRENT_DIR))
+        # os.system("npm install --prefix {}".format(WAFFLE_DIR))
 
 
 def start_sachima():
