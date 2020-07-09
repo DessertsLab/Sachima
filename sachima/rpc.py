@@ -39,6 +39,7 @@ def data_wrapper(data):
     df = data["data"][0]
     filters = data["filters"]
     links = data.get("links", {})
+    vis = data.get("vis")
 
     if isinstance(df, pd.DataFrame):
         res["controls"] = [f.to_json(df) for f in filters]
@@ -58,6 +59,7 @@ def data_wrapper(data):
                 orient="records", date_format="iso", date_unit="s", force_ascii=False,
             )
         )
+        res["vis"] = vis
         # logger.debug("res dataSource lens: " + str(len(res["dataSource"])))
         return res
     else:

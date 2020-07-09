@@ -45,5 +45,6 @@ def run(user_params, api_params):
     data = handler.handle(data_in, params)
     filters = user_params["filters"]
     links = user_params.get("links", {})
+    vis = user_params.get("vis")
 
-    return {"data": data, "filters": filters, "links": links}
+    return {"data": data, "filters": filters, "links": links, "vis": vis}
