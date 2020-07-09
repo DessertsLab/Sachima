@@ -102,12 +102,17 @@ def sync_waffle():
     or update Waffle 
     """
     if not os.path.exists(WAFFLE_DIR):
+        click.echo("Cloneing  DessertsLab/Waffle...")
         os.system(
             "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
         )
+        click.echo("Installing  DessertsLab/Waffle...")
         os.system("npm install --prefix {}".format(WAFFLE_DIR))
     else:
+        click.echo("Pulling  DessertsLab/Waffle...")
         os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
+        click.echo("Installing  DessertsLab/Waffle...")
+        os.system("npm install --prefix {}".format(WAFFLE_DIR))
 
 
 def start_sachima():
