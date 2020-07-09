@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.7.9.1",
+    version="2020.7.9.2",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="Better data analysis",
@@ -13,7 +13,6 @@ setup(
     long_description_content_type="text/x-rst",
     url="https://github.com/DessertsLab/Sachima",
     packages=find_packages(),
-    scripts=["sachima/bin/sachima"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3.5",
@@ -38,4 +37,10 @@ setup(
     ],
     include_package_data=True,
     package_data={"": ["*.css"]},
+    # scripts=["sachima/bin/sachima"],
+    entry_points={
+        'console_scripts':[
+            'sachima = sachima.cli:sachima',
+        ]
+    }
 )
