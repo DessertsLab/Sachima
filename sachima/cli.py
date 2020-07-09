@@ -127,7 +127,7 @@ def start_sachima():
     from sachima.sachima_http_server_flask import app
     sys.path.insert(0, os.getcwd())
     sys.dont_write_bytecode = True
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=80, debug=True)
 
 
 @click.command(help="Run sachima dev server Waffle")

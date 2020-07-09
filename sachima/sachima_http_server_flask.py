@@ -10,6 +10,8 @@ app = Flask(__name__)
 
 
 def sachima_rpc_reports(req, local=True):
+    print("*"*80)
+    print(req.json)
     d = Data()
     res = d.get_report(req.json)
 
@@ -25,6 +27,6 @@ def sachima_rpc_reports(req, local=True):
 
 @app.route("/reports", methods=["POST"])
 def sachima():
-    print(request.json)
+    # print(request.json)
     return jsonify(sachima_rpc_reports(request))
 
