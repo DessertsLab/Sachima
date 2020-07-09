@@ -11,6 +11,7 @@ app = Sanic()
 CONFIG = conf.get("BROKER")
 
 
+# TODO: separate local and server mode  local no depends on nameko and redis
 def sachima_rpc_reports(req, local=True):
     if local is not True:
         with ClusterRpcProxy(CONFIG) as rpc:
