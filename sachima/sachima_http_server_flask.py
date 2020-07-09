@@ -10,13 +10,10 @@ app = Flask(__name__)
 
 
 def sachima_rpc_reports(req, local=True):
-    if local is not True:
-        with ClusterRpcProxy(CONFIG) as rpc:
-            res = rpc.data.get_report(req.json)
-    else:
-        d = Data()
-        res = d.get_report(req.json)
+    d = Data()
+    res = d.get_report(req.json)
 
+    # TODO: is Waffle call me twice? improve it
     if req.json.get("dataonly") == "True":
         return {
             "dataSource": res.get("dataSource", []),
