@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.7.9.5",
+    version="2020.7.10.1",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="Better data analysis",
@@ -26,7 +26,7 @@ setup(
         "click",
         # "pandas",
         "Flask",
-        "nameko",
+        # "nameko",
         "redis",
         # "cython >= 0.29.6",
         # "thriftpy >= 0.3.9",
