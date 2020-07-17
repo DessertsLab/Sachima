@@ -5,7 +5,7 @@ with open("README.rst", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.7.10.1",
+    version="2020.7.17.1",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="Better data analysis",
