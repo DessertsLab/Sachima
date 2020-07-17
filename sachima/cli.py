@@ -52,7 +52,7 @@ def is_in_sachima_project():
         return True
 
     click.echo(
-        "Your should cd into your sachima project before getting middleware. Maybe you want to create your project first by running sachima init"
+        "You should cd into your sachima project. Maybe you want to create your project first by running sachima init"
     )
     return False
 
