@@ -90,15 +90,16 @@ def _get_df(sql, datatype, dataname):
     animate_thread.Done = False
     animate_thread.start()
 
-    # try:
-    start = time.time()
-    df = pd.read_sql(sql, datatype)
-    consumed_time = time.time() - start
+    try:
+        start = time.time()
+        df = pd.read_sql(sql, datatype)
+        consumed_time = time.time() - start
 
-    logger.info("<{}> time: {} secs".format(dataname, consumed_time))
-    animate_thread.Done = True  # no matter how break the animate loop
-    # finally:
-    # animate_thread.Done = True  # no matter how break the animate loop
+        logger.info("<{}> time: {} secs".format(dataname, consumed_time))
+    except Exception as e:
+        raise e
+    finally:
+        animate_thread.Done = True  # no matter how break the animate loop
     # logger.info("<{}> start loading data... ".format(dataname))
 
     # # df = pd.concat(first + [chunk for chunk in tqdm(chunks, total=200)])
