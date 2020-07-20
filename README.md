@@ -33,53 +33,51 @@ Features
 Getting Started
 -----------------------------------
 First you should have [python](https://www.python.org/downloads/) and [nodejs](https://nodejs.org/en/download/) installed
+If you already had a python env and you need a separate environment to run Sachima, you should install [virtualenv](https://pypi.org/project/virtualenv/)
 
-you should check your installation by
+Check your installation by run this in command line
 
 ``` shell 
-python3 -V
+python -V
 ```
 
-> Python 3.7.2
+``` shell 
+node -v
+```
+> Sometime you need change python to python3 and pip to pip3.
 
-``node -v``
+Install sachima by pip
 
-.. code::
+``` python
+pip install -U sachima
+```
 
-    v11.6.0
+Check sachima version
+``` shell
+sachima version
+```
 
+Cd into your working dir and init Sachima project with example
+``` shell
+sachima init
+```
 
+Update Sachima to latest version and get latest Waffle which is a Sachima frontend development tool.
+``` shell
+sachima update
+```
 
-
-then you will need a separate environment to run Sachima, cd to your working dir and run commands
-``pip3 install virtualenv``
-
-``mkdir sachima_start``
-
-``python3 -m venv sachima_start/venv``
-
-``source sachima_start/venv/bin/activate``
-
-``pip3 install sachima``
-
-``sachima init```
-
-``sachima run``
-
-...
-
-
-``deactivate``
+Run Sachima dev tools
+``` shell
+sachima run
+```
+This will start your sachima dev server and display data in Browser. If you had any problem rerun the last step or ask in [Sachima github issues](https://github.com/DessertsLab/Sachima/issues).
 
 
-
-Installation
+Working with BI platform
 -----------------------------------
-``pip3 install sachima``
 
-
-Working with superset
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+### Working with superset
 
 - git clone https://github.com/pphszx/incubator-superset.git
 - git checkout pp_feat_apitable_0.29_new
@@ -109,7 +107,7 @@ Working with superset
 
 - create file  ./venv/bin/superset_config.py
 
-.. code:: json
+``` json
 
     APP_NAME = 'My App'
 
@@ -118,6 +116,7 @@ Working with superset
         'RESTFUL': 'http://0.0.0.0:8008/reports',
         'GRPC': '0.0.0.0:50051',
     }
+```
 
 
 - cd superset
@@ -125,5 +124,6 @@ Working with superset
 - open browser http://127.0.0.1:8088/login/
 - ref:https://github.com/apache/incubator-superset/blob/master/CONTRIBUTING.md#flask-server
 
+### Working with schima-ui(WIP)
 
 
