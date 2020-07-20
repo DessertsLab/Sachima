@@ -21,14 +21,13 @@ You can use Sachima together with [Superset](https://github.com/apache/incubator
 
 Features
 ------------------------------------
-
 |feature|screen casts|description|
 |----|----|----|
 |api||Publishing your python codes as a http/rpc api.|
 |BI platform intergration||Working with BI platform Superset.|
 |Message Sending||Sending your data reports to email or sns.|
-|Data Visulization||Working with GrassJelly which is a Data Visulization project.
-|command line||Command line tools.|
+|Data Visulization|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)|Visulize your data.
+|command line|![image](https://user-images.githubusercontent.com/7627381/87915185-5d7ad600-caa4-11ea-9c03-4847b8a1d1a1.png)![image](https://user-images.githubusercontent.com/7627381/87915290-8c914780-caa4-11ea-8bf7-da54ad63d6b8.png)|Command line tools.|
 
 Getting Started
 -----------------------------------
