@@ -16,8 +16,8 @@ You can use Sachima together with [Superset](https://github.com/apache/incubator
 [![github code size](https://img.shields.io/github/languages/code-size/DessertsLab/Sachima?color=pink&style=flat-square)]()
 [![code style](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/ambv/black)
 [![commit activity](https://img.shields.io/github/commit-activity/w/DessertsLab/Sachima?style=flat-square)](https://github.com/DessertsLab/Sachima/pulse)
-[![doc](https://readthedocs.org/projects/sachima/badge/?version=latest&style=flat-square)](http://sachima.readthedocs.io/en/latest/?badge=latest)
-[![latest](https://img.shields.io/pypi/v/sachima.svg?style=flat-square&logo=python&color=green)](https://pypi.python.org/pypi/sachima/)
+[![doc](https://readthedocs.org/projects/sachima/badge/?version=latest&style=flat-square&color=ff69b4)](http://sachima.readthedocs.io/en/latest/?badge=latest)
+[![latest](https://img.shields.io/pypi/v/sachima.svg?style=flat-square&logo=python)](https://pypi.python.org/pypi/sachima/)
 
 
 Sachima is a package for Data Analyst:
