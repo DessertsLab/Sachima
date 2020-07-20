@@ -1,13 +1,11 @@
 [English](https://github.com/DessertsLab/Sachima/blob/master/README.md)｜[中文简体](https://github.com/DessertsLab/Sachima/blob/master/doc/README_CN.md)｜[中文繁體](https://github.com/DessertsLab/Sachima/blob/master/doc/README_TC.md)
 
 # Sachima
+Sachima是一个灵活的用于开发数据驱动应用的框架。它基于MIT开源协议，所有的代码均由python实现。我们创建它的最初目的是因为数据需求变化太快太频繁，因此需要一个可以让数据分析师修改的逻辑直接上线和可视化的工具。
 
-Sachima is a flexiable framework for data-driven apps. It's a MIT licensed open source project written in python. We creates it because our data-driven requirments changes frequently, and we need data analyst having the ability to change online api and data visulization.
+Sachima拥有非常美观的洁面和智能的数据分析功能。
 
-Sachima helps you build apps that looks great and intelligently.
-
-You can use Sachima together with [Superset](https://github.com/apache/incubator-superset), or with [sachima-ui](https://github.com/nocmk2/sachima-ui).
-
+你可以选择把Sachima和BI平台[Superset](https://github.com/apache/incubator-superset)或者[sachima-ui](https://github.com/nocmk2/sachima-ui)整合使用。或者使用它生成的api，开发自己的ui。
 
 [![build status](https://img.shields.io/travis/DessertsLab/Sachima/master.svg?style=flat-square&logo=travis)](https://travis-ci.com/DessertsLab/Sachima)
 [![dependencies](https://img.shields.io/librariesio/github/DessertsLab/Sachima?style=flat-square)](https://libraries.io/search?q=sachima)
@@ -19,9 +17,9 @@ You can use Sachima together with [Superset](https://github.com/apache/incubator
 [![latest](https://img.shields.io/pypi/v/sachima.svg?style=flat-square&logo=python)](https://pypi.python.org/pypi/sachima/)
 
 
-Features
+特性列表
 ------------------------------------
-|feature|screen casts|description|
+|特性|预览|描述|
 |----|----|----|
 |api||Publishing your python codes as a http/rpc api.|
 |BI platform intergration|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|Working with BI platform Superset.|
