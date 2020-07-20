@@ -2,9 +2,9 @@
 
 # Sachima
 
-Sachima is a flexiable framework for data-driven apps. 
+Sachima is a flexiable framework for data-driven apps. It's a MIT licensed open source project written in python. We creates it because our data-driven requirments changes frequently, and we need data analyst having the ability to change online api and data visulization.
 
-It helps you build apps that looks great and intelligently.
+Sachima helps you build apps that looks great and intelligently.
 
 You can use Sachima together with [Superset](https://github.com/apache/incubator-superset), or with [sachima-ui](https://github.com/nocmk2/sachima-ui).
 
