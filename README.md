@@ -1,6 +1,13 @@
+[English](https://github.com/DessertsLab/Sachima/blob/master/README.md)｜[中文简体](https://github.com/DessertsLab/Sachima/blob/master/README_CN.md)｜[中文繁體](https://github.com/DessertsLab/Sachima/blob/master/README_TC.md)
+
 # Sachima
 
-[English](https://github.com/DessertsLab/Sachima/blob/master/README.md)｜[中文简体](https://github.com/DessertsLab/Sachima/blob/master/README_CN.md)｜[中文繁體](https://github.com/DessertsLab/Sachima/blob/master/README_TC.md)
+Sachima is a flexiable framework for data-driven apps. 
+
+It helps you build apps that looks great and intelligently.
+
+You can use Sachima together with [Superset](https://github.com/apache/incubator-superset), or with [sachima-ui](https://github.com/nocmk2/sachima-ui).
+
 
 [![build status](https://img.shields.io/travis/DessertsLab/Sachima/master.svg?style=flat-square&logo=travis)](https://travis-ci.com/DessertsLab/Sachima)
 [![dependencies](https://img.shields.io/librariesio/github/DessertsLab/Sachima?style=flat-square)](https://libraries.io/search?q=sachima)
@@ -10,20 +17,6 @@
 [![commit activity](https://img.shields.io/github/commit-activity/w/DessertsLab/Sachima?style=flat-square)](https://github.com/DessertsLab/Sachima/pulse)
 [![doc](https://readthedocs.org/projects/sachima/badge/?version=latest&style=flat-square&color=ff69b4)](http://sachima.readthedocs.io/en/latest/?badge=latest)
 [![latest](https://img.shields.io/pypi/v/sachima.svg?style=flat-square&logo=python)](https://pypi.python.org/pypi/sachima/)
-
-
-
-
-
-Sachima is a flexiable framework for data-driven apps.
-
-It helps you build apps that looks great and intelligently.
-
-You can use Sachima together with [Superset](https://github.com/apache/incubator-superset), or with [sachima-ui](https://github.com/nocmk2/sachima-ui).
-
-
-
-
 
 
 Features
