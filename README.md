@@ -22,24 +22,25 @@ You can use Sachima together with [Superset](https://github.com/apache/incubator
 Features
 ------------------------------------
 
-Sachima is a package for Data Analyst:
-
-- Publishing your python codes as a http/rpc api.
-- Working with BI platform Superset.
-- Sending your data reports to email or sns.
-- Working with GrassJelly which is a Data Visulization project.
+|feature|screen casts|description|
+|----|----|----|
+|api||Publishing your python codes as a http/rpc api.|
+|BI platform intergration||Working with BI platform Superset.|
+|Message Sending||Sending your data reports to email or sns.|
+|Data Visulization||Working with GrassJelly which is a Data Visulization project.
+|command line||Command line tools.|
 
 Getting Started
 -----------------------------------
-First you should have python3(https://www.python.org/downloads/) and nodejs(https://nodejs.org/en/download/) installed on your os
+First you should have [python](https://www.python.org/downloads/) and [nodejs](https://nodejs.org/en/download/) installed
 
 you should check your installation by
 
-``python3 -V``
+``` shell 
+python3 -V
+```
 
-.. code::
-
-    Python 3.7.2
+> Python 3.7.2
 
 ``node -v``
 
