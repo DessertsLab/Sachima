@@ -2,7 +2,7 @@
 
 # Sachima
 
-Sachima is a flexiable framework for data-driven apps. It's a MIT licensed open source project written in python. We creates it because our data-driven requirments changes frequently, and we need data analyst having the ability to change online api and data visulization.
+Sachima is a flexible framework for data-driven apps. It's a MIT licensed open source project written in python. We creates it because our data-driven requirements changes frequently, and we need data analyst having the ability to change online api and data visulization.
 
 Sachima helps you build apps that looks great and intelligently.
 
