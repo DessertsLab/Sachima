@@ -3,7 +3,7 @@
 # Sachima
 Sachima是一个灵活的用于开发数据驱动应用的框架。它基于MIT开源协议，所有的代码均由python实现。我们创建它的最初目的是因为数据需求变化太快太频繁，因此需要一个可以让数据分析师修改的逻辑直接上线和可视化的工具。
 
-Sachima拥有非常美观的洁面和智能的数据分析功能。
+Sachima拥有非常美观的界面和智能的数据分析功能。
 
 你可以选择把Sachima和BI平台[Superset](https://github.com/apache/incubator-superset)或者[sachima-ui](https://github.com/nocmk2/sachima-ui)整合使用。或者使用它生成的api，开发自己的ui。
 
@@ -21,8 +21,8 @@ Sachima拥有非常美观的洁面和智能的数据分析功能。
 ------------------------------------
 |特性|预览|描述|
 |----|----|----|
-|api||Publishing your python codes as a http/rpc api.|
-|BI platform intergration|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|Working with BI platform Superset.|
+|api||把数据逻辑发布成rpc和http的api|
+|BI platform intergration|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|整合流行的|
 |Message Sending||Sending your data reports to email or sns.|
 |Data Visulization|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)|Visulize your data.
 |command line|![image](https://user-images.githubusercontent.com/7627381/87915185-5d7ad600-caa4-11ea-9c03-4847b8a1d1a1.png)![image](https://user-images.githubusercontent.com/7627381/87915290-8c914780-caa4-11ea-8bf7-da54ad63d6b8.png)|Command line tools.|
