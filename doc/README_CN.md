@@ -22,12 +22,12 @@ Sachima拥有非常美观的界面和智能的数据分析功能。
 |特性|预览|描述|
 |----|----|----|
 |api||把数据逻辑发布成rpc和http的api|
-|BI platform intergration|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|整合流行的|
-|Message Sending||Sending your data reports to email or sns.|
-|Data Visulization|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)|Visulize your data.
-|command line|![image](https://user-images.githubusercontent.com/7627381/87915185-5d7ad600-caa4-11ea-9c03-4847b8a1d1a1.png)![image](https://user-images.githubusercontent.com/7627381/87915290-8c914780-caa4-11ea-8bf7-da54ad63d6b8.png)|Command line tools.|
+|BI平台整合|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|可以在流行的BI平台上使用|
+|消息通知发送||可以把数据报告发送到email或者即时通讯工具|
+|数据可视化|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)|一键可视化你的数据.
+|命令行工具|![image](https://user-images.githubusercontent.com/7627381/87915185-5d7ad600-caa4-11ea-9c03-4847b8a1d1a1.png)![image](https://user-images.githubusercontent.com/7627381/87915290-8c914780-caa4-11ea-8bf7-da54ad63d6b8.png)|方便的命令行工具.|
 
-Getting Started
+开始使用
 -----------------------------------
 First you should have [python](https://www.python.org/downloads/) and [nodejs](https://nodejs.org/en/download/) installed.
 Optionally if you already had a python env and you need a separate environment to run Sachima, you should install [virtualenv](https://pypi.org/project/virtualenv/)
