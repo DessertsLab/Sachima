@@ -8,7 +8,7 @@ from datetime import date, datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from sachima.excel_high_light import ExcelHighLighter
+# from sachima.excel_high_light import ExcelHighLighter
 from sachima.tools import Tools
 
 if sys.platform == "darwin":

@@ -36,7 +36,7 @@ def poi(lat, lng, keywords, radius=1000):
     }
     try:
         r = requests.get(url, values).json()
-        logger.info(r)
+        logger.debug(r)
         return r
     except Exception as e:
         raise e
@@ -139,6 +139,7 @@ def fetchAmapLatLng(address):
     """
     使用高德API
     """
+    logger.info("fetching {} amap geo info".format(address))
     if AMAP_GEO_TOKEN is None:
         logger.info("error: Must config AMAP_GEO_TOKEN in sachima_config.py")
         raise "Must config AMAP_GEO_TOKEN in sachima_config.py"
