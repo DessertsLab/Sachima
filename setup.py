@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-with open("README.rst", "r") as fh:
+with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(
@@ -10,7 +10,7 @@ setup(
     author_email="jianye.zhang@gmail.com",
     description="Better data analysis",
     long_description=long_description,
-    long_description_content_type="text/x-rst",
+    long_description_content_type="text/markdown",
     url="https://github.com/DessertsLab/Sachima",
     packages=find_packages(),
     classifiers=[
