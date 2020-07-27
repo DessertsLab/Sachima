@@ -14,8 +14,17 @@ BAIDU_GEO_TOKEN = conf.get("BAIDU_GEO_TOKEN")
 QQ_GEO_TOKEN = conf.get("QQ_GEO_TOKEN")
 AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
 
-def poi_compound_dict(dim, dis, lat, lng):
-    '''
+
+def poi_compound_dict(
+    dim={"K001": "subway", "K002": "hospital", "K003": "school"},
+    dis=[500,1000],
+    lat=31.191869,
+    lng=121.446756,
+    onlycnt=False,
+    onlyfarest=True,
+    savetofile=False
+):
+    """
     DIM = {
         "K001": "subway",
         "K002": "hospital",
@@ -23,9 +32,24 @@ def poi_compound_dict(dim, dis, lat, lng):
     }
 
     DIS = [500, 1000, 1500, 2000]
-    '''
-    pass
 
+    lat = 31.191869 
+    lng = 121.446756
+    """
+    res = {}
+    for k in dim:
+        for d in dis:
+            key = k + "_" + str(d)  # eg. K001_1000
+            key_cnt = key + "_CNT"  # eg. K001_1000_CNT
+            poi_json = poi(lat, lng, dim.get(k), radius=d)
+            if onlycnt is False : 
+                if onlyfarest is False: 
+                    res[key] = str(poi_json)
+                elif d==max(dis):
+                    res[key] = str(poi_json)
+            res[key_cnt] = poi_json.get("count")
+
+    return res
 
 # poi
 def poi(lat, lng, keywords, radius=1000):
@@ -177,8 +201,8 @@ def fetchAmapLatLng(address):
         "amap_citycode": geocodes.get("citycode"),
         "amap_city": geocodes.get("city"),
         "amap_adcode": geocodes.get("adcode"),
-        "amap_street": geocodes.get("street"),
-        "amap_number": geocodes.get("number"),
+        "amap_street": str(geocodes.get("street")),
+        "amap_number": str(geocodes.get("number")),
         "amap_level": geocodes.get("level"),
     }
 
