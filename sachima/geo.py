@@ -14,6 +14,18 @@ BAIDU_GEO_TOKEN = conf.get("BAIDU_GEO_TOKEN")
 QQ_GEO_TOKEN = conf.get("QQ_GEO_TOKEN")
 AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
 
+def poi_compound_dict(dim, dis, lat, lng):
+    '''
+    DIM = {
+        "K001": "subway",
+        "K002": "hospital",
+        "K003": "school"
+    }
+
+    DIS = [500, 1000, 1500, 2000]
+    '''
+    pass
+
 
 # poi
 def poi(lat, lng, keywords, radius=1000):
