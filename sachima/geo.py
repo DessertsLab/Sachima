@@ -17,12 +17,12 @@ AMAP_GEO_TOKEN = conf.get("AMAP_GEO_TOKEN")
 
 def poi_compound_dict(
     dim={"K001": "subway", "K002": "hospital", "K003": "school"},
-    dis=[500,1000],
+    dis=[500, 1000],
     lat=31.191869,
     lng=121.446756,
     onlycnt=False,
     onlyfarest=True,
-    savetofile=False
+    savetofile=False,
 ):
     """
     DIM = {
@@ -42,14 +42,15 @@ def poi_compound_dict(
             key = k + "_" + str(d)  # eg. K001_1000
             key_cnt = key + "_CNT"  # eg. K001_1000_CNT
             poi_json = poi(lat, lng, dim.get(k), radius=d)
-            if onlycnt is False : 
-                if onlyfarest is False: 
+            if onlycnt is False:
+                if onlyfarest is False:
                     res[key] = str(poi_json)
-                elif d==max(dis):
+                elif d == max(dis):
                     res[key] = str(poi_json)
             res[key_cnt] = poi_json.get("count")
 
     return res
+
 
 # poi
 def poi(lat, lng, keywords, radius=1000):
@@ -57,7 +58,7 @@ def poi(lat, lng, keywords, radius=1000):
     高德地图获取poi信息 \n
     https://lbs.amap.com/api/webservice/guide/api/search \n
     """
-    logger.info((lat, lng))
+    logger.info((lat, lng, keywords, radius))
     if AMAP_GEO_TOKEN is None:
         logger.info("error: Must config AMAP_GEO_TOKEN in sachima_config.py")
         raise "Must config AMAP_GEO_TOKEN in sachima_config.py"
@@ -73,6 +74,8 @@ def poi(lat, lng, keywords, radius=1000):
     try:
         r = requests.get(url, values).json()
         logger.debug(r)
+        if r.get("info") == 'USER_DAILY_QUERY_OVER_LIMIT':
+            raise 'USER_DAILY_QUERY_OVER_LIMIT'
         return r
     except Exception as e:
         raise e
@@ -119,15 +122,18 @@ def fetchBaiduLatLng(address):
     url = "http://api.map.baidu.com/geocoder/v2/"
     try:
         r = requests.get(url, params=values).json()
-        return {
-            "baidu_lat": r.get("result").get("location").get("lat"),
-            "baidu_lng": r.get("result").get("location").get("lng"),
-            "baidu_precise": r.get("result").get("precise"),
-            "baidu_confidence": r.get("result").get("confidence"),
-            "baidu_comprehension": r.get("result").get("comprehension"),
-            "baidu_level": r.get("result").get("level"),
-            "baidu_status": r.get("status"),
-        }
+        if r.get("status") == 1:
+            return {}
+        else:
+            return {
+                "baidu_lat": r.get("result").get("location").get("lat"),
+                "baidu_lng": r.get("result").get("location").get("lng"),
+                "baidu_precise": r.get("result").get("precise"),
+                "baidu_confidence": r.get("result").get("confidence"),
+                "baidu_comprehension": r.get("result").get("comprehension"),
+                "baidu_level": r.get("result").get("level"),
+                "baidu_status": r.get("status"),
+            }
     except Exception as e:
         logger.info("fetchBaiduGeo for %s error: %s 发生异常！" % (address, e))
         raise e
@@ -147,25 +153,32 @@ def fetchQQLatLng(address):
     url = "https://apis.map.qq.com/ws/geocoder/v1/"
     try:
         r = requests.get(url, params=values).json()
-        return {
-            "qq_lat": r.get("result").get("location").get("lat"),
-            "qq_lng": r.get("result").get("location").get("lng"),
-            "qq_title": r.get("result").get("title"),
-            "qq_adcode": r.get("result").get("ad_info").get("adcode"),
-            "qq_province": r.get("result").get("address_components").get("province"),
-            "qq_city": r.get("result").get("address_components").get("city"),
-            "qq_district": r.get("result").get("address_components").get("district"),
-            "qq_street": r.get("result").get("address_components").get("street"),
-            "qq_street_number": r.get("result")
-            .get("address_components")
-            .get("street_number"),
-            "qq_similarity": r.get("result").get("similarity"),
-            "qq_deviation": r.get("result").get("deviation"),
-            "qq_reliability": r.get("result").get("reliability"),
-            "qq_level": r.get("result").get("level"),
-            "qq_status": r.get("status"),
-            "qq_message": r.get("message"),
-        }
+        if r.get("status") == 347:
+            return {}
+        else:
+            return {
+                "qq_lat": r.get("result").get("location").get("lat"),
+                "qq_lng": r.get("result").get("location").get("lng"),
+                "qq_title": r.get("result").get("title"),
+                "qq_adcode": r.get("result").get("ad_info").get("adcode"),
+                "qq_province": r.get("result")
+                .get("address_components")
+                .get("province"),
+                "qq_city": r.get("result").get("address_components").get("city"),
+                "qq_district": r.get("result")
+                .get("address_components")
+                .get("district"),
+                "qq_street": r.get("result").get("address_components").get("street"),
+                "qq_street_number": r.get("result")
+                .get("address_components")
+                .get("street_number"),
+                "qq_similarity": r.get("result").get("similarity"),
+                "qq_deviation": r.get("result").get("deviation"),
+                "qq_reliability": r.get("result").get("reliability"),
+                "qq_level": r.get("result").get("level"),
+                "qq_status": r.get("status"),
+                "qq_message": r.get("message"),
+            }
     except Exception as e:
         logger.info("fetchQQGeo for %s error: %s 发生异常！" % (address, e))
         raise e
