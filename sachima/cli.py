@@ -7,6 +7,8 @@ import sys
 import subprocess
 import pkg_resources
 
+import shutil
+
 sachima_version = pkg_resources.require("sachima")[0].version
 sys.path.insert(0, os.getcwd())
 
@@ -62,13 +64,9 @@ def version():
     click.echo(sachima_version)
 
 
-@click.command(
-    help="Get sachima middleware from github : get DessertsLab/pivot_table"
-)
+@click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
 @click.option(
-    "--path",
-    default=os.path.join(os.getcwd(), "middleware"),
-    help="project path",
+    "--path", default=os.path.join(os.getcwd(), "middleware"), help="project path",
 )
 @click.argument("middleware_name")
 def get(path, middleware_name):
@@ -89,8 +87,13 @@ def get(path, middleware_name):
 
 
 @click.command(help="Init a sachima project")
-def init():
-    click.echo("get something")
+@click.argument("name")
+def init(name):
+    sachima_example_path = os.path.join(os.path.dirname(__file__), "example")
+    current_init_path = os.path.join(os.getcwd(), name)
+    click.echo("copying {} to {} ...".format(sachima_example_path, current_init_path))
+    shutil.copytree(sachima_example_path, current_init_path)
+    click.echo("Init a sachima project")
 
 
 @click.command(help="Start sachima server")
@@ -107,9 +110,7 @@ def sync_waffle():
     if not os.path.exists(WAFFLE_DIR):
         click.echo("Cloneing  DessertsLab/Waffle...")
         os.system(
-            "git clone https://github.com/DessertsLab/Waffle.git {}".format(
-                WAFFLE_DIR
-            )
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
         )
         click.echo("Installing  DessertsLab/Waffle...")
 
@@ -159,10 +160,7 @@ def run():
         cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
     s = subprocess.Popen(
-        start_sachima(),
-        shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
     )
     w.wait()
     s.wait()

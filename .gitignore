@@ -113,5 +113,5 @@ sqls/
 test_rpc_client.py
 Waffle/
 
-sachima_config.py
+# sachima_config.py
 
