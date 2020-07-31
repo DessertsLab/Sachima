@@ -26,7 +26,7 @@ Features
 |api||Publishing your python codes as a http/rpc api.|
 |BI platform intergration|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|Working with BI platform Superset.|
 |Message Sending||Sending your data reports to email or sns.|
-|Data Visulization|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)|Visulize your data.
+|Data Visulization|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)![heatmap](https://user-images.githubusercontent.com/7627381/89003496-80be4480-d332-11ea-9cf6-c53d80df1377.gif)![44331558-5d2ec600-a49c-11e8-9406-ee71ac94b52c](https://user-images.githubusercontent.com/7627381/89003512-8a47ac80-d332-11ea-9d5d-391cdf67162c.gif)<img width="1082" alt="44331788-083f7f80-a49d-11e8-9fad-5668b53ab954" src="https://user-images.githubusercontent.com/7627381/89003523-90d62400-d332-11ea-86c4-6d10882ddf92.png">![48402607-fcdfb580-e766-11e8-9fe4-68f1a995d4f6](https://user-images.githubusercontent.com/7627381/89003527-9469ab00-d332-11ea-9406-55831eadc1f1.jpg)|Visulize your data.
 |command line|![image](https://user-images.githubusercontent.com/7627381/87915185-5d7ad600-caa4-11ea-9c03-4847b8a1d1a1.png)![image](https://user-images.githubusercontent.com/7627381/87915290-8c914780-caa4-11ea-8bf7-da54ad63d6b8.png)|Command line tools.|
 
 Getting Started
