@@ -89,7 +89,7 @@ def get(path, middleware_name):
 @click.command(help="Init a sachima project")
 @click.argument("name")
 def init(name):
-    sachima_example_path = os.path.join(os.path.dirname(__file__), "example")
+    sachima_example_path = os.path.join(os.path.dirname(__file__), "init_example")
     current_init_path = os.path.join(os.getcwd(), name)
     click.echo("copying {} to {} ...".format(sachima_example_path, current_init_path))
     shutil.copytree(sachima_example_path, current_init_path)
