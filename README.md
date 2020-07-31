@@ -72,8 +72,15 @@ sachima run
 ```
 This will start your sachima dev server and display data in Browser. If you had any problem rerun the last step or ask in [Sachima github issues](https://github.com/DessertsLab/Sachima/issues).
 
-Get middleware(WIP)
+
+Get middleware
 -----------------------------------
+
+Get pivot_table middleware from github
+
+``` shell
+sachima get DessertsLab/pivot_table
+```
 
 Working with BI platform
 -----------------------------------
