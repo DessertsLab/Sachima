@@ -8,27 +8,35 @@ from datetime import date, datetime, timedelta
 
 import numpy as np
 import pandas as pd
+
 # from sachima.excel_high_light import ExcelHighLighter
 from sachima.tools import Tools
+from sachima import conf
 
-if sys.platform == "darwin":
-    BASE_FILES_PATH = "/Users/zhangmk/Desktop/alert/"
-    CONF_PATH = "/Users/zhangmk/Downloads/CODE/MEIHAO/mail/alertconf.csv"
-    OUT_PATH = BASE_FILES_PATH
-elif sys.platform == "win32":
-    BASE_FILES_PATH = "d:\\share"
-    CONF_PATH = "d:\\python_work\\reports\\alertconf.csv"
-    OUT_PATH = BASE_FILES_PATH
-elif sys.platform == "linux":
-    BASE_FILES_PATH = "/data/jiankongdata/zhangj"
-    CONF_PATH = "/data/app/reports/alertconf.csv"
-    OUT_PATH = "/data/jiankongdata/"
+# if sys.platform == "darwin":
+#     BASE_FILES_PATH = "/Users/zhangmk/Desktop/alert/"
+#     CONF_PATH = "/Users/zhangmk/Downloads/CODE/MEIHAO/mail/alertconf.csv"
+#     OUT_PATH = BASE_FILES_PATH
+# elif sys.platform == "win32":
+#     BASE_FILES_PATH = "d:\\share"
+#     CONF_PATH = "d:\\python_work\\reports\\alertconf.csv"
+#     OUT_PATH = BASE_FILES_PATH
+# elif sys.platform == "linux":
+#     BASE_FILES_PATH = "/data/jiankongdata/zhangj"
+#     CONF_PATH = "/data/app/reports/alertconf.csv"
+#     OUT_PATH = "/data/jiankongdata/"
+
+BASE_FILES_PATH = os.path.join(conf.get("PROJ_DIR"), "data")
+OUT_PATH = BASE_FILES_PATH
+CONF_PATH = os.path.join(BASE_FILES_PATH, "alertconf.csv")
 
 BATCH_DATE = datetime.strptime(
     datetime.strftime(datetime.today(), "%Y-%m-%d"), "%Y-%m-%d"
 )
 TIME_LEN = 60
 NEED_CHART = False
+
+panel_data = {}
 
 
 def get_md5_value(src):
@@ -41,18 +49,17 @@ def get_md5_value(src):
 def handle_conf(conf):
     # 打开文件
     ori = pd.read_csv(conf, index_col=None, sep=",")
+    # ori = ori.replace("\xc2\xa0", " ")
+    ori.replace("\xa0", " ", inplace=True, regex=True)
+    ori.replace("\s+", " ", inplace=True, regex=True)
     # 判断表头第一列是不是ruleid，如果不是增加ruleid表头
     col_name = ori.columns.tolist()
     # 每一行生成md5值，放在第一列作为ruleid
     ori["ruleid"] = (
         ori[col_name]
         .drop(["ruleid"], axis=1)
-        .apply(
-            lambda x: get_md5_value("-".join(str(value) for value in x)),
-            axis=1,
-        )
+        .apply(lambda x: get_md5_value("-".join(str(value) for value in x)), axis=1,)
     )
-    # 删除重复的md5 并记录到rule_dupli.csv文件
     ori.set_index(["ruleid"], inplace=True)
     ori.drop_duplicates(inplace=True)
     # 保存文件
@@ -64,12 +71,7 @@ def special_char_remove(s):
     """
     特殊字符替换处理函数
     """
-    return (
-        s.replace(",", " ")
-        .replace("<", "小于")
-        .replace(">", "大于")
-        .replace("*", "_")
-    )
+    return s.replace(",", " ").replace("<", "小于").replace(">", "大于").replace("*", "_")
 
 
 def time_dim_to_str(timeobj):
@@ -95,9 +97,7 @@ def date_cut(x):
             [x, str(monthrange(iyear, imonth)[1])]
         )  # monthrange 返回 月第一天的weekday和  最后一天   join当月的最后一天
         return datetime.strptime(sample, "%Y-%m-%d")
-    elif (
-        type(x) == str and len(x) > 7 and len(x) <= 10
-    ):  # 2017-08-01   20170801
+    elif type(x) == str and len(x) > 7 and len(x) <= 10:  # 2017-08-01   20170801
         for fmt in ("%Y-%m-%d", "%Y%m%d", "%Y/%m/%d"):
             try:
                 return datetime.strptime(x, fmt)
@@ -164,42 +164,38 @@ def get_last_time(groupdata):
         return groupdata.index[-1]
 
 
-"""
-把规则配置里的一条记录传给rulerun，执行相应的规则并输出
-todo: 判断如果dt_begin dt_end为空的话取最大最小值 否则的话取传入的值
-"""
-
-
 def rulerun(ruleid, table, index, column, rule, param, url, f):
-    foldername = table.split(".")[0]
-    filename = table.split(".")[1]
-    filepath = os.path.join(BASE_FILES_PATH, foldername, filename + ".xlsx")
-    index = index.split(
-        " "
-    )  # 维度字段   最后一个是时间维度  用空格隔开  example: d_绿通标识 td_统计日期
-    df = pd.read_excel(
-        filepath, index_col=None, na_values="999"
-    )  # 替换999为NaN 执行效率慢了很多 建议张杰在生成excel的时候把数据留空   读取速度能优化吗？
+    """
+    example: 
+        ruleid=ff27a4ff5ea11f3c319670037f32316f
+        table=risk.table1 
+        index=dim1 dim2 td_stat_date
+        column=column1 column2
+        rule=R00003_multicondi
+        param=< > 0.8 0.1
+        url=www.google.com
+        f=open("filename", "w")
+    """
+    df = panel_data[table]
+    index = index.split(" ")  # example: d_dim1 d_dim2 td_stat_date
 
-    # 所有年月结合的情况
+    # # 所有年月结合的情况
+    # time_dim_possible_lists = [
+    #     ("d_年份", "d_月份"),
+    #     ("ty_申请年份", "tm_月份"),
+    #     ("ty_放款年份", "tm_月份"),
+    # ]
 
-    time_dim_possible_lists = [
-        ("d_年份", "d_月份"),
-        ("ty_申请年份", "tm_月份"),
-        ("ty_放款年份", "tm_月份"),
-    ]
-    if len(index) > 1 and (index[-2], index[-1]) in time_dim_possible_lists:
-        df["d_年月"] = df[[index[-2], index[-1]]].apply(
-            lambda x: "-".join(str(value) for value in x), axis=1
-        )
-        index[-2] = "d_年月"
-        index.pop()
+    # if len(index) > 1 and (index[-2], index[-1]) in time_dim_possible_lists:
+    #     df["d_年月"] = df[[index[-2], index[-1]]].apply(
+    #         lambda x: "-".join(str(value) for value in x), axis=1
+    #     )
+    #     index[-2] = "d_年月"
+    #     index.pop()
 
+    # get begin time and end time
     dt_end = max(df[index[-1]])
-    if (
-        len(df[index[-1]].drop_duplicates(keep="first", inplace=False))
-        > TIME_LEN
-    ):
+    if len(df[index[-1]].drop_duplicates(keep="first", inplace=False)) > TIME_LEN:
         dt_begin = (
             df[index[-1]]
             .drop_duplicates(keep="first", inplace=False)
@@ -209,28 +205,23 @@ def rulerun(ruleid, table, index, column, rule, param, url, f):
     else:
         dt_begin = min(df[index[-1]])
 
+    # get begin time to end time range data
     df = df[(df[index[-1]] >= dt_begin) & (df[index[-1]] <= dt_end)]
 
     df = df.set_index(index).sort_index()
-    ruletype = rule.split("_")[
-        0
-    ]  # example： R00001_{L}阶差分值不超过{N}日移动窗口{M}个上下标准差
-    eval(ruletype)(
-        ruleid, df, column, param, foldername, filename, index, url, f
-    )  # 执行规则函数  每个规则写到一个函数里面
+    ruletype = rule.split("_")[0]  # example： R00001_{L}阶差分值不超过{N}日移动窗口{M}个上下标准差
+    eval(ruletype)(ruleid, df, table, column, param, index, url, f)
 
 
-# 规则处理过程，以ruleid命名
-# R00001_{L}阶差分值不超过{N}日移动窗口{M}个上下标准差
-
-
-def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
-    diff_deep = int(param.split(" ")[0])  # 参数按照顺序提取，配置文件中配置的时候也按照顺序   差分的次数
-    window_value = int(param.split(" ")[1])  # 移动窗口长度
-    std_times = float(param.split(" ")[2])  # 超过多少倍的标准差被认为是异常值
-    std_top = (
-        "diff_" + str(std_times) + "times_mstd" + str(window_value)
-    )  # 上标准差的字段名
+def R00001(ruleid, df, table, column, param, index, url, f):
+    """
+    R00001_{L}阶差分值不超过{N}日移动窗口{M}个上下标准差
+    """
+    s_param = param.split(" ")
+    diff_deep = int(s_param[0])  # 参数按照顺序提取，配置文件中配置的时候也按照顺序   差分的次数
+    window_value = int(s_param[1])  # 移动窗口长度
+    std_times = float(s_param[2])  # 超过多少倍的标准差被认为是异常值
+    std_top = "diff_" + str(std_times) + "times_mstd" + str(window_value)  # 上标准差的字段名
     std_bottom = (
         "diff_-" + str(std_times) + "times_mstd" + str(window_value)
     )  # 下标准差的字段名
@@ -249,8 +240,8 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             "R00001"
             + ruleid
             + "------------正在处理分组---"
-            + foldername
-            + filename
+            + table
+            # + filename
             + str(index)
             + "--------"
             + str(groupset)
@@ -295,12 +286,10 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
         )
         # Moving std 移动标准差  std_times倍标准差
         obj[std_top] = (
-            std_times
-            * obj["diff"].rolling(window=window_value, center=False).std()
+            std_times * obj["diff"].rolling(window=window_value, center=False).std()
         )
         obj[std_bottom] = (
-            -std_times
-            * obj["diff"].rolling(window=window_value, center=False).std()
+            -std_times * obj["diff"].rolling(window=window_value, center=False).std()
         )
 
         # 判断指标是否在范围内 增加向上或向下波动异常
@@ -334,7 +323,7 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + special_char_remove(str(groupset))
             + ","
-            + filename
+            + table
             + ",["
             + column
             + "],"
@@ -342,9 +331,7 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
             + "异常,"
             + param
         )
-        data_file = os.path.join(
-            "..", foldername, filename + ".xlsx"
-        )  # 对应的数据文件 可以在excel中直接连接到源数据
+        data_file = os.path.join("..", table + ".xlsx")  # 对应的数据文件 可以在excel中直接连接到源数据
 
         f.write(
             str(uuid.uuid1())
@@ -373,15 +360,14 @@ def R00001(ruleid, df, column, param, foldername, filename, index, url, f):
         f.flush()
 
 
-# 规则处理过程，以ruleid命名
-# R00005_绝对值{>=<}{T}
-def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
+def R00005(ruleid, df, table, column, param, index, url, f):
+    """
+    R00005_绝对值{>=<}{T}
+    """
     oper = param.split(" ")[0]  # >=<   大于等于小于
     value = float(param.split(" ")[1])  # 阈值
 
-    if (
-        len(index) > 1
-    ):  # 如果index的长度是一代表只有时间维度，大于1的话取最后一个时间维度以外的维度index[0:-1]作groupby
+    if len(index) > 1:  # 如果index的长度是一代表只有时间维度，大于1的话取最后一个时间维度以外的维度index[0:-1]作groupby
         dim_str = str(index[0:-1])  # 其它维度
         time_str = str(index[-1])  # 时间维度
         temp = df.groupby(index[0:-1]).count().index  # 其它维度的列表,分组处理
@@ -393,14 +379,15 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
     for groupset in temp:
         print(
             "R00005"
+            + "--------ruleid:"
             + ruleid
             + "------------正在处理分组---"
-            + foldername
-            + filename
+            + table
+            + "@"
             + str(index)
             + "--------"
             + str(groupset)
-            + "---------------正在处理分组----------------"
+            + "----------"
         )
         dt_end = ""
         dd = None
@@ -419,38 +406,35 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
 
         obj = dd[:dt_end][[column]]
 
-        obj[
-            "thresholdvalue"
-        ] = (
-            value
-        )  # std_times*obj['diff'].rolling(window=window_value, center=False).std()
+        # std_times*obj['diff'].rolling(window=window_value, center=False).std()
+        obj["thresholdvalue"] = value
         obj["-thresholdvalue"] = -1 * value
 
         # 判断指标是否在范围内 规则存在条件里面
-        # if oper == '>':
-        #     conditions = [abs(obj[column]) > obj['thresholdvalue'], 1 == 1]
-        #     oper_str = '大于'
-        # elif oper == '<':
-        #     conditions = [abs(obj[column]) < obj['thresholdvalue'], 1 == 1]
-        #     oper_str = '小于'
-        # elif oper == '=':
-        #     conditions = [abs(obj[column]) == obj['thresholdvalue'], 1 == 1]
-        #     oper_str = '等于'
-
-        conditions = eval(
-            "[abs(obj['"
-            + column
-            + "']) "
-            + oper
-            + " obj['thresholdvalue'], 1 == 1]"
-        )
-
+        print("column: ", column)
+        print("obj[column]: ", obj[column])
         if oper == ">":
+            conditions = [abs(obj[column]) > obj["thresholdvalue"], 1 == 1]
             oper_str = "大于"
         elif oper == "<":
+            conditions = [abs(obj[column]) < obj["thresholdvalue"], 1 == 1]
             oper_str = "小于"
         elif oper == "=":
+            conditions = [abs(obj[column]) == obj["thresholdvalue"], 1 == 1]
             oper_str = "等于"
+
+        # conditions = eval(
+        #     "[abs(obj['" + column + "']) " + oper + " obj['thresholdvalue'], 1 == 1]"
+        # )
+
+        # print(con)
+
+        # if oper == ">":
+        #     oper_str = "大于"
+        # elif oper == "<":
+        #     oper_str = "小于"
+        # elif oper == "=":
+        #     oper_str = "等于"
 
         choices = [True, False]
         obj["res"] = np.select(conditions, choices, default=False)
@@ -462,7 +446,7 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + special_char_remove(str(groupset))
             + ","
-            + filename
+            + table
             + ",["
             + column
             + "],绝对值"
@@ -479,7 +463,7 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
         # print(obj[obj['res'] == True].index)
         last_dt = obj[obj["res"] == True].index[-1]
         vv = obj.loc[last_dt][column]
-        data_file = os.path.join("..", foldername, filename + ".xlsx")
+        data_file = os.path.join("..", table + ".xlsx")
         # print('---writing....--')
         f.write(
             str(uuid.uuid1())
@@ -508,10 +492,13 @@ def R00005(ruleid, df, column, param, foldername, filename, index, url, f):
         f.flush()
 
 
-# 多条件规则匹配    Y,业务表汇总.商户周申请量,d_商户名称 tw2_周区间,申请量 申请通过率,R00002_$1{>=<}{T}AND$2{>=<}{M},> 10 < 0.25,,
-def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
+def R00003(ruleid, df, table, column, param, index, url, f):
+    """
+    R00003 多条件规则匹配    Y,业务表汇总.商户周申请量,d_商户名称 tw2_周区间,申请量 申请通过率,R00002_$1{>=<}{T}AND$2{>=<}{M},> 10 < 0.25,,
+    """
     column_lists = column.split(" ")
     param_lists = param.split(" ")
+    print(param_lists)
     l = len(column_lists)
     oper_lists = param_lists[:l]
     value_lists = param_lists[l:]
@@ -527,9 +514,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         print("请输入匹配的字段参数和值，按照一个空格分割,这条规则将不会执行：" + ruleid)
         return 0
 
-    if (
-        len(index) > 1
-    ):  # 如果index的长度是一代表只有时间维度，大于1的话取最后一个时间维度以外的维度idx[0:-1]作groupby
+    if len(index) > 1:  # 如果index的长度是一代表只有时间维度，大于1的话取最后一个时间维度以外的维度idx[0:-1]作groupby
         dim_str = str(index[0:-1])  # 其它维度
         time_str = str(index[-1])  # 时间维度
         dimention = df.groupby(index[0:-1]).count().index  # 其它维度的列表,分组处理
@@ -543,8 +528,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             "R00003"
             + ruleid
             + "------------正在处理分组----"
-            + foldername
-            + filename
+            + table
             + str(index)
             + "-------"
             + str(groupset)
@@ -594,7 +578,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + special_char_remove(str(groupset))
             + ","
-            + filename
+            + table
             + ","
             + Tools.special_char_remove(str(column_lists))
             + ","
@@ -608,7 +592,8 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
 
         last_dt = obj[obj["res"] == True].index[-1]
         vv = list(obj.loc[last_dt][column_lists])
-        data_file = os.path.join("..", foldername, filename + ".xlsx")
+        # data_file = os.path.join("..", table + ".xlsx")
+        # "预警编号,规则编号,触发规则,规则类型,日期,日期类型,维度名称,维度值,表格,字段,描述,参数,值,图,数据,url" + "\n"
         f.write(
             str(uuid.uuid1())
             + ","
@@ -622,12 +607,7 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
             + ","
             + Tools.special_char_remove(str(vv))
             + ","
-            + ""
             + str(url)
-            + ""
-            + ',=HYPERLINK("'
-            + data_file
-            + '")'
             + ',=HYPERLINK("'
             + str(url)
             + '")'
@@ -636,54 +616,38 @@ def R00003(ruleid, df, column, param, foldername, filename, index, url, f):
         f.flush()
 
 
-def get(t="csv", days=1, conf_path=CONF_PATH):
-
+def get(days=1, conf_path=CONF_PATH):
     """
-    用户调用 get获取输出预警规则输出结果 可以使用excel csv 或者 dataframe类型
+    get alert out put
     """
-    # 默认需要当天的数据 作为sys参数传入  如果传入5 就是跑近5天的数据
-
-    ## 命令行运行的时候第二个参数是天数，这里get在sachima项目总调用暂时注释掉
-    # if len(sys.argv) == 2 and isinstance(int(sys.argv[1]), int):
-    #     days = int(sys.argv[1])
     for d in range(0, days):
-        # 批量日期 默认是当天 days=1
         BATCH_DATE = datetime.strptime(
             datetime.strftime(datetime.today(), "%Y-%m-%d"), "%Y-%m-%d"
         ) + timedelta(days=-d)
-        # # 读取配置文件
-        # '''
-        # # conf['table']   # example :  风险表汇总.每日逾期明细
-        # # conf['index']   # td_统计时点
-        # # conf['column']  # 逾期余额
-        # # conf['rule']    # R00001_{L}阶差分值不超过{N}日移动窗口{M}个上下标准差
-        # # conf['param']   # [2 30 2]
-        # '''
 
-        # 配置文件是一个csv，包含了预警规则
+        # read alert conf file
         conf = pd.read_csv(conf_path, index_col=None, sep=",")
+        # you can config active==N in config file to disable the alert rule
         conf = conf[conf["active"] == "Y"]
 
+        # the path store results
         last_path = os.path.join(
-            OUT_PATH,
-            "lastest_alerts" + datetime.strftime(BATCH_DATE, "%Y%m%d"),
+            OUT_PATH, "lastest_alerts" + datetime.strftime(BATCH_DATE, "%Y%m%d"),
         )
+
         if not os.path.exists(last_path):
             os.makedirs(last_path)
 
         csv_file_name = os.path.join(
-            last_path,
-            "alertlist" + datetime.strftime(BATCH_DATE, "%Y%m%d") + ".csv",
+            last_path, "alertlist" + datetime.strftime(BATCH_DATE, "%Y%m%d") + ".csv",
         )
 
-        f_last_alerts = open(csv_file_name, "w", encoding="GBK")
+        f_last_alerts = open(csv_file_name, "w")
         f_last_alerts.write(
-            "预警编号,规则编号,触发规则,规则类型,日期,日期类型,维度名称,维度值,表格,字段,描述,参数,值,图,数据,url"
-            + "\n"
+            "预警编号,规则编号,触发规则,规则类型,日期,日期类型,维度名称,维度值,表格,字段,描述,参数,值,图,数据,url" + "\n"
         )
         f_last_alerts.flush()
 
-        # 遍历规则
         for index, row in conf.iterrows():
             rulerun(
                 row["ruleid"],
@@ -694,7 +658,7 @@ def get(t="csv", days=1, conf_path=CONF_PATH):
                 row["param"],
                 row["url"],
                 f_last_alerts,
-            )  # 增加到superset的连接 url
+            )
 
         f_last_alerts.close()
 
@@ -709,35 +673,14 @@ def get(t="csv", days=1, conf_path=CONF_PATH):
         #     colfilter=True,
         # )
         # ehl.to_excel()
-
-        if t == "csv":
-            return csv_file_name
-        elif t == "excel":
-            return csv_file_name.replace("csv", "xlsx")
-        elif t == "dataframe":
-            return pd.read_csv(csv_file_name, encoding="GBK")
-        else:
-            print("请输入输出类型 csv excel dataframe")
-
-        # 调用 mail发送邮件 在mail中定义一个handler用于发送结果excel
-        # os.system('/data/anaconda/bin/python /data/app/reports/r_00120_main.py ' + str(-d))
+        return pd.read_csv(csv_file_name)
 
 
 def add(name, df):
     """
-    add函数增加数据到alert中，使用get可以通过规则配置文件得到数据结果，配置文件中的table字段就对应这里设置的name
-    name: 数据名称
-    df: 传入的数据 pandas Dataframe
+    add df to global panel_data 
+    name: path.filename
+    df: input pandas Dataframe
     """
-    a = name.split(".")
-    catelog = a[0]
-    filename = a[1] + ".xlsx"
-    folder = "d:\\share"
-    if sys.platform == "win32":
-        folder = "d:\\share"
-    elif sys.platform == "linux":
-        folder = "/data/jiankongdata/zhangj"
-    elif sys.platform == "darwin":
-        folder = "~/Desktop/alert"
-    df.to_excel(os.path.join(folder, catelog, filename), index=False)
+    panel_data[name] = df
 
