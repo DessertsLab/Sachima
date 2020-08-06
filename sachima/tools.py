@@ -109,7 +109,7 @@ class Tools:
         Special character replacement processing function, these characters cannot exist in the file name under Windows
         """
         return (
-            s.replace(",", " ").replace("<", "小于").replace(">", "大于").replace("*", "_")
+            s.replace(",", " ").replace("<", " less than ").replace(">", " greater than ").replace("*", "_")
         )
 
     @classmethod
