@@ -9,22 +9,8 @@ from datetime import date, datetime, timedelta
 import numpy as np
 import pandas as pd
 
-# from sachima.excel_high_light import ExcelHighLighter
 from sachima.tools import Tools
 from sachima import conf
-
-# if sys.platform == "darwin":
-#     BASE_FILES_PATH = "/Users/zhangmk/Desktop/alert/"
-#     CONF_PATH = "/Users/zhangmk/Downloads/CODE/MEIHAO/mail/alertconf.csv"
-#     OUT_PATH = BASE_FILES_PATH
-# elif sys.platform == "win32":
-#     BASE_FILES_PATH = "d:\\share"
-#     CONF_PATH = "d:\\python_work\\reports\\alertconf.csv"
-#     OUT_PATH = BASE_FILES_PATH
-# elif sys.platform == "linux":
-#     BASE_FILES_PATH = "/data/jiankongdata/zhangj"
-#     CONF_PATH = "/data/app/reports/alertconf.csv"
-#     OUT_PATH = "/data/jiankongdata/"
 
 BASE_FILES_PATH = os.path.join(conf.get("PROJ_DIR"), "data")
 OUT_PATH = BASE_FILES_PATH
@@ -39,54 +25,38 @@ NEED_CHART = False
 panel_data = {}
 
 
-def get_md5_value(src):
-    myMd5 = hashlib.md5()
-    myMd5.update(src.encode("utf8"))
-    myMd5_Digest = myMd5.hexdigest()
-    return myMd5_Digest
-
-
 def handle_conf(conf):
-    # 打开文件
+    """
+    Handle config file by
+    1. Remove special whitespace
+    2. Drop duplicate rules
+    3. Add ruleid as first column
+
+    ps: This function will modify the conf file inplace
+    """
+    # Open conf file
     ori = pd.read_csv(conf, index_col=None, sep=",")
-    # ori = ori.replace("\xc2\xa0", " ")
+
+    # Remove special whitespace
     ori.replace("\xa0", " ", inplace=True, regex=True)
     ori.replace("\s+", " ", inplace=True, regex=True)
-    # 判断表头第一列是不是ruleid，如果不是增加ruleid表头
+
+    # Column names
     col_name = ori.columns.tolist()
-    # 每一行生成md5值，放在第一列作为ruleid
+
+    # Generate md5 value for each row and put it in the first column as ruleid
     ori["ruleid"] = (
         ori[col_name]
         .drop(["ruleid"], axis=1)
-        .apply(lambda x: get_md5_value("-".join(str(value) for value in x)), axis=1,)
+        .apply(
+            lambda x: Tools.get_md5_value("-".join(str(value) for value in x)), axis=1,
+        )
     )
     ori.set_index(["ruleid"], inplace=True)
     ori.drop_duplicates(inplace=True)
-    # 保存文件
+
+    # Save modified conf file 
     ori.to_csv(conf)
-    return
-
-
-def special_char_remove(s):
-    """
-    特殊字符替换处理函数
-    """
-    return s.replace(",", " ").replace("<", "小于").replace(">", "大于").replace("*", "_")
-
-
-def time_dim_to_str(timeobj):
-    """
-    time_dim_to_str
-    timeobj可能是任意类型的，用这个函数转换为日期格式的字符串类型
-    如果是无法转换的保留字符串类型返回
-    """
-    if type(timeobj) == str:
-        return timeobj
-    elif type(timeobj) == np.int64 or type(timeobj) == int:
-        return str(timeobj)
-    else:
-        return timeobj.strftime("%Y-%m-%d")
-
 
 def date_cut(x):
     # 2017-9
@@ -319,9 +289,9 @@ def R00001(ruleid, df, table, column, param, index, url, f):
             sBD = "向下波动"
 
         alerttext = (
-            special_char_remove(dim_str)
+            Tools.special_char_remove(dim_str)
             + ","
-            + special_char_remove(str(groupset))
+            + Tools.special_char_remove(str(groupset))
             + ","
             + table
             + ",["
@@ -338,7 +308,7 @@ def R00001(ruleid, df, table, column, param, index, url, f):
             + ","
             + ruleid
             + ",R00001,[波动预警],"
-            + time_dim_to_str(last_dt)
+            + Tools.time_dim_to_str(last_dt)
             + ",["
             + time_str
             + "],"
@@ -442,9 +412,9 @@ def R00005(ruleid, df, table, column, param, index, url, f):
         # a = obj[obj['res'] == True].index
 
         alerttext = (
-            special_char_remove(dim_str)
+            Tools.special_char_remove(dim_str)
             + ","
-            + special_char_remove(str(groupset))
+            + Tools.special_char_remove(str(groupset))
             + ","
             + table
             + ",["
@@ -470,7 +440,7 @@ def R00005(ruleid, df, table, column, param, index, url, f):
             + ","
             + ruleid
             + ",R00005,[高限预警],"
-            + time_dim_to_str(last_dt)
+            + Tools.time_dim_to_str(last_dt)
             + ",["
             + time_str
             + "],"
@@ -574,9 +544,9 @@ def R00003(ruleid, df, table, column, param, index, url, f):
         obj["res"] = obj[c_markers_lists].all(axis=1)  # 必须满足所有的条件才触发预警
 
         alerttext = (
-            special_char_remove(dim_str)
+            Tools.special_char_remove(dim_str)
             + ","
-            + special_char_remove(str(groupset))
+            + Tools.special_char_remove(str(groupset))
             + ","
             + table
             + ","
@@ -599,7 +569,7 @@ def R00003(ruleid, df, table, column, param, index, url, f):
             + ","
             + ruleid
             + ",R00003,[多条件预警],"
-            + time_dim_to_str(last_dt)
+            + Tools.time_dim_to_str(last_dt)
             + ",["
             + time_str
             + "],"

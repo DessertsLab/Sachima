@@ -1,7 +1,9 @@
 import hashlib
 import operator
+import numpy as np
 import pandas as pd
 import datetime
+
 from sachima.log import logger
 
 
@@ -104,7 +106,7 @@ class Tools:
     @classmethod
     def special_char_remove(self, s):
         """
-        特殊字符替换处理函数, 在windows下这些字符无法在文件名中存在
+        Special character replacement processing function, these characters cannot exist in the file name under Windows
         """
         return (
             s.replace(",", " ").replace("<", "小于").replace(">", "大于").replace("*", "_")
@@ -136,56 +138,16 @@ class Tools:
             string = chr(65 + remainder) + string
         return string
 
-
-# if __name__ == "__main__":
-# YEAR = 2017
-# MONTH = 1
-# DAY = 1
-# HOUR = 12
-# MINUTES = 12
-# SECONDS = 12
-
-# case1 = (
-#     pd.Timestamp(YEAR, MONTH, DAY),
-#     [datetime.date(YEAR, MONTH, DAY)],
-#     "#1 single timestamp input",
-# )
-# case2 = (
-#     pd.Timestamp(YEAR, MONTH, DAY, HOUR, MINUTES, SECONDS),
-#     [datetime.date(YEAR, MONTH, DAY)],
-#     "#2 single timestamp input with time",
-# )
-# case3 = (
-#     [pd.Timestamp(YEAR, MONTH, DAY)],
-#     [datetime.date(YEAR, MONTH, DAY)],
-#     "#3 single timestamp list",
-# )
-# case4 = (
-#     [pd.Timestamp(YEAR, MONTH, DAY), pd.Timestamp(YEAR, MONTH + 1, DAY)],
-#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-#     "#4 multi timestamp list",
-# )
-# case5 = (
-#     [
-#         pd.Timestamp(YEAR, MONTH, DAY),
-#         "{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
-#     ],
-#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-#     "#5 mix timestamp and str list",
-# )
-# case6 = (
-#     [
-#         pd.Timestamp(YEAR, MONTH, DAY),
-#         "boom!{}-{}-{}".format(str(YEAR), str(MONTH + 1), str(DAY)),
-#     ],
-#     [datetime.date(YEAR, MONTH, DAY), datetime.date(YEAR, MONTH + 1, DAY)],
-#     ValueError,
-# )
-
-# tests = [case1, case2, case3, case4, case5, case6]
-
-# for t in tests:
-#     print(_to_date_list(t[0]))
-#     assert _to_date_list(t[0]) == t[1], "{} not correct".format(t[2])
-
-# print(longest_common_substring("曝光:不要..._新浪博客", "曝光:人|..."))
+    @classmethod
+    def time_dim_to_str(cls, timeobj):
+        """
+        time_dim_to_str converts a time object into a string
+        timeobj may be of any type, use this function to convert to date format string type
+        If it is a reserved string type that cannot be converted, return itself
+        """
+        if type(timeobj) == str:
+            return timeobj
+        elif type(timeobj) == np.int64 or type(timeobj) == int:
+            return str(timeobj)
+        else:
+            return timeobj.strftime("%Y-%m-%d")
