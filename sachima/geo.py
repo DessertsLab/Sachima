@@ -120,7 +120,8 @@ def fetchBaiduLatLng(address):
     url = "http://api.map.baidu.com/geocoder/v2/"
     try:
         r = requests.get(url, params=values).json()
-        if r.get("status") == 1:
+        logger.info(r)
+        if r.get("status") != 0:
             return {}
         else:
             return {
