@@ -172,9 +172,7 @@ def R00001(ruleid, df, table, column, param, index, url, f):
     # Field name of upper standard deviation
     std_top = "diff_" + str(std_times) + "times_mstd" + str(window_value)
     # The field name of the lower standard deviation
-    std_bottom = (
-        "diff_-" + str(std_times) + "times_mstd" + str(window_value)
-    )  
+    std_bottom = "diff_-" + str(std_times) + "times_mstd" + str(window_value)
 
     if len(index) > 1:
         dim_str = str(index[0:-1])  # Except the last one as the dimension
@@ -218,7 +216,9 @@ def R00001(ruleid, df, table, column, param, index, url, f):
             continue
 
         # Difference The difference between the previous time and the previous time. The need_diff parameter controls whether the difference is needed, and the diff_deep parameter controls the order of the diff
-        obj["diff"] = obj[column]  # Increase the diff field equal to the original value when initialized
+        obj["diff"] = obj[
+            column
+        ]  # Increase the diff field equal to the original value when initialized
         i = diff_deep  # diff_deep order difference
         while i > 0:
             obj["diff"] = obj["diff"].diff()
@@ -248,8 +248,12 @@ def R00001(ruleid, df, table, column, param, index, url, f):
         obj["up"] = np.select(conditios_up, choices, default=False)
         obj["down"] = np.select(conditios_down, choices, default=False)
 
-        if obj.loc[obj.index[-1]]["res"] == False:  # The last point must be an early warning point, otherwise no warning is output
-            print("The last point must be an early warning point, otherwise no warning is output")
+        if (
+            obj.loc[obj.index[-1]]["res"] == False
+        ):  # The last point must be an early warning point, otherwise no warning is output
+            print(
+                "The last point must be an early warning point, otherwise no warning is output"
+            )
             continue
 
         # Only record the last warning point
@@ -309,7 +313,6 @@ def R00005(ruleid, df, table, column, param, index, url, f):
     """
     # fill None value to Zero
     df.fillna(0, inplace=True)
-
     # params example: "< 100"
     # so we split it with whitespace then we got the operation and threshold value
     params = param.split(" ")
@@ -360,63 +363,65 @@ def R00005(ruleid, df, table, column, param, index, url, f):
         obj["-thresholdvalue"] = -1 * value
         if oper == ">":
             conditions = [abs(obj[column]) > obj["thresholdvalue"], 1 == 1]
-            oper_str = ">"
-        elif oper == " less than ":
-            conditions = [abs(obj[column]) < obj["thresholdvalue"], 1 == 1]
+            print("conditions: ", conditions)
+            print("thresholdvalue", obj["thresholdvalue"])
             oper_str = " greater than "
+        elif oper == "<":
+            conditions = [abs(obj[column]) < obj["thresholdvalue"], 1 == 1]
+            oper_str = " less than "
         elif oper == "=":
             conditions = [abs(obj[column]) == obj["thresholdvalue"], 1 == 1]
             oper_str = " is equal to "
 
-            choices = [True, False]
-            obj["res"] = np.select(conditions, choices, default=False)
+        choices = [True, False]
+        obj["res"] = np.select(conditions, choices, default=False)
 
-            alerttext = (
-                Tools.special_char_remove(dim_str)
-                + ","
-                + Tools.special_char_remove(str(groupset))
-                + ","
-                + table
-                + ",["
-                + column
-                + "],Absolute value"
-                + oper_str
-                + "Threshold,"
-                + str(value)
-            )
+        alerttext = (
+            Tools.special_char_remove(dim_str)
+            + ","
+            + Tools.special_char_remove(str(groupset))
+            + ","
+            + table
+            + ",["
+            + column
+            + "],Absolute value"
+            + oper_str
+            + "Threshold,"
+            + str(value)
+        )
 
-            # The last point must be an early warning point, otherwise no warning will be output and cannot be used is must == there will be bugs
-            if obj.loc[obj.index[-1]]["res"] == False:
-                continue
+        # The last point must be an early warning point, otherwise no warning will be output and cannot be used is must == there will be bugs
+        if obj.loc[obj.index[-1]]["res"] == False:
+            continue
 
-            last_dt = obj[obj["res"] == True].index[-1]
-            vv = obj.loc[last_dt][column]
-            data_file = os.path.join("..", table + ".xlsx")
-            f.write(
-                str(uuid.uuid1())
-                + ","
-                + ruleid
-                + ",R00005,[High limit warning],"
-                + Tools.time_dim_to_str(last_dt)
-                + ",["
-                + time_str
-                + "],"
-                + alerttext
-                + ","
-                + Tools.special_char_remove(str(vv))
-                + ","
-                + ""
-                + str(url)
-                + ""
-                + ',=HYPERLINK("'
-                + data_file
-                + '")'
-                + ',=HYPERLINK("'
-                + str(url)
-                + '")'
-                + "\n"
-            )
-            f.flush()
+        last_dt = obj[obj["res"] == True].index[-1]
+        vv = obj.loc[last_dt][column]
+        data_file = os.path.join("..", table + ".xlsx")
+        f.write(
+            str(uuid.uuid1())
+            + ","
+            + ruleid
+            + ",R00005,[High limit warning],"
+            + Tools.time_dim_to_str(last_dt)
+            + ",["
+            + time_str
+            + "],"
+            + alerttext
+            + ","
+            + Tools.special_char_remove(str(vv))
+            + ","
+            + ""
+            + str(url)
+            + ""
+            + ',=HYPERLINK("'
+            + data_file
+            + '")'
+            + ',=HYPERLINK("'
+            + str(url)
+            + '")'
+            + "\n"
+        )
+        f.flush()
 
 
 def R00003(ruleid, df, table, column, param, index, url, f):
@@ -440,10 +445,14 @@ def R00003(ruleid, df, table, column, param, index, url, f):
         )
         return 0
 
-    if len(index) > 1:  # If the length of index is one, it means there is only time dimension. If it is greater than 1, take the dimension idx[0:-1] other than the last time dimension as groupby
+    if (
+        len(index) > 1
+    ):  # If the length of index is one, it means there is only time dimension. If it is greater than 1, take the dimension idx[0:-1] other than the last time dimension as groupby
         dim_str = str(index[0:-1])  # Other dimensions
         time_str = str(index[-1])  # Time dimension
-        dimention = df.groupby(index[0:-1]).count().index  # List of other dimensions, group processing
+        dimention = (
+            df.groupby(index[0:-1]).count().index
+        )  # List of other dimensions, group processing
     else:
         time_str = str(index[0])
         dim_str = "_"
@@ -504,7 +513,9 @@ def R00003(ruleid, df, table, column, param, index, url, f):
             + Tools.special_char_remove(str(value_lists))
         )
 
-        if obj.loc[obj.index[-1]]["res"] == False:  # The last point must be an early warning point, otherwise no warning is output
+        if (
+            obj.loc[obj.index[-1]]["res"] == False
+        ):  # The last point must be an early warning point, otherwise no warning is output
             continue
 
         last_dt = obj[obj["res"] == True].index[-1]
@@ -557,7 +568,7 @@ def get(days=1, conf_path=CONF_PATH):
             last_path, "alertlist" + datetime.strftime(BATCH_DATE, "%Y%m%d") + ".csv",
         )
 
-        f_last_alerts = open(csv_file_name, "w")
+        f_last_alerts = open(csv_file_name, "w", encoding="utf-8")
         f_last_alerts.write(
             "alarmid,ruleid,trigger_rule,rule_type,date,date_type,dimension_name,dimension_value,table,field,description,parameter,value,graph,data,url"
             + "\n"
@@ -578,7 +589,7 @@ def get(days=1, conf_path=CONF_PATH):
 
         f_last_alerts.close()
 
-        return pd.read_csv(csv_file_name)
+        return pd.read_csv(csv_file_name, encoding="utf-8")
 
 
 def add(name, df):
