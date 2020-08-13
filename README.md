@@ -34,7 +34,7 @@ Getting Started
 First you should have [python](https://www.python.org/downloads/) and [nodejs](https://nodejs.org/en/download/) installed.
 Optionally if you already had a python env and you need a separate environment to run Sachima, you should install [virtualenv](https://pypi.org/project/virtualenv/)
 
-Check your installation by run this in command line
+Check your installation by running this in command line
 
 ``` shell 
 python -V
