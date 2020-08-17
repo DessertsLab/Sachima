@@ -90,3 +90,8 @@ Working with BI platform
 ### Working with schima-ui(WIP)
 
 
+Contributors
+-----------------------------------
+<a href="https://github.com/DessertsLab/Sachima/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=DessertsLab/Sachima" />
+</a>
