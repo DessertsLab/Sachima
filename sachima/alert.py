@@ -114,13 +114,13 @@ def get_last_time(groupdata):
         )
         return ""
 
-    if the_end_date_put_in != t1:
-        print(the_end_date_put_in)
-        print(t1)
-        print("*********The final time is not t-1, not calculated")
-        return ""
-    else:
-        return groupdata.index[-1]
+    # if the_end_date_put_in != t1:
+    #     print(the_end_date_put_in)
+    #     print(t1)
+    #     print("*********The final time is not t-1, not calculated")
+    #     return ""
+    # else:
+    return groupdata.index[-1]
 
 
 def rulerun(ruleid, table, index, column, rule, param, url, f):
