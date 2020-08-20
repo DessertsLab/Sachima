@@ -42,7 +42,7 @@ class Data:
             api_cls = importlib.import_module("services." + dataname, package="..")
             api = api_cls.Api()
             self.data = api.data
-        elif datatype in ("json"):
+        elif datatype in ("json",):
             self.data = pd.read_json(os.path.join(conf.get("PROJ_DIR"), dataname))
         else:
             # read sql file from ./sqls
