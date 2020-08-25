@@ -35,8 +35,7 @@ setup(
         # "SQLAlchemy",
         # "tqdm"
     ],
-    # include_package_data=True,
-    # package_data={"": ["*.css"], "example":["example_data","handler","logs"]},
-    # scripts=["sachima/bin/sachima"],
+    include_package_data=True,
+    package_data={"": ["*.css"], "sachima": ["example/*/*.*"]},
     entry_points={"console_scripts": ["sachima = sachima.cli:sachima"]},
 )

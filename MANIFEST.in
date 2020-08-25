@@ -1,5 +1,0 @@
-include LICENSE
-include sachima/example/example_data
-include sachima/example/handler
-include sachima/example/logs
-include sachima/example/sqls
