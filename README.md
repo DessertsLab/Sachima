@@ -43,13 +43,15 @@ python -V
 ``` shell 
 node -v
 ```
-> Sometime you need change python to python3 and pip to pip3.
+> Sometimes you need change python to python3 and pip to pip3.
 
-Install sachima by pip
+Sachima is on the Python Package Index(PyPI), so it can be installed with standard Python tools like pip: 
 
 ``` python
 pip install -U sachima
 ```
+
+> -U means update if exists
 
 Check sachima version
 ``` shell
