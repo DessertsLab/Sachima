@@ -154,16 +154,17 @@ def run():
     print("-" * 80)
     print(WAFFLE_DIR)
     print("-" * 80)
+    start_sachima()
     # --prefix means start npm in a different directory
-    cmd_line = "npm start --prefix {0}".format(WAFFLE_DIR)
-    w = subprocess.Popen(
-        cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    )
-    s = subprocess.Popen(
-        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-    )
-    w.wait()
-    s.wait()
+    # cmd_line = "npm start --prefix {0}".format(WAFFLE_DIR)
+    # w = subprocess.Popen(
+    #     cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    # )
+    # s = subprocess.Popen(
+    #     start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    # )
+    # w.wait()
+    # s.wait()
 
 
 sachima.add_command(get)
