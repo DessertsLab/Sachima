@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="sachima",
-    version="2020.8.25.2",
+    version="2020.8.25.3",
     author="nocmk2",
     author_email="jianye.zhang@gmail.com",
     description="Better data analysis",
@@ -35,8 +35,7 @@ setup(
         # "SQLAlchemy",
         # "tqdm"
     ],
-    # include_package_data=True,
-    # package_data={"": ["*.css"], "example":["example_data","handler","logs"]},
-    # scripts=["sachima/bin/sachima"],
+    include_package_data=True,
+    package_data={"": ["*.css"], "sachima": ["example/*/*.*"]},
     entry_points={"console_scripts": ["sachima = sachima.cli:sachima"]},
 )
