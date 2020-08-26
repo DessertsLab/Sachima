@@ -21,7 +21,7 @@ Sachima擁有非常美觀的界麵和智能的數據分析功能。
 ------------------------------------
 |特性|預覽|描述|
 |----|----|----|
-|api||把數據邏輯PO成rpc和http的api|
+|api||把數據邏輯發佈成rpc和http的api|
 |BI平臺整合|![image](https://user-images.githubusercontent.com/7627381/87924280-3c6cb200-cab1-11ea-9330-93cbe5340594.png)|可以在流行的BI平臺上使用|
 |消息通知發送||可以把數據報告發送到email或者即時通訊工具|
 |數據可視化|![image](https://user-images.githubusercontent.com/7627381/87915432-c4988a80-caa4-11ea-96c3-e2f95e1d2017.png)![image](https://user-images.githubusercontent.com/7627381/87915967-68823600-caa5-11ea-9ca5-093a5688e1b0.png)![heatmap](https://user-images.githubusercontent.com/7627381/89003496-80be4480-d332-11ea-9cf6-c53d80df1377.gif)![44331558-5d2ec600-a49c-11e8-9406-ee71ac94b52c](https://user-images.githubusercontent.com/7627381/89003512-8a47ac80-d332-11ea-9d5d-391cdf67162c.gif)<img width="1082" alt="44331788-083f7f80-a49d-11e8-9fad-5668b53ab954" src="https://user-images.githubusercontent.com/7627381/89003523-90d62400-d332-11ea-86c4-6d10882ddf92.png">![48402607-fcdfb580-e766-11e8-9fe4-68f1a995d4f6](https://user-images.githubusercontent.com/7627381/89003527-9469ab00-d332-11ea-9406-55831eadc1f1.jpg)|一鍵可視化你的數據.
@@ -29,18 +29,15 @@ Sachima擁有非常美觀的界麵和智能的數據分析功能。
 
 開始使用
 -----------------------------------
-首先你需要安裝 [python](https://www.python.org/downloads/) 和 [nodejs](https://nodejs.org/en/download/).
+首先你需要安裝 [python](https://www.python.org/downloads/).
 如果你不想影響到你現有的python環境可以選擇安裝虛擬環境 [virtualenv](https://pypi.org/project/virtualenv/)
 
-通過以下命令檢查你的python和nodejs是否安裝正確
+通過以下命令檢查你的python是否安裝正確
 
 ``` shell 
 python -V
 ```
 
-``` shell 
-node -v
-```
 > 根據你環境的配置你可能需要執行python3和pip3而不是python和pip.
 
 安裝sachima
@@ -49,28 +46,33 @@ node -v
 pip install -U sachima
 ```
 
-檢視sachima版本
+查看sachima版本
 
 ``` shell
 sachima version
 ```
 
-切換到你的工作目錄並初始化sachima項目(預設會自帶例子)
+切換到你的工作目錄並初始化sachima項目(默認會自帶例子)
 
 ``` shell
-sachima init
+sachima init YOUR_PROJ_NAME
 ```
 
-更新sachima到最新版本並下載Waffle到同級目錄
+進入你新創建的Sachima工程目錄
 ``` shell
-sachima update
+cd YOUR_PROJ_NAME
 ```
 
 運行sachima
 ``` shell
 sachima run
 ```
-這時你的sachima開發環境的服務會在命令行啓動並且自動打開瀏覽器展示數據。如果你遇到任何問題可以嘗試重新執行最後一步或者在[Sachima github issues](https://github.com/DessertsLab/Sachima/issues)提問題
+這時你的sachima會在命令行啓動並且自動打開瀏覽器展示數據。如果你遇到任何問題可以嘗試重新執行最後一步或者在[Sachima github issues](https://github.com/DessertsLab/Sachima/issues)提問題
+
+更新sachima到最新版本
+``` shell
+sachima update
+```
 
 獲取中間件
 -----------------------------------
@@ -87,5 +89,3 @@ Working with BI platform
 ### Working with superset(WIP)
 
 ### Working with schima-ui(WIP)
-
-

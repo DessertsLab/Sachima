@@ -31,7 +31,7 @@ Features
 
 Getting Started
 -----------------------------------
-First you should have [python](https://www.python.org/downloads/) and [nodejs](https://nodejs.org/en/download/) installed.
+First you should have [python](https://www.python.org/downloads/) installed.
 Optionally if you already had a python env and you need a separate environment to run Sachima, you should install [virtualenv](https://pypi.org/project/virtualenv/)
 
 Check your installation by running this in command line
@@ -40,9 +40,6 @@ Check your installation by running this in command line
 python -V
 ```
 
-``` shell 
-node -v
-```
 > Sometimes you need change python to python3 and pip to pip3.
 
 Sachima is on the Python Package Index(PyPI), so it can be installed with standard Python tools like pip: 
@@ -50,30 +47,58 @@ Sachima is on the Python Package Index(PyPI), so it can be installed with standa
 ``` python
 pip install -U sachima
 ```
-
 > -U means update if exists
+
+Or you can install from the source code:
+
+``` shell 
+git clone https://github.com/DessertsLab/Sachima.git
+cd Sachima
+pip install -e .
+```
 
 Check sachima version
 ``` shell
 sachima version
 ```
 
-Cd into your working dir and init Sachima project with example
+Init Sachima project. This will create YOUR_PROJ_NAME folder in current dir with sachima example apps.
 ``` shell
-sachima init
+sachima init YOUR_PROJ_NAME
 ```
 
-Update Sachima to latest version and get latest Waffle which is a Sachima frontend development tool.
+Cd into your project dir  
 ``` shell
-sachima update
+cd YOUR_PROJ_NAME
 ```
 
-Run Sachima dev tools
+Run Sachima. Please wait after your browser open until sachima flask server started.
 ``` shell
 sachima run
 ```
-This will start your sachima dev server and display data in Browser. If you had any problem rerun the last step or ask in [Sachima github issues](https://github.com/DessertsLab/Sachima/issues).
 
+If your browser did not open. Open http://0.0.0.0:80 manually in your browser(Chrome recommend). 
+
+
+
+Update Sachima to latest version.
+``` shell
+sachima update
+```
+or
+``` shell
+pip install -U sachima
+```
+ 
+If you want to contribute. The sachima start command will clone or pull Waffle source code from github and use npm to start it.
+
+``` shell
+sachima start
+```
+ 
+
+
+If you had any problem ask in [Sachima github issues](https://github.com/DessertsLab/Sachima/issues) or send me email jianye.zhang@gmail.com or chat in  https://gitter.im/sachima-python/community?source=orgpage
 
 Get middleware
 -----------------------------------

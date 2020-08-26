@@ -29,18 +29,15 @@ Sachima拥有非常美观的界面和智能的数据分析功能。
 
 开始使用
 -----------------------------------
-首先你需要安装 [python](https://www.python.org/downloads/) 和 [nodejs](https://nodejs.org/en/download/).
+首先你需要安装 [python](https://www.python.org/downloads/).
 如果你不想影响到你现有的python环境可以选择安装虚拟环境 [virtualenv](https://pypi.org/project/virtualenv/)
 
-通过以下命令检查你的python和nodejs是否安装正确
+通过以下命令检查你的python是否安装正确
 
 ``` shell 
 python -V
 ```
 
-``` shell 
-node -v
-```
 > 根据你环境的配置你可能需要执行python3和pip3而不是python和pip.
 
 安装sachima
@@ -58,19 +55,24 @@ sachima version
 切换到你的工作目录并初始化sachima项目(默认会自带例子)
 
 ``` shell
-sachima init
+sachima init YOUR_PROJ_NAME
 ```
 
-更新sachima到最新版本并下载Waffle到同级目录
+进入你新创建的Sachima工程目录
 ``` shell
-sachima update
+cd YOUR_PROJ_NAME
 ```
 
 运行sachima
 ``` shell
 sachima run
 ```
-这时你的sachima开发环境的服务会在命令行启动并且自动打开浏览器展示数据。如果你遇到任何问题可以尝试重新执行最后一步或者在[Sachima github issues](https://github.com/DessertsLab/Sachima/issues)提问题
+这时你的sachima会在命令行启动并且自动打开浏览器展示数据。如果你遇到任何问题可以尝试重新执行最后一步或者在[Sachima github issues](https://github.com/DessertsLab/Sachima/issues)提问题
+
+更新sachima到最新版本
+``` shell
+sachima update
+```
 
 获取中间件
 -----------------------------------
@@ -87,5 +89,3 @@ Working with BI platform
 ### Working with superset(WIP)
 
 ### Working with schima-ui(WIP)
-
-
