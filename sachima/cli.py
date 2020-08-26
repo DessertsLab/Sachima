@@ -6,6 +6,7 @@ import random
 import sys
 import subprocess
 import pkg_resources
+import webbrowser
 
 import shutil
 
@@ -59,6 +60,40 @@ def is_in_sachima_project():
     return False
 
 
+def sync_waffle():
+    """
+    DessertsLab/Waffle is frontend for sachima dev env
+    pre download Waffle from github to the parent dir
+    or update Waffle 
+    """
+    if not os.path.exists(WAFFLE_DIR):
+        click.echo("Cloneing  DessertsLab/Waffle...")
+        os.system(
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
+        )
+        click.echo("Installing  DessertsLab/Waffle...")
+
+        # os.system("cd {}".format(WAFFLE_DIR))
+        os.chdir(WAFFLE_DIR)
+        os.system("npm install")
+        os.chdir(CURRENT_DIR)
+    else:
+        click.echo("Pulling  DessertsLab/Waffle...")
+        os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
+        click.echo("Installing  DessertsLab/Waffle...")
+        os.chdir(WAFFLE_DIR)
+        os.system("npm install")
+        os.chdir(CURRENT_DIR)
+
+
+def start_sachima():
+    from sachima.sachima_http_server_flask import app
+
+    sys.path.insert(0, os.getcwd())
+    sys.dont_write_bytecode = True
+    app.run(host="0.0.0.0", port=80, debug=False)
+
+
 @click.command(help="Print sachima version")
 def version():
     click.echo(sachima_version)
@@ -96,75 +131,38 @@ def init(name):
     click.echo("Init a sachima project successed")
 
 
-@click.command(help="Start sachima server")
+@click.command(help="Start sachima dev server with syncing Waffle source code from github(For contributors)")
 def start():
-    click.echo("start sachima server")
-
-
-def sync_waffle():
-    """
-    DessertsLab/Waffle is frontend for sachima dev env
-    pre download Waffle from github to the parent dir
-    or update Waffle 
-    """
-    if not os.path.exists(WAFFLE_DIR):
-        click.echo("Cloneing  DessertsLab/Waffle...")
-        os.system(
-            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
-        )
-        click.echo("Installing  DessertsLab/Waffle...")
-
-        # os.system("cd {}".format(WAFFLE_DIR))
-        os.chdir(WAFFLE_DIR)
-        os.system("npm install")
-        # os.system("cd {}".format(CURRENT_DIR))
-        # os.system("npm install --prefix {}".format(WAFFLE_DIR))
-    else:
-        click.echo("Pulling  DessertsLab/Waffle...")
-        os.system("git -C {0} pull origin master".format(WAFFLE_DIR))
-        click.echo("Installing  DessertsLab/Waffle...")
-        os.chdir(WAFFLE_DIR)
-        os.system("npm install")
-        # click.echo("cd {}".format(CURRENT_DIR))
-        # os.system("cd {}".format(CURRENT_DIR))
-        # os.system("npm install --prefix {}".format(WAFFLE_DIR))
-
-
-def start_sachima():
-    from sachima.sachima_http_server_flask import app
-
-    sys.path.insert(0, os.getcwd())
-    sys.dont_write_bytecode = True
-    app.run(host="0.0.0.0", port=80, debug=False)
+    click.echo("start sachima dev server")
+    if not is_in_sachima_project():
+        return
+    sync_waffle()
+    # --prefix means start npm in a different directory
+    cmd_line = "npm start --prefix {0}".format(WAFFLE_DIR)
+    w = subprocess.Popen(
+        cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    s = subprocess.Popen(
+        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+    )
+    w.wait()
+    s.wait()
 
 
 @click.command(help="Update sachima")
 def update():
     click.echo("Updating sachima...")
     os.system("pip3 install -U sachima")
-    click.echo("Updating waffle...")
-    sync_waffle()
 
 
-@click.command(help="Run sachima dev server with Waffle")
+@click.command(help="Run sachima")
 def run():
     if not is_in_sachima_project():
         return
-    # sync_waffle()
-    print("-" * 80)
-    print(WAFFLE_DIR)
-    print("-" * 80)
+    # Open browser first while sachima backend starting the browser will update automaticly
+    url = "http://0.0.0.0:80"
+    webbrowser.open_new(url)
     start_sachima()
-    # --prefix means start npm in a different directory
-    # cmd_line = "npm start --prefix {0}".format(WAFFLE_DIR)
-    # w = subprocess.Popen(
-    #     cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
-    # )
-    # s = subprocess.Popen(
-    #     start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-    # )
-    # w.wait()
-    # s.wait()
 
 
 sachima.add_command(get)
@@ -177,26 +175,3 @@ sachima.add_command(update)
 
 if __name__ == "__main__":
     sachima()
-
-
-# TODO: build Waffle and put it in sachima use this script start it
-# import sys
-# import thread
-# import webbrowser
-# import time
-
-# import BaseHTTPServer, SimpleHTTPServer
-
-# def start_server():
-#     httpd = BaseHTTPServer.HTTPServer(('127.0.0.1', 3600), SimpleHTTPServer.SimpleHTTPRequestHandler)
-#     httpd.serve_forever()
-
-# thread.start_new_thread(start_server,())
-# url = 'http://127.0.0.1:3600'
-# webbrowser.open_new(url)
-
-# while True:
-#     try:
-#         time.sleep(1)
-#     except KeyboardInterrupt:
-#         sys.exit(0)
