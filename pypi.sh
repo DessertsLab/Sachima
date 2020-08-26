@@ -8,7 +8,7 @@ python3 -m twine upload dist/*
 
 
 
-git tag -a 2020.8.25.3 -m '2020.8.25.3'
+git tag -a 2020.8.26.1 -m '2020.8.26.1'
 git push origin --tags
 
 
