@@ -150,9 +150,16 @@ def start():
 
 
 @click.command(help="Update sachima")
-def update():
+@click.option(
+    "--local", default="", help="if in china use tsinghua source",
+)
+def update(local):
     click.echo("Updating sachima...")
-    os.system("pip3 install -U sachima")
+    if local=="china":
+        os.system("pip3 --default-timeout=100 install -U sachima -i https://pypi.tuna.tsinghua.edu.cn/simple")
+    else:
+        os.system("pip3 install -U sachima")
+        
 
 
 @click.command(help="Run sachima")
@@ -160,7 +167,7 @@ def run():
     if not is_in_sachima_project():
         return
     # Open browser first while sachima backend starting the browser will update automaticly
-    url = "http://0.0.0.0:80"
+    url = "http://127.0.0.1:80"
     webbrowser.open_new(url)
     start_sachima()
 
