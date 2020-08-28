@@ -44,8 +44,8 @@ def longest_common_substring(s1, s2):
 
 def extract(df, p, *cols):
     """
-    用cols中的参数名从p中提取参数并过滤df
-    如果参数不存在 提取下一个 直到结束
+    Use the parameter name in cols to extract parameters from p and filter df
+    If the parameter does not exist, extract the next one until the end
     """
     for c in cols:
         try:
@@ -151,3 +151,27 @@ class Tools:
             return str(timeobj)
         else:
             return timeobj.strftime("%Y-%m-%d")
+
+
+class V:
+    def __init__(self, d):
+        self.__data = d
+
+    @classmethod
+    def __first_value(cls, dic_data):
+        return next(iter(dic_data.items()))[1]
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return V.__first_value(self.__data) == V.__first_value(other.__data)
+        else:
+            return False
+
+    def __hash__(self):
+        return 1
+
+    def to_dict(self):
+        return self.__data
+
+def drop_duplicates_dict_in_list(l):
+    return [x.to_dict() for x in set([V(record) for record in l])]
