@@ -40,6 +40,7 @@ setup(
         "": ["*.css"],
         "sachima": [
             "example/*/*.*",
+            "example/*/.*",
             "assets/*",
             "assets/static/css/*",
             "assets/static/js/*",
