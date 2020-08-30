@@ -172,7 +172,7 @@ def update(local):
             "pip3 --default-timeout=100 install -U sachima -i https://pypi.tuna.tsinghua.edu.cn/simple"
         )
     else:
-        state = s.system("pip3 install -U sachima")
+        state = os.system("pip3 install -U sachima")
 
     if state == 0:
         click.echo(
@@ -180,6 +180,7 @@ def update(local):
                 pkg_resources.require("sachima")[0].version
             )
         )
+        os.system("sachima version")
 
 
 @click.command(help="Run sachima")
