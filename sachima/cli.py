@@ -69,7 +69,9 @@ def sync_waffle():
     if not os.path.exists(WAFFLE_DIR):
         click.echo("Cloneing  DessertsLab/Waffle...")
         os.system(
-            "git clone https://github.com/DessertsLab/Waffle.git {}".format(WAFFLE_DIR)
+            "git clone https://github.com/DessertsLab/Waffle.git {}".format(
+                WAFFLE_DIR
+            )
         )
         click.echo("Installing  DessertsLab/Waffle...")
 
@@ -99,9 +101,13 @@ def version():
     click.echo(sachima_version)
 
 
-@click.command(help="Get sachima middleware from github : get DessertsLab/pivot_table")
+@click.command(
+    help="Get sachima middleware from github : get DessertsLab/pivot_table"
+)
 @click.option(
-    "--path", default=os.path.join(os.getcwd(), "middleware"), help="project path",
+    "--path",
+    default=os.path.join(os.getcwd(), "middleware"),
+    help="project path",
 )
 @click.argument("middleware_name")
 def get(path, middleware_name):
@@ -126,12 +132,16 @@ def get(path, middleware_name):
 def init(name):
     sachima_example_path = os.path.join(os.path.dirname(__file__), "example")
     current_init_path = os.path.join(os.getcwd(), name)
-    click.echo("copying {} to {} ...".format(sachima_example_path, current_init_path))
+    click.echo(
+        "copying {} to {} ...".format(sachima_example_path, current_init_path)
+    )
     shutil.copytree(sachima_example_path, current_init_path)
     click.echo("Init a sachima project successed")
 
 
-@click.command(help="Start sachima dev server with syncing Waffle source code from github(For contributors)")
+@click.command(
+    help="Start sachima dev server with syncing Waffle source code from github(For contributors)"
+)
 def start():
     click.echo("start sachima dev server")
     if not is_in_sachima_project():
@@ -143,23 +153,33 @@ def start():
         cmd_line, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
     s = subprocess.Popen(
-        start_sachima(), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        start_sachima(),
+        shell=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
     )
     w.wait()
     s.wait()
 
 
 @click.command(help="Update sachima")
-@click.option(
-    "--local", default="", help="if in china use tsinghua source",
-)
+@click.option("--local", default="", help="if in china use tsinghua source")
 def update(local):
     click.echo("Updating sachima...")
-    if local=="china":
-        os.system("pip3 --default-timeout=100 install -U sachima -i https://pypi.tuna.tsinghua.edu.cn/simple")
+    state = 0
+    if local == "china":
+        state = os.system(
+            "pip3 --default-timeout=100 install -U sachima -i https://pypi.tuna.tsinghua.edu.cn/simple"
+        )
     else:
-        os.system("pip3 install -U sachima")
-        
+        state = s.system("pip3 install -U sachima")
+
+    if state == 0:
+        click.echo(
+            "Sachima already updated to {}".format(
+                pkg_resources.require("sachima")[0].version
+            )
+        )
 
 
 @click.command(help="Run sachima")
