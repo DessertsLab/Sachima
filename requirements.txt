@@ -4,6 +4,6 @@ pandas==1.1.1
 PyMySQL==0.10.0
 numpy==1.19.1
 aenum==2.2.4
-nameko==2.12.0
+nameko==2.13.0
 impyla==0.16.2
 tqdm==4.48.2
