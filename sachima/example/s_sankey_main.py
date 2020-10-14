@@ -6,10 +6,10 @@ from sachima.filter_enum import FilterEnum as _
 from sachima.params import Filter
 from sachima.wrappers import send, timer
 
-from services.db_connects import db
+# from services.db_connects import db
 import datetime as dt
 
-db = db()
+# db = db()
 
 
 @timer
