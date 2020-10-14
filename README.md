@@ -1,6 +1,6 @@
 [English](https://github.com/DessertsLab/Sachima/blob/master/README.md)｜[中文简体](https://github.com/DessertsLab/Sachima/blob/master/doc/README_CN.md)｜[中文繁體](https://github.com/DessertsLab/Sachima/blob/master/doc/README_TC.md)
 
-# Sachima
+# Sachima <
 
 Sachima is a flexible framework for data-driven apps. It's a MIT licensed open source project written in python. We creates it because our data-driven requirements changes frequently, and we need data analyst having the ability to change online api and data visulization.
 
