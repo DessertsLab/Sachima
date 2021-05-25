@@ -6,4 +6,4 @@ numpy==1.19.4
 aenum==2.2.4
 nameko==2.13.0
 impyla==0.16.3
-tqdm==4.51.0
+tqdm==4.61.0
