@@ -2,7 +2,7 @@ SQLAlchemy==1.4.15
 premailer==3.7.0
 pandas==1.1.4
 PyMySQL==0.10.1
-numpy==1.19.4
+numpy==1.22.0
 aenum==2.2.4
 nameko==2.13.0
 impyla==0.16.3
